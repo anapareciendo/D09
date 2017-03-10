@@ -85,10 +85,10 @@ public class Offer extends Commentable {
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Place getPlacer() {
+	public Place getPlace() {
 		return this.place;
 	}
-	public void setPlacer(final Place place) {
+	public void setPlace(final Place place) {
 		this.place = place;
 	}
 
