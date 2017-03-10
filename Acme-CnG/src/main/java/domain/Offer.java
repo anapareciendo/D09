@@ -24,26 +24,26 @@ public class Offer extends Commentable {
 	private String	title;
 	private String	description;
 	private Date	moment;
-	private Boolean banned;
+	private boolean	banned;
 
 
 	@NotBlank
 	@SafeHtml
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 	}
-	
+
 	@NotBlank
 	@SafeHtml
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(final String description) {
 		this.description = description;
 	}
 
@@ -51,49 +51,45 @@ public class Offer extends Commentable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	public Date getMoment() {
-		return moment;
+		return this.moment;
 	}
 
-	public void setMoment(Date moment) {
+	public void setMoment(final Date moment) {
 		this.moment = moment;
 	}
 
-
-	@NotNull
-	public Boolean getBanned() {
-		return banned;
+	public boolean getBanned() {
+		return this.banned;
 	}
 
-	
-	public void setBanned(Boolean banned) {
+	public void setBanned(final boolean banned) {
 		this.banned = banned;
 	}
 
 
-
 	//---------------------Relationships--------------------------
-	private Customer customer;
-	private Place place;
+	private Customer	customer;
+	private Place		place;
+
 
 	@Valid
 	@NotNull
-	@ManyToOne(optional=false)
+	@ManyToOne(optional = false)
 	public Customer getCustomer() {
 		return this.customer;
 	}
-	public void setCustomer(Customer customer){
-		this.customer=customer;
+	public void setCustomer(final Customer customer) {
+		this.customer = customer;
 	}
-	
+
 	@Valid
 	@NotNull
-	@ManyToOne(optional=false)
+	@ManyToOne(optional = false)
 	public Place getPlacer() {
 		return this.place;
 	}
-	public void setPlacer(Place place){
-		this.place=place;
+	public void setPlacer(final Place place) {
+		this.place = place;
 	}
-	
-	
+
 }

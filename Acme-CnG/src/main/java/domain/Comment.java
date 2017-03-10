@@ -24,17 +24,17 @@ public class Comment extends DomainEntity {
 	private String	title;
 	private Date	moment;
 	private String	text;
-	private int	stars;
-	private Boolean banned;
+	private int		stars;
+	private boolean	banned;
 
 
 	@NotNull
 	@SafeHtml
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 	}
 
@@ -42,67 +42,64 @@ public class Comment extends DomainEntity {
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	public Date getMoment() {
-		return moment;
+		return this.moment;
 	}
 
-	public void setMoment(Date moment) {
+	public void setMoment(final Date moment) {
 		this.moment = moment;
 	}
 
 	@NotNull
 	@SafeHtml
 	public String getText() {
-		return text;
+		return this.text;
 	}
 
-	public void setText(String text) {
+	public void setText(final String text) {
 		this.text = text;
 	}
 
 	@Range(min = 0, max = 5)
 	public int getStars() {
-		return stars;
+		return this.stars;
 	}
 
-	public void setStars(int stars) {
+	public void setStars(final int stars) {
 		this.stars = stars;
 	}
-	
-	@NotNull
-	public Boolean getBanned() {
-		return banned;
+
+	public boolean getBanned() {
+		return this.banned;
 	}
 
-	
-	public void setBanned(Boolean banned) {
+	public void setBanned(final boolean banned) {
 		this.banned = banned;
 	}
 
 
-
 	//---------------------Relationships--------------------------
-	private Actor posted;
-	private Commentable commentable;
+	private Actor		posted;
+	private Commentable	commentable;
+
 
 	@Valid
 	@NotNull
-	@ManyToOne(optional=false)
+	@ManyToOne(optional = false)
 	public Actor getPosted() {
 		return this.posted;
 	}
-	public void setPosted(Actor posted){
-		this.posted=posted;
+	public void setPosted(final Actor posted) {
+		this.posted = posted;
 	}
-	
+
 	@Valid
 	@NotNull
-	@ManyToOne(optional=false)
+	@ManyToOne(optional = false)
 	public Commentable getCommentable() {
 		return this.commentable;
 	}
-	public void setCommentable(Commentable commentable){
-		this.commentable=commentable;
+	public void setCommentable(final Commentable commentable) {
+		this.commentable = commentable;
 	}
-	
-	
+
 }
