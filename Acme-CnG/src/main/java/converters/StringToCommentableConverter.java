@@ -1,3 +1,13 @@
+/* StringToCardConverter.java
+ *
+ * Copyright (C) 2016 Universidad de Sevilla
+ * 
+ * The use of this project is hereby constrained to the conditions of the 
+ * TDG Licence, a copy of which you may download from 
+ * http://www.tdg-seville.info/License.html
+ * 
+ */
+
 package converters;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -5,24 +15,43 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import domain.Administrator;
+import repositories.AdministratorRepository;
+import repositories.CustomerRepository;
+import repositories.OfferRepository;
+import repositories.RequestRepository;
 import domain.Commentable;
 
 @Component
 @Transactional
-public class StringToCommentableConverter implements Converter<String, Commentable>{
+public class StringToCommentableConverter implements Converter<String, Commentable> {
 
 	@Autowired
-	CommentableRepository commentableRepository;
+	AdministratorRepository adminRepository;
+	@Autowired
+	CustomerRepository customerRepository;
+	@Autowired
+	OfferRepository offerRepository;
+	@Autowired
+	RequestRepository requestRepository;
 
 	@Override
 	public Commentable convert(String text) {
-		Administrator result;
+		Commentable result;
 		int id;
 
 		try {
 			id = Integer.valueOf(text);
-			result = commentableRepository.findOne(id);
+			
+			result = adminRepository.findOne(id);
+			
+			if(result == null){
+				result = customerRepository.findOne(id);
+			}if(result == null){
+				result = offerRepository.findOne(id);
+			}if(result == null){
+				result = requestRepository.findOne(id);
+			}
+			
 		} catch (Exception oops) {
 			throw new IllegalArgumentException(oops);
 		}

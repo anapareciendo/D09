@@ -5,7 +5,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import domain.Administrator;
+import repositories.CommentRepository;
 import domain.Comment;
 
 @Component
@@ -17,7 +17,7 @@ public class StringToCommentConverter implements Converter<String, Comment>{
 
 	@Override
 	public Comment convert(String text) {
-		Administrator result;
+		Comment result;
 		int id;
 
 		try {
