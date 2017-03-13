@@ -122,10 +122,7 @@
 		<property name="comments">
 			<list></list>
 		</property>
-		<property name="offers">
-			<list></list>
-		</property>
-		<property name="requests">
+		<property name="applications">
 			<list></list>
 		</property>
 	</bean>
@@ -148,14 +145,12 @@
 		<property name="comments">
 			<list></list>
 		</property>
-		<property name="offers">
-			<list></list>
-		</property>
-		<property name="requests">
+		<property name="applications">
 			<list></list>
 		</property>
 	</bean>
 	
+	<!-- Messages -->
 	<bean id="message1" class="domain.Message">
 		<property name="moment" value="2016/12/31" />
 		<property name="title" value="A good experience" />
@@ -211,6 +206,9 @@
 		<property name="comments">
 			<list></list>
 		</property>
+		<property name="applications">
+			<list></list>
+		</property>
 	</bean>
 	
 	<bean id="offer2" class="domain.Offer">
@@ -223,6 +221,9 @@
 		<property name="comments">
 			<list></list>
 		</property>
+		<property name="applications">
+			<list></list>
+		</property>
 	</bean>
 	
 	<bean id="offer3" class="domain.Offer">
@@ -233,6 +234,9 @@
 		<property name="origin" ref="place1" />
 		<property name="destination" ref="place4" />
 		<property name="comments">
+			<list></list>
+		</property>
+		<property name="applications">
 			<list></list>
 		</property>
 	</bean>
@@ -249,6 +253,9 @@
 		<property name="comments">
 			<list></list>
 		</property>
+		<property name="applications">
+			<list></list>
+		</property>
 	</bean>
 	
 	<bean id="request2" class="domain.Request">
@@ -261,12 +268,30 @@
 		<property name="comments">
 			<list></list>
 		</property>
+		<property name="applications">
+			<list></list>
+		</property>
 	</bean>
-	
-	
+		
+	<!-- Applications -->
+	<bean id="application1" class="domain.Application">
+		<property name="status" value="PENDING" />
+		<property name="customer" ref="customer1" />
+		<property name="demand" ref="request2" />
+	</bean>
+	<bean id="application2" class="domain.Application">
+		<property name="status" value="ACCEPTED" />
+		<property name="customer" ref="customer2" />
+		<property name="demand" ref="request1" />
+	</bean>
+	<bean id="application3" class="domain.Application">
+		<property name="status" value="DENIED" />
+		<property name="customer" ref="customer1" />
+		<property name="demand" ref="offer1" />
+	</bean>
+		
 		
 	<!-- Comment -->
-	
 	<bean id="comment1" class="domain.Comment">
 		<property name="title" value="Recordatorio" />	
 		<property name="moment" value="2016/10/28 11:25" />
@@ -292,5 +317,10 @@
 		<property name="stars" value="4" />
 		<property name="posted" ref="customer2" />
 		<property name="commentable" ref="admin1" />
+	</bean>
+	
+	<!-- Banner -->
+	<bean id="banner1" class="domain.Banner">
+		<property name="logo" value="Welcome!"/>
 	</bean>
 </beans>

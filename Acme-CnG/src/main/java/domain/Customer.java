@@ -1,3 +1,4 @@
+
 package domain;
 
 import java.util.Collection;
@@ -11,34 +12,20 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class Customer extends Actor{
+public class Customer extends Actor {
 
 	//---------------------Relationships--------------------------
-	private Collection<Offer> offers;
-	private Collection<Request> requests;
-	
+	private Collection<Application>	applications;
+
+
 	@Valid
 	@NotNull
 	@OneToMany(mappedBy = "customer")
-	public Collection<Offer> getOffers() {
-		return offers;
+	public Collection<Application> getApplications() {
+		return this.applications;
 	}
-	
-	public void setOffers(Collection<Offer> offers) {
-		this.offers = offers;
+	public void setApplications(final Collection<Application> applications) {
+		this.applications = applications;
 	}
-	
-	@Valid
-	@NotNull
-	@OneToMany(mappedBy = "customer")
-	public Collection<Request> getRequests() {
-		return requests;
-	}
-	
-	public void setRequests(Collection<Request> requests) {
-		this.requests = requests;
-	}
-	
-	
-	
+
 }
