@@ -58,6 +58,7 @@ public class Offer extends Commentable {
 		this.moment = moment;
 	}
 
+
 	public boolean getBanned() {
 		return this.banned;
 	}
