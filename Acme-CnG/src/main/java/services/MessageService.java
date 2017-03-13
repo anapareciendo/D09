@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.MessageRepository;
+import security.LoginService;
+import security.UserAccount;
 import domain.Actor;
 import domain.Message;
 
@@ -58,12 +60,32 @@ public class MessageService {
 	
 	public Message save(Message message) {
 		Assert.notNull(message, "The message to save cannot be null.");
-
+		
+		Assert.notNull(message.getSender());
+		Assert.notNull(message.getRecipient());
+		
+		Assert.isTrue(message.getMoment()!= null);
+		Assert.isTrue(message.getTitle()!= null);
+		Assert.isTrue(message.getText() != null);
+		
 		Message res = messageRepository.save(message);
 		res.getSender().getSenderMessages().add(res);
 		res.getRecipient().getReceivedMessages().add(res);
-
+		res.setMoment(Calendar.getInstance().getTime());
+		
 		return res;
+	}
+	
+	public void delete(Message message) {
+		
+		Assert.notNull(message, "The message to delete cannot be null.");
+		Assert.isTrue(messageRepository.exists(message.getId()));
+		
+
+		UserAccount ua=LoginService.getPrincipal();
+		Assert.isTrue(message.getSender().getUserAccount().equals(ua), "You are not the owner of the message");
+		
+		messageRepository.delete(message);
 	}
 	
 	

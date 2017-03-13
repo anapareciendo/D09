@@ -84,8 +84,8 @@ public class MessageTest extends AbstractTest {
 		Object testingData[][] = {
 				{Calendar.getInstance().getTime(),"title","text", "customer1",null},
 				{null,"title","text","customer1",IllegalArgumentException.class},
-				{Calendar.getInstance().getTime(),"","text","customer1",IllegalArgumentException.class},
-				{Calendar.getInstance().getTime(),"title","","customer1",IllegalArgumentException.class}
+				{Calendar.getInstance().getTime(),null,"text","customer1",IllegalArgumentException.class},
+				{Calendar.getInstance().getTime(),"title",null,"customer1",IllegalArgumentException.class}
 		};
 		
 		for(int i = 0; i < testingData.length; i++){
@@ -109,9 +109,41 @@ public class MessageTest extends AbstractTest {
 			save.setTitle(title);
 			save.setText(text);
 			
+			messageService.save(save);
+			
 			unauthenticate();
 		}catch(Throwable oops){
 			caught =  oops.getClass();
+		}
+		checkExceptions(expected, caught);
+	}
+	
+	@Test
+	public void driverDelete(){
+		Object testingData[][] = {
+				{31, "customer1",null},
+				{45, "customer1", IllegalArgumentException.class},
+				{31, "customer2",IllegalArgumentException.class}
+		};
+		
+		for(int i = 0; i < testingData.length; i++){
+			templateDelete((int) testingData[i][0],(String) testingData[i][1],
+					(Class<?>) testingData[i][2]);
+		}
+	}
+	
+	protected void templateDelete(int messageId, String username, Class<?> expected){
+		Class<?> caught;
+		caught = null;
+		try{
+			authenticate(username);
+
+			Message m = messageService.findOne(messageId);
+			messageService.delete(m);
+			
+			unauthenticate();
+		} catch(Throwable oops){
+			caught = oops.getClass();
 		}
 		checkExceptions(expected, caught);
 	}
