@@ -22,6 +22,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
 
+import security.LoginService;
+import services.CustomerService;
 import services.OfferService;
 import services.PlaceService;
 import utilities.AbstractTest;
@@ -39,6 +41,8 @@ public class OfferTest extends AbstractTest {
 	private OfferService offerService;
 	@Autowired
 	private PlaceService placeService;
+	@Autowired
+	private CustomerService customerService;
 
 	//Create a place
 	@Test
@@ -138,5 +142,43 @@ public class OfferTest extends AbstractTest {
 		}
 		checkExceptions(expected, caught);
 	}
+	
+	@Test
+	public void driverdelete(){
+		Object testingData[][] = {
+				{"customer1",null},
+				{"admin1",IllegalArgumentException.class},
+		};
+		
+		for(int i = 0; i < testingData.length; i++){
+			templatedelete((String) testingData[i][0],
+					(Class<?>) testingData[i][1]);
+		}
+	}
+	
+	protected void templatedelete(String username, Class<?> expected){
+		Class<?> caught;
+		caught = null;
+		try{
+			authenticate(username);
+				Place o = placeService.findOne(33);
+				placeService.save(o);
+			
+				Place d = placeService.findOne(34);
+				placeService.save(d);
+
+			Offer save = offerService.create(o, d);
+			save.setTitle("title");
+			save.setDescription("description"); 
+				save.setCustomer(customerService.findByUserAccountId(LoginService.getPrincipal().getId()));
+			offerService.save(save);
+			offerService.delete(save);
+			unauthenticate();
+		} catch(Throwable oops){
+			caught = oops.getClass();
+		}
+		checkExceptions(expected, caught);
+	}
+	
 	
 }

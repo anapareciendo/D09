@@ -35,7 +35,7 @@ public class PlaceTest extends AbstractTest {
 
 	//Save a place without address.
 	@Test(expected = IllegalArgumentException.class)
-	public void savePlaceNegativeTest2() {
+	public void savePlaceNegativeTest() {
 		authenticate("customer3");
 		Place p = placeService.create();
 		//p.setAddress("Address cambiado");
@@ -49,7 +49,8 @@ public class PlaceTest extends AbstractTest {
 	public void driver(){
 		Object testingData[][] = {
 				{"customer1",null},
-				{"admin1",IllegalArgumentException.class}
+				{"admin1",IllegalArgumentException.class},
+				
 		};
 		
 		for(int i = 0; i < testingData.length; i++){

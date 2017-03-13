@@ -73,7 +73,7 @@ public class OfferService {
 		Assert.isTrue(offerRepository.exists(offer.getId()));
 		
 		Authority b = new Authority();
-		b.setAuthority(Authority.ADMIN);
+		b.setAuthority(Authority.CUSTOMER);
 
 		UserAccount ua=LoginService.getPrincipal();
 		Assert.isTrue(offer.getCustomer().getUserAccount().equals(ua) || ua.getAuthorities().contains(b), "You are not the owner of the offer");

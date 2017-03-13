@@ -11,7 +11,6 @@ import repositories.PlaceRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
-import domain.Administrator;
 import domain.Place;
 
 @Service
