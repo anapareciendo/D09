@@ -190,13 +190,24 @@
 		<property name="longitude" value="50"/>
 	</bean>
 	
+	<bean id="place3" class="domain.Place">
+		<property name="address" value="Cádiz" />
+		<property name="latitude" value="20"/>
+		<property name="longitude" value="18"/>
+	</bean>
+	
+	<bean id="place4" class="domain.Place">
+		<property name="address" value="Milán" />
+	</bean>
+	
 	<!-- Offer -->
 	<bean id="offer1" class="domain.Offer">
 		<property name="title" value="offer1" />
 		<property name="description" value="I want go to Madrid"/>
 		<property name="moment" value="2016/09/06 12:45"/>
 		<property name="customer" ref="customer1" />	
-		<property name="place" ref="place1" />
+		<property name="origin" ref="place1" />
+		<property name="destination" ref="place2" />
 		<property name="comments">
 			<list></list>
 		</property>
@@ -207,7 +218,8 @@
 		<property name="description" value="I want go to Madrid"/>
 		<property name="moment" value="2016/09/06 12:45"/>
 		<property name="customer" ref="customer1" />	
-		<property name="place" ref="place1" />
+		<property name="origin" ref="place2" />
+		<property name="destination" ref="place3" />
 		<property name="comments">
 			<list></list>
 		</property>
@@ -218,7 +230,8 @@
 		<property name="description" value="I want go to Seville"/>
 		<property name="moment" value="2017/12/06 12:45"/>
 		<property name="customer" ref="customer2" />	
-		<property name="place" ref="place2" />
+		<property name="origin" ref="place1" />
+		<property name="destination" ref="place4" />
 		<property name="comments">
 			<list></list>
 		</property>
@@ -231,7 +244,8 @@
 		<property name="description" value="Description request 1"/>
 		<property name="moment" value="2017/06/09 12:45"/>
 		<property name="customer" ref="customer1" />	
-		<property name="place" ref="place2" />
+		<property name="origin" ref="place1" />
+		<property name="destination" ref="place4" />
 		<property name="comments">
 			<list></list>
 		</property>
@@ -242,7 +256,8 @@
 		<property name="description" value="Description request 2"/>
 		<property name="moment" value="2016/02/23 12:45"/>
 		<property name="customer" ref="customer2" />	
-		<property name="place" ref="place1" />
+		<property name="origin" ref="place2" />
+		<property name="destination" ref="place3" />
 		<property name="comments">
 			<list></list>
 		</property>

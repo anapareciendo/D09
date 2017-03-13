@@ -69,7 +69,8 @@ public class Request extends Commentable {
 
 	//---------------------Relationships--------------------------
 	private Customer	customer;
-	private Place		place;
+	private Place origin;
+	private Place destination;
 
 
 	@Valid
@@ -85,11 +86,21 @@ public class Request extends Commentable {
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Place getPlace() {
-		return this.place;
+	public Place getDestination() {
+		return this.destination;
 	}
-	public void setPlace(final Place place) {
-		this.place = place;
+	public void setDestination(Place destination) {
+		this.destination = destination;
+	}
+	
+	@Valid
+	@NotNull
+	@ManyToOne(optional = false)
+	public Place getOrigin() {
+		return this.origin;
+	}
+	public void setOrigin(Place origin) {
+		this.origin = origin;
 	}
 
 }
