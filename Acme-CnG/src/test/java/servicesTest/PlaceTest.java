@@ -32,25 +32,46 @@ public class PlaceTest extends AbstractTest {
 	@Autowired
 	private PlaceService placeService;
 
-	//Create a place with necesary attributes, not with de optional one
-	@Test
-	public void createPlacePositiveTest() {
-		authenticate("customer1");
-		Place p = placeService.create();
-		p.setAddress("Address cambiado");
-		placeService.save(p);
-	}
 
-	//Create a place with a admin. Places cannot be create by them.
+	//Save a place without address.
 	@Test(expected = IllegalArgumentException.class)
-	public void createPlaceNegativeTest() {
-		authenticate("admin1");
+	public void savePlaceNegativeTest2() {
+		authenticate("customer3");
 		Place p = placeService.create();
-		p.setAddress("Address cambiado");
+		//p.setAddress("Address cambiado");
 		placeService.save(p);
+		unauthenticate();
+	}
+	
+	//Save a place with necesary attributes, not with de optional one
+	//Save a place with a admin. Places cannot be create by them.
+	@Test
+	public void driver(){
+		Object testingData[][] = {
+				{"customer1",null},
+				{"admin1",IllegalArgumentException.class}
+		};
+		
+		for(int i = 0; i < testingData.length; i++){
+			template((String) testingData[i][0],
+					(Class<?>) testingData[i][1]);
+		}
+	}
+	
+	protected void template(String username, Class<?> expected){
+		Class<?> caught;
+		caught=null;
+		try{
+			authenticate(username);
+			Place p = placeService.create();
+			p.setAddress("Address cambiado");
+			placeService.save(p);
+			unauthenticate();
+		}catch(Throwable oops){
+			caught =  oops.getClass();
+		}
+		checkExceptions(expected, caught);
 	}
 
-	
-	// Ancillary methods ------------------------------------------------------
 
 }

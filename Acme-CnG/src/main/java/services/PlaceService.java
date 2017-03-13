@@ -11,6 +11,7 @@ import repositories.PlaceRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
+import domain.Administrator;
 import domain.Place;
 
 @Service
@@ -55,10 +56,12 @@ public class PlaceService {
 
 		UserAccount ua=LoginService.getPrincipal();
 		Assert.isTrue(ua.getAuthorities().contains(b), "You must to be a customer for this acction");
+		Assert.notNull(place.getAddress(),"El lugar no puede ser nulo");
 		Place res = placeRepository.save(place);
 		return res;
 	}
 	
+
 
 }
 
