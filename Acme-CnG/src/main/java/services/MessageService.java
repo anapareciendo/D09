@@ -1,5 +1,6 @@
 package services;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 
@@ -37,6 +38,7 @@ public class MessageService {
 		Assert.notNull(recipient);
 		Message res;
 		res = new Message();
+		res.setAttachments(new ArrayList<String>());
 		res.setRecipient(recipient);
 		res.setSender(sender);
 		res.setMoment(Calendar.getInstance().getTime());
