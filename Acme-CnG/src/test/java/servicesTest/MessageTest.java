@@ -10,7 +10,9 @@
 
 package servicesTest;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.transaction.Transactional;
@@ -81,21 +83,26 @@ public class MessageTest extends AbstractTest {
 	//-------------Save Message tests-------------
 	@Test
 	public void driverSave(){
+		Collection<String> attachments = new ArrayList<String>();
+		Collection<String> attachments2 = attachments;
+		attachments.add("a1");
+	
 		Object testingData[][] = {
-				{Calendar.getInstance().getTime(),"title","text", "customer1",null},
-				{null,"title","text","customer1",IllegalArgumentException.class},
-				{Calendar.getInstance().getTime(),null,"text","customer1",IllegalArgumentException.class},
-				{Calendar.getInstance().getTime(),"title",null,"customer1",IllegalArgumentException.class}
+				{Calendar.getInstance().getTime(),"title","text",attachments, "customer1",null},
+				{Calendar.getInstance().getTime(),"title","text",attachments2, "customer1",null},
+				{null,"title","text",null,"customer1",IllegalArgumentException.class},
+				{Calendar.getInstance().getTime(),null,"text",null,"customer1",IllegalArgumentException.class},
+				{Calendar.getInstance().getTime(),"title",null,null,"customer1",IllegalArgumentException.class}
 		};
 		
 		for(int i = 0; i < testingData.length; i++){
 			templateSave((Date)testingData[i][0], (String)testingData[i][1],
-				(String)testingData[i][2], (String)testingData[i][3], 
-				(Class<?>) testingData[i][4]);
+				(String)testingData[i][2],(Collection<String>)testingData[i][3], (String)testingData[i][4], 
+				(Class<?>) testingData[i][5]);
 		}
 	}
 	
-	protected void templateSave(Date moment, String title, String text, String username, Class<?> expected){
+	protected void templateSave(Date moment, String title, String text, Collection<String> attachments, String username, Class<?> expected){
 		Class<?> caught;
 		caught=null;
 		try{
@@ -108,6 +115,7 @@ public class MessageTest extends AbstractTest {
 			save.setMoment(moment);
 			save.setTitle(title);
 			save.setText(text);
+			save.setAttachments(attachments);
 			
 			messageService.save(save);
 			
