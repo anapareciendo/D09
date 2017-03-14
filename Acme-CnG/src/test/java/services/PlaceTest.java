@@ -8,7 +8,7 @@
  * http://www.tdg-seville.info/License.html
  */
 
-package servicesTest;
+package services;
 
 import javax.transaction.Transactional;
 

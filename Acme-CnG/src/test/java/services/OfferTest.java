@@ -8,7 +8,7 @@
  * http://www.tdg-seville.info/License.html
  */
 
-package servicesTest;
+package services;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -21,27 +21,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import services.OfferService;
 import services.PlaceService;
-import services.RequestService;
 import utilities.AbstractTest;
+import domain.Offer;
 import domain.Place;
-import domain.Request;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class RequestTest extends AbstractTest {
+public class OfferTest extends AbstractTest {
 
 	@Autowired
-	private RequestService requestService;
+	private OfferService offerService;
 	@Autowired
 	private PlaceService placeService;
 
 
 
-	//Create a request with same of place null and a correct one
+
+	//Create a offer with some of place null and a correct one
 	@Test
 	public void drivercreate(){
 		Object testingData[][] = {
@@ -72,7 +73,7 @@ public class RequestTest extends AbstractTest {
 				d = placeService.findOne(destination);
 				placeService.save(d);
 			}
-			requestService.create(o, d);
+			offerService.create(o, d);
 			unauthenticate();
 		} catch(Throwable oops){
 			caught = oops.getClass();
@@ -111,13 +112,13 @@ public class RequestTest extends AbstractTest {
 				Place d = placeService.findOne(38);
 				placeService.save(d);
 
-			Request save = requestService.create(o, d);
+			Offer save = offerService.create(o, d);
 			save.setTitle(title);
 			save.setDescription(description);
 			save.setMoment(moment);
 			save.setBanned(banned);
 			
-			requestService.save(save);
+			offerService.save(save);
 			unauthenticate();
 		} catch(Throwable oops){
 			caught = oops.getClass();
@@ -145,8 +146,8 @@ public class RequestTest extends AbstractTest {
 		caught = null;
 		try{
 			authenticate(username);
-			Request re = requestService.findOne(44);
-			requestService.delete(re);
+			Offer of= offerService.findOne(41);
+			offerService.delete(of);
 			unauthenticate();
 		} catch(Throwable oops){
 			caught = oops.getClass();
