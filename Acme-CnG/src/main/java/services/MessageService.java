@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.ArrayList;
@@ -21,21 +22,23 @@ public class MessageService {
 
 	//Managed repository
 	@Autowired
-	private MessageRepository messageRepository;
-	
+	private MessageRepository	messageRepository;
+
+
 	//Supporting services
 
-	
-	/*@Autowired
-	private Validator validator;*/
-	
+	/*
+	 * @Autowired
+	 * private Validator validator;
+	 */
+
 	//Constructors
 	public MessageService() {
 		super();
 	}
-	
+
 	//Simple CRUD methods
-	public Message create(Actor sender, Actor recipient) {
+	public Message create(final Actor sender, final Actor recipient) {
 		Assert.notNull(sender);
 		Assert.notNull(recipient);
 		Message res;
@@ -47,47 +50,44 @@ public class MessageService {
 
 		return res;
 	}
-	
+
 	public Collection<Message> findAll() {
-		Collection<Message> res = messageRepository.findAll();
+		final Collection<Message> res = this.messageRepository.findAll();
 		return res;
 	}
 
-	public Message findOne(int messageId) {
-		Message res = messageRepository.findOne(messageId);
+	public Message findOne(final int messageId) {
+		final Message res = this.messageRepository.findOne(messageId);
 		return res;
 	}
-	
-	public Message save(Message message) {
+
+	public Message save(final Message message) {
 		Assert.notNull(message, "The message to save cannot be null.");
-		
+
 		Assert.notNull(message.getSender());
 		Assert.notNull(message.getRecipient());
-		
-		Assert.isTrue(message.getMoment()!= null);
-		Assert.isTrue(message.getTitle()!= null);
+
+		Assert.isTrue(message.getMoment() != null);
+		Assert.isTrue(message.getTitle() != null);
 		Assert.isTrue(message.getText() != null);
-		
-		Message res = messageRepository.save(message);
+
+		final Message res = this.messageRepository.save(message);
 		res.getSender().getSenderMessages().add(res);
 		res.getRecipient().getReceivedMessages().add(res);
 		res.setMoment(Calendar.getInstance().getTime());
-		
+
 		return res;
 	}
-	
-	public void delete(Message message) {
-		
-		Assert.notNull(message, "The message to delete cannot be null.");
-		Assert.isTrue(messageRepository.exists(message.getId()));
-		
 
-		UserAccount ua=LoginService.getPrincipal();
+	public void delete(final Message message) {
+
+		Assert.notNull(message, "The message to delete cannot be null.");
+		Assert.isTrue(this.messageRepository.exists(message.getId()));
+
+		final UserAccount ua = LoginService.getPrincipal();
 		Assert.isTrue(message.getSender().getUserAccount().equals(ua), "You are not the owner of the message");
-		
-		messageRepository.delete(message);
+
+		this.messageRepository.delete(message);
 	}
-	
-	
-	
+
 }

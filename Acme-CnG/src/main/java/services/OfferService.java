@@ -45,6 +45,7 @@ public class OfferService {
 		res.setMoment(Calendar.getInstance().getTime());
 		res.setApplications(new ArrayList<Application>());
 		res.setComments(new ArrayList<Comment>());
+		res.setBanned(false);
 
 		return res;
 	}
@@ -61,14 +62,13 @@ public class OfferService {
 
 	public Offer save(final Offer offer) {
 		Assert.notNull(offer, "The offer to save cannot be null.");
-		
+
 		final Authority a = new Authority();
 		a.setAuthority(Authority.CUSTOMER);
 
 		final UserAccount ua = LoginService.getPrincipal();
 		Assert.isTrue(ua.getAuthorities().contains(a), "You must to be a Customer for this action");
 
-		
 		Assert.notNull(offer.getOrigin());
 		Assert.notNull(offer.getDestination());
 
@@ -76,7 +76,7 @@ public class OfferService {
 		Assert.isTrue(offer.getDescription() != "" && offer.getDescription() != null);
 		Assert.isTrue(offer.getMoment() != null);
 
-		Offer res = this.offerRepository.save(offer);
+		final Offer res = this.offerRepository.save(offer);
 		res.setMoment(Calendar.getInstance().getTime());
 
 		return res;

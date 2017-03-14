@@ -15,6 +15,7 @@ import security.UserAccount;
 import domain.Application;
 import domain.Customer;
 import domain.Demand;
+import domain.Status;
 
 @Service
 @Transactional
@@ -46,6 +47,7 @@ public class ApplicationService {
 		res = new Application();
 		res.setCustomer(customer);
 		res.setDemand(demand);
+		res.setStatus(Status.PENDING);
 		return res;
 	}
 
@@ -61,13 +63,13 @@ public class ApplicationService {
 
 	public Application save(final Application application) {
 		Assert.notNull(application, "The customer to save cannot be null.");
-		
+
 		final Authority a = new Authority();
 		a.setAuthority(Authority.CUSTOMER);
 
 		final UserAccount ua = LoginService.getPrincipal();
 		Assert.isTrue(ua.getAuthorities().contains(a), "You must to be a Customer for this action");
-		
+
 		final Application res = this.applicationRepository.save(application);
 
 		return res;

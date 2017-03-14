@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -19,48 +20,48 @@ public class PlaceService {
 
 	//Managed repository
 	@Autowired
-	private PlaceRepository placeRepository;
-	
+	private PlaceRepository	placeRepository;
+
+
 	//Supporting services
-	
-	/*@Autowired
-	private Validator validator;*/
-	
+
+	/*
+	 * @Autowired
+	 * private Validator validator;
+	 */
+
 	//Constructors
 	public PlaceService() {
 		super();
 	}
-	
+
 	//Simple CRUD methods
 	public Place create() {
 		Place res;
 		res = new Place();
 		return res;
 	}
-	
+
 	public Collection<Place> findAll() {
-		Collection<Place> res = placeRepository.findAll();
+		final Collection<Place> res = this.placeRepository.findAll();
 		return res;
 	}
 
-	public Place findOne(int placeId) {
-		Place res = placeRepository.findOne(placeId);
+	public Place findOne(final int placeId) {
+		final Place res = this.placeRepository.findOne(placeId);
 		return res;
 	}
-	
-	public Place save(Place place) {
+
+	public Place save(final Place place) {
 		Assert.notNull(place, "The place to save cannot be null.");
-		Authority b = new Authority();
+		final Authority b = new Authority();
 		b.setAuthority(Authority.CUSTOMER);
 
-		UserAccount ua=LoginService.getPrincipal();
+		final UserAccount ua = LoginService.getPrincipal();
 		Assert.isTrue(ua.getAuthorities().contains(b), "You must to be a customer for this acction");
-		Assert.notNull(place.getAddress(),"El lugar no puede ser nulo");
-		Place res = placeRepository.save(place);
+		Assert.notNull(place.getAddress(), "El lugar no puede ser nulo");
+		final Place res = this.placeRepository.save(place);
 		return res;
 	}
-	
-
 
 }
-
