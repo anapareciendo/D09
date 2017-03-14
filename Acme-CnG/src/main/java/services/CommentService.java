@@ -62,8 +62,17 @@ public class CommentService {
 
 	public Comment save(final Comment comment) {
 		Assert.notNull(comment, "The comment to save cannot be null.");
+		Assert.notNull(comment.getPosted());
+		Assert.notNull(comment.getCommentable());
+		
+		Assert.isTrue(comment.getMoment() != null);
+		Assert.isTrue(comment.getTitle() != null);
+		Assert.isTrue(comment.getText() != null);
 		Assert.isTrue(comment.getStars() > 0 && comment.getStars() <= 5, "The stars must be between 1 and 5");
+		
 		final Comment res = this.commentRepository.save(comment);
+		res.getPosted().getComments().add(res);
+		res.getCommentable().getComments().add(res);
 		res.setMoment(Calendar.getInstance().getTime());
 
 		return res;
