@@ -59,17 +59,24 @@ public class RequestService {
 		return res;
 	}
 
-	public Request save(final Request request) {
-		Assert.notNull(request, "The request to save cannot be null.");
-		Assert.isTrue(this.requestRepository.exists(request.getId()));
-
+	public Request save(Request request) {
+		Assert.notNull(request, "The offer to save cannot be null.");
+		
 		final Authority a = new Authority();
 		a.setAuthority(Authority.CUSTOMER);
 
 		final UserAccount ua = LoginService.getPrincipal();
 		Assert.isTrue(ua.getAuthorities().contains(a), "You must to be a Customer for this action");
 
-		final Request res = this.requestRepository.save(request);
+		
+		Assert.notNull(request.getOrigin());
+		Assert.notNull(request.getDestination());
+
+		Assert.isTrue(request.getTitle() != "" && request.getTitle() != null);
+		Assert.isTrue(request.getDescription() != "" && request.getDescription() != null);
+		Assert.isTrue(request.getMoment() != null);
+
+		Request res = this.requestRepository.save(request);
 		res.setMoment(Calendar.getInstance().getTime());
 
 		return res;

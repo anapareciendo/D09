@@ -62,6 +62,13 @@ public class OfferService {
 	public Offer save(Offer offer) {
 		Assert.notNull(offer, "The offer to save cannot be null.");
 		
+		final Authority a = new Authority();
+		a.setAuthority(Authority.CUSTOMER);
+
+		final UserAccount ua = LoginService.getPrincipal();
+		Assert.isTrue(ua.getAuthorities().contains(a), "You must to be a Customer for this action");
+
+		
 		Assert.notNull(offer.getOrigin());
 		Assert.notNull(offer.getDestination());
 
