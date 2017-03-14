@@ -9,6 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.CommentRepository;
+import security.Authority;
+import security.LoginService;
+import security.UserAccount;
 import domain.Actor;
 import domain.Comment;
 import domain.Commentable;
@@ -62,6 +65,19 @@ public class CommentService {
 		res.setMoment(Calendar.getInstance().getTime());
 		
 		return res;
+	}
+	
+	public void delete(Comment comment) {
+		Assert.notNull(comment, "The comment to delete cannot be null.");
+		Assert.isTrue(commentRepository.exists(comment.getId()));
+		
+		Authority b = new Authority();
+		b.setAuthority(Authority.ADMIN);
+
+		UserAccount ua=LoginService.getPrincipal();
+		Assert.isTrue(comment.getPosted().getUserAccount().equals(ua) || ua.getAuthorities().contains(b), "You are not the owner of the comment");
+		
+		commentRepository.delete(comment);
 	}
 	
 
