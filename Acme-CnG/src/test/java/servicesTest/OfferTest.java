@@ -22,8 +22,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
 
-import security.LoginService;
-import services.CustomerService;
 import services.OfferService;
 import services.PlaceService;
 import utilities.AbstractTest;
@@ -41,8 +39,7 @@ public class OfferTest extends AbstractTest {
 	private OfferService offerService;
 	@Autowired
 	private PlaceService placeService;
-	@Autowired
-	private CustomerService customerService;
+
 
 	//Create a place
 	@Test
@@ -65,9 +62,9 @@ public class OfferTest extends AbstractTest {
 	@Test
 	public void drivercreate(){
 		Object testingData[][] = {
-				{33,34,null},
-				{0,35, IllegalArgumentException.class},
-				{36, 0, IllegalArgumentException.class}
+				{37,38,null},
+				{0,40, IllegalArgumentException.class},
+				{39, 0, IllegalArgumentException.class}
 		};
 		
 		for(int i = 0; i < testingData.length; i++){
@@ -124,10 +121,10 @@ public class OfferTest extends AbstractTest {
 		caught = null;
 		try{
 			authenticate("customer2");
-				Place o = placeService.findOne(33);
+				Place o = placeService.findOne(37);
 				placeService.save(o);
 			
-				Place d = placeService.findOne(34);
+				Place d = placeService.findOne(38);
 				placeService.save(d);
 
 			Offer save = offerService.create(o, d);
@@ -135,6 +132,7 @@ public class OfferTest extends AbstractTest {
 			save.setDescription(description);
 			save.setMoment(moment);
 			save.setBanned(banned);
+			
 			offerService.save(save);
 			unauthenticate();
 		} catch(Throwable oops){
@@ -161,18 +159,8 @@ public class OfferTest extends AbstractTest {
 		caught = null;
 		try{
 			authenticate(username);
-				Place o = placeService.findOne(33);
-				placeService.save(o);
-			
-				Place d = placeService.findOne(34);
-				placeService.save(d);
-
-			Offer save = offerService.create(o, d);
-			save.setTitle("title");
-			save.setDescription("description"); 
-				save.setCustomer(customerService.findByUserAccountId(LoginService.getPrincipal().getId()));
-			offerService.save(save);
-			offerService.delete(save);
+			Offer of= offerService.findOne(41);
+			offerService.delete(of);
 			unauthenticate();
 		} catch(Throwable oops){
 			caught = oops.getClass();

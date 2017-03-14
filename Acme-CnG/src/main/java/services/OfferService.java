@@ -59,16 +59,18 @@ public class OfferService {
 		return res;
 	}
 
-	public Offer save(final Offer offer) {
+	public Offer save(Offer offer) {
 		Assert.notNull(offer, "The offer to save cannot be null.");
-		final Offer res = this.offerRepository.save(offer);
-		res.setMoment(Calendar.getInstance().getTime());
+		
 		Assert.notNull(offer.getOrigin());
 		Assert.notNull(offer.getDestination());
 
 		Assert.isTrue(offer.getTitle() != "" && offer.getTitle() != null);
 		Assert.isTrue(offer.getDescription() != "" && offer.getDescription() != null);
 		Assert.isTrue(offer.getMoment() != null);
+
+		Offer res = this.offerRepository.save(offer);
+		res.setMoment(Calendar.getInstance().getTime());
 
 		return res;
 	}
