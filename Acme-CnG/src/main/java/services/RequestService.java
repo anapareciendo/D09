@@ -59,7 +59,7 @@ public class RequestService {
 		return res;
 	}
 
-	public Request save(Request request) {
+	public Request save(final Request request) {
 		Assert.notNull(request, "The offer to save cannot be null.");
 		
 		final Authority a = new Authority();

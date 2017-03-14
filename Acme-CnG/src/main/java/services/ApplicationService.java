@@ -9,6 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.ApplicationRepository;
+import security.Authority;
+import security.LoginService;
+import security.UserAccount;
 import domain.Application;
 import domain.Customer;
 import domain.Demand;
@@ -36,8 +39,8 @@ public class ApplicationService {
 
 	//Simple CRUD methods
 	public Application create(final Customer customer, final Demand demand) {
-		Assert.isNull(customer, "The customer cannot be null");
-		Assert.isNull(demand, "The demand cannot be null");
+		Assert.notNull(customer, "The customer cannot be null");
+		Assert.notNull(demand, "The demand cannot be null");
 
 		Application res;
 		res = new Application();
@@ -58,6 +61,13 @@ public class ApplicationService {
 
 	public Application save(final Application application) {
 		Assert.notNull(application, "The customer to save cannot be null.");
+		
+		final Authority a = new Authority();
+		a.setAuthority(Authority.CUSTOMER);
+
+		final UserAccount ua = LoginService.getPrincipal();
+		Assert.isTrue(ua.getAuthorities().contains(a), "You must to be a Customer for this action");
+		
 		final Application res = this.applicationRepository.save(application);
 
 		return res;

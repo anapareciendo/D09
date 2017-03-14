@@ -59,7 +59,7 @@ public class OfferService {
 		return res;
 	}
 
-	public Offer save(Offer offer) {
+	public Offer save(final Offer offer) {
 		Assert.notNull(offer, "The offer to save cannot be null.");
 		
 		final Authority a = new Authority();

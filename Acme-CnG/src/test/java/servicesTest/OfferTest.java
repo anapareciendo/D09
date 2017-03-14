@@ -20,7 +20,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.util.Assert;
 
 import services.OfferService;
 import services.PlaceService;
@@ -41,24 +40,9 @@ public class OfferTest extends AbstractTest {
 	private PlaceService placeService;
 
 
-	//Create a place
-	@Test
-	public void createOfferPositiveTest() {
-		authenticate("customer1");
-		Place origin = placeService.create();
-		origin.setAddress("origin");
-		placeService.save(origin);
-		Place destination = placeService.create();
-		destination.setAddress("destination");
-		placeService.save(destination);
-		Offer o = offerService.create(origin, destination);
-		Assert.notNull(o.getOrigin());
-		Assert.notNull(o.getMoment());
-		Assert.notNull(o.getDestination());
-		unauthenticate();
-	}
 
-	//Create a offer with same of place null and a correct one
+
+	//Create a offer with some of place null and a correct one
 	@Test
 	public void drivercreate(){
 		Object testingData[][] = {
@@ -97,7 +81,8 @@ public class OfferTest extends AbstractTest {
 		checkExceptions(expected, caught);
 	}
 	
-	
+	//Save an offer with all its attributes well
+	//Save an offer with some of its attributes wrong
 	@Test
 	public void driversave(){
 		Object testingData[][] = {
@@ -141,6 +126,8 @@ public class OfferTest extends AbstractTest {
 		checkExceptions(expected, caught);
 	}
 	
+	//Delete an offer with the correct user login
+	//Delete an offer with the wrong user login
 	@Test
 	public void driverdelete(){
 		Object testingData[][] = {
