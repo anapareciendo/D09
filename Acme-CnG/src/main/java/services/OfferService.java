@@ -65,9 +65,11 @@ public class OfferService {
 
 		final Authority a = new Authority();
 		a.setAuthority(Authority.CUSTOMER);
+		final Authority b = new Authority();
+		b.setAuthority(Authority.ADMIN);
 
 		final UserAccount ua = LoginService.getPrincipal();
-		Assert.isTrue(ua.getAuthorities().contains(a), "You must to be a Customer for this action");
+		Assert.isTrue(ua.getAuthorities().contains(a) || ua.getAuthorities().contains(b), "You must to be a Customer or an Admin for this action");
 
 		Assert.notNull(offer.getOrigin());
 		Assert.notNull(offer.getDestination());
@@ -96,4 +98,32 @@ public class OfferService {
 		this.offerRepository.delete(offer);
 	}
 
+	//Utility Methods
+	public Collection<Offer> findNoBannedRequest() {
+		return this.offerRepository.findNoBannedRequest();
+	}
+
+	public Collection<Offer> searchOffers(final String keyword) {
+		final Authority b = new Authority();
+		b.setAuthority(Authority.CUSTOMER);
+
+		final UserAccount ua = LoginService.getPrincipal();
+		Assert.isTrue(ua.getAuthorities().contains(b), "You must to be a Customer for this action");
+
+		return this.offerRepository.searchOffers(keyword);
+	}
+
+	public void ban(final int offerId) {
+		final Authority b = new Authority();
+		b.setAuthority(Authority.ADMIN);
+
+		final UserAccount ua = LoginService.getPrincipal();
+		Assert.isTrue(ua.getAuthorities().contains(b), "You must to be an Admin for this action");
+
+		final Offer offer = this.offerRepository.findOne(offerId);
+		Assert.notNull(offer, "This id is not from an offer");
+
+		offer.setBanned(true);
+		this.offerRepository.save(offer);
+	}
 }

@@ -90,4 +90,26 @@ public class MessageService {
 		this.messageRepository.delete(message);
 	}
 
+	//Utility Methdos
+	public Collection<Message> findMyMessages() {
+		return this.messageRepository.findMyMessages(LoginService.getPrincipal().getId());
+	}
+
+	public Message copy(final int messageId) {
+		final Message message = this.messageRepository.findOne(messageId);
+		Assert.notNull(message, "This id is not from an message");
+
+		final Message copy = new Message();
+		copy.setRecipient(message.getRecipient());
+		copy.setSender(message.getSender());
+		copy.setText(message.getText());
+		copy.setTitle(message.getTitle());
+		copy.setAttachments(new ArrayList<String>());
+		copy.getAttachments().addAll(message.getAttachments());
+		copy.setMoment(Calendar.getInstance().getTime());
+
+		final Message res = this.messageRepository.save(message);
+		return res;
+	}
+
 }

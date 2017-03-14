@@ -96,4 +96,19 @@ public class RequestService {
 		this.requestRepository.delete(request);
 	}
 
+	//Utility Methods
+	public Collection<Request> findNoBannedRequest() {
+		return this.requestRepository.findNoBannedRequest();
+	}
+
+	public Collection<Request> searchRequest(final String keyword) {
+		final Authority b = new Authority();
+		b.setAuthority(Authority.CUSTOMER);
+
+		final UserAccount ua = LoginService.getPrincipal();
+		Assert.isTrue(ua.getAuthorities().contains(b), "You must to be a Customer for this action");
+
+		return this.requestRepository.searchRequests(keyword);
+	}
+
 }

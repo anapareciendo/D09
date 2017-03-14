@@ -62,7 +62,7 @@ public class ApplicationService {
 	}
 
 	public Application save(final Application application) {
-		Assert.notNull(application, "The customer to save cannot be null.");
+		Assert.notNull(application, "The application to delete cannot be null.");
 
 		final Authority a = new Authority();
 		a.setAuthority(Authority.CUSTOMER);
@@ -75,6 +75,55 @@ public class ApplicationService {
 		return res;
 	}
 
-	//Utilites methods
+	public void delete(final Application application) {
+		Assert.notNull(application, "The application to delete cannot be null.");
 
+		final Authority a = new Authority();
+		a.setAuthority(Authority.CUSTOMER);
+		final UserAccount ua = LoginService.getPrincipal();
+		Assert.isTrue(ua.getAuthorities().contains(a), "You must to be a Customer for this action");
+
+		Assert.isTrue(application.getCustomer().getUserAccount().equals(ua), "You are not the owner of this application");
+
+		this.applicationRepository.delete(application);
+
+	}
+
+	//Utilites methods
+	public Collection<Application> findApplicationMyDemand() {
+		final Authority a = new Authority();
+		a.setAuthority(Authority.CUSTOMER);
+		final UserAccount ua = LoginService.getPrincipal();
+		Assert.isTrue(ua.getAuthorities().contains(a), "You must to be a Customer for this acction");
+
+		return this.applicationRepository.findApplicationMyDemand();
+	}
+
+	public void accept(final int applicationId) {
+		final Authority a = new Authority();
+		a.setAuthority(Authority.CUSTOMER);
+		final UserAccount ua = LoginService.getPrincipal();
+		Assert.isTrue(ua.getAuthorities().contains(a), "You must to be a Customer for this acction");
+
+		final Application application = this.applicationRepository.findOne(applicationId);
+		Assert.notNull(application, "The id is not from an application");
+		Assert.isTrue(application.getCustomer().getUserAccount().equals(ua), "You are not the owner of this application");
+
+		application.setStatus(Status.ACCEPTED);
+		this.applicationRepository.save(application);
+	}
+
+	public void deny(final int applicationId) {
+		final Authority a = new Authority();
+		a.setAuthority(Authority.CUSTOMER);
+		final UserAccount ua = LoginService.getPrincipal();
+		Assert.isTrue(ua.getAuthorities().contains(a), "You must to be a Customer for this acction");
+
+		final Application application = this.applicationRepository.findOne(applicationId);
+		Assert.notNull(application, "The id is not from an application");
+		Assert.isTrue(application.getCustomer().getUserAccount().equals(ua), "You are not the owner of this application");
+
+		application.setStatus(Status.DENIED);
+		this.applicationRepository.save(application);
+	}
 }

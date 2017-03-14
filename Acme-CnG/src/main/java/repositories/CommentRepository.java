@@ -9,6 +9,6 @@ import domain.Comment;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
-	
-	
+	//	@Query("select c from Comment c where c.banned=false")
+
 }
