@@ -32,18 +32,18 @@ public abstract class Actor extends Commentable {
 	@NotBlank
 	@SafeHtml
 	public String getName() {
-		return name;
+		return this.name;
 	}
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
 	@NotBlank
 	@SafeHtml
 	public String getSurname() {
-		return surname;
+		return this.surname;
 	}
-	public void setSurname(String surname) {
+	public void setSurname(final String surname) {
 		this.surname = surname;
 	}
 
@@ -51,67 +51,69 @@ public abstract class Actor extends Commentable {
 	@Email
 	@SafeHtml
 	public String getEmail() {
-		return email;
+		return this.email;
 	}
-	public void setEmail(String email) {
+	public void setEmail(final String email) {
 		this.email = email;
 	}
 
 	@Pattern(regexp = "([+][0-9]{3})[ ]*([(][0-9]{3}[)])?[ ]*([0-9a-zA-Z][ -]*){4,}")
 	@SafeHtml
 	public String getPhone() {
-		return phone;
+		return this.phone;
 	}
-	public void setPhone(String phone) {
+	public void setPhone(final String phone) {
 		this.phone = phone;
 	}
 
+
 	//----------------Relationships------------------------------------------
 	private Collection<Comment>	postComments;
-	private Collection<Message> senderMessages;
-	private Collection<Message> receivedMessages;
-	private UserAccount		userAccount;
+	private Collection<Message>	senderMessages;
+	private Collection<Message>	receivedMessages;
+	private UserAccount			userAccount;
+
 
 	@Valid
 	@NotNull
 	@OneToMany(mappedBy = "posted")
 	public Collection<Comment> getPostComments() {
-		return postComments;
+		return this.postComments;
 	}
-	public void setPostComments(Collection<Comment> postComments) {
+	public void setPostComments(final Collection<Comment> postComments) {
 		this.postComments = postComments;
 	}
-	
+
 	@Valid
 	@NotNull
 	@OneToMany(mappedBy = "sender")
 	public Collection<Message> getSenderMessages() {
-		return senderMessages;
+		return this.senderMessages;
 	}
-	
-	public void setSenderMessages(Collection<Message> senderMessages) {
+
+	public void setSenderMessages(final Collection<Message> senderMessages) {
 		this.senderMessages = senderMessages;
 	}
-	
+
 	@Valid
 	@NotNull
 	@OneToMany(mappedBy = "recipient")
 	public Collection<Message> getReceivedMessages() {
-		return receivedMessages;
+		return this.receivedMessages;
 	}
-	
-	public void setReceivedMessages(Collection<Message> receivedMessages) {
+
+	public void setReceivedMessages(final Collection<Message> receivedMessages) {
 		this.receivedMessages = receivedMessages;
 	}
-	
+
 	@Valid
 	@NotNull
 	@OneToOne(cascade = javax.persistence.CascadeType.ALL)
 	public UserAccount getUserAccount() {
-		return userAccount;
+		return this.userAccount;
 	}
-	public void setUserAccount(UserAccount userAccount) {
+	public void setUserAccount(final UserAccount userAccount) {
 		this.userAccount = userAccount;
 	}
-	
+
 }
