@@ -24,6 +24,8 @@ public class ApplicationService {
 	//Managed repository
 	@Autowired
 	private ApplicationRepository	applicationRepository;
+	@Autowired
+	private CustomerService customerService;
 
 
 	/*
@@ -95,8 +97,11 @@ public class ApplicationService {
 		a.setAuthority(Authority.CUSTOMER);
 		final UserAccount ua = LoginService.getPrincipal();
 		Assert.isTrue(ua.getAuthorities().contains(a), "You must to be a Customer for this acction");
+		
+		
+		Customer c = customerService.findByUserAccountId(LoginService.getPrincipal().getId());
 
-		return this.applicationRepository.findApplicationMyDemand();
+		return this.applicationRepository.findApplicationMyDemand(c.getId());
 	}
 
 	public void accept(final int applicationId) {

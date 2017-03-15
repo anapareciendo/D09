@@ -13,6 +13,6 @@ import domain.Application;
 public interface ApplicationRepository extends JpaRepository<Application, Integer> {
 
 	@Query("select a from Application a where a.demand.customer.userAccount.id=?1")
-	Collection<Application> findApplicationMyDemand();
+	Collection<Application> findApplicationMyDemand(int id);
 
 }
