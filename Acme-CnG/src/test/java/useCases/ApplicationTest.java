@@ -17,7 +17,7 @@ import utilities.AbstractTest;
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class ApplicationOfferTest extends AbstractTest {
+public class ApplicationTest extends AbstractTest {
 
 	@Autowired
 	private ApplicationService	applicationService;
