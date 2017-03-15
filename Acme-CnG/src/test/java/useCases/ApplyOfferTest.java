@@ -18,23 +18,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import domain.Application;
-import domain.Status;
-
+import security.LoginService;
 import services.ApplicationService;
+import services.CustomerService;
+import services.OfferService;
 import utilities.AbstractTest;
+import domain.Application;
+import domain.Customer;
+import domain.Offer;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class DenyARequestTest extends AbstractTest {
+public class ApplyOfferTest extends AbstractTest {
 
 	@Autowired
 	private ApplicationService appService;
+	@Autowired
+	private OfferService offerService;
+	@Autowired
+	private CustomerService customerService;
 
-	//Deny an Application for an Request
+	//Apply for a request
 	@Test
 	public void driver(){
 		Object testingData[][] = {
@@ -53,9 +60,10 @@ public class DenyARequestTest extends AbstractTest {
 		caught = null;
 		try{
 			authenticate(username);
-			appService.findApplicationMyDemand();
-			Application ap = appService.findOne(46);
-			ap.setStatus(Status.DENIED);
+			offerService.findNoBannedOffers();
+			Offer re= offerService.findOne(41);
+			Customer cus= customerService.findByUserAccountId(LoginService.getPrincipal().getId());
+			Application ap= appService.create(cus, re);
 			appService.save(ap);
 			unauthenticate();
 		} catch(Throwable oops){

@@ -18,9 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import domain.Application;
-import domain.Status;
-
 import services.ApplicationService;
 import utilities.AbstractTest;
 
@@ -29,7 +26,7 @@ import utilities.AbstractTest;
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class DenyARequestTest extends AbstractTest {
+public class FindApplicationTest extends AbstractTest {
 
 	@Autowired
 	private ApplicationService appService;
@@ -54,9 +51,6 @@ public class DenyARequestTest extends AbstractTest {
 		try{
 			authenticate(username);
 			appService.findApplicationMyDemand();
-			Application ap = appService.findOne(46);
-			ap.setStatus(Status.DENIED);
-			appService.save(ap);
 			unauthenticate();
 		} catch(Throwable oops){
 			caught = oops.getClass();
