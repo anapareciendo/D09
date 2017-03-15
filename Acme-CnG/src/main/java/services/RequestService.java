@@ -98,9 +98,15 @@ public class RequestService {
 
 	//Utility Methods
 	public Collection<Request> findNoBannedRequest() {
+		final Authority a = new Authority();
+		a.setAuthority(Authority.ADMIN);
+		final Authority c = new Authority();
+		c.setAuthority(Authority.CUSTOMER);
+		final UserAccount ua = LoginService.getPrincipal();
+		Assert.isTrue(ua.getAuthorities().contains(a) || ua.getAuthorities().contains(c), "You must to be autenticate for this action");
+
 		return this.requestRepository.findNoBannedRequest();
 	}
-
 	public Collection<Request> searchRequest(final String keyword) {
 		final Authority b = new Authority();
 		b.setAuthority(Authority.CUSTOMER);

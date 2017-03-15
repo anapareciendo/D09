@@ -24,16 +24,7 @@ public class ApplicationService {
 	//Managed repository
 	@Autowired
 	private ApplicationRepository	applicationRepository;
-	@Autowired
-	private CustomerService customerService;
 
-
-	/*
-	 * Validator
-	 * 
-	 * @Autowired
-	 * private Validator validator;
-	 */
 
 	//Constructors
 	public ApplicationService() {
@@ -72,6 +63,8 @@ public class ApplicationService {
 		final UserAccount ua = LoginService.getPrincipal();
 		Assert.isTrue(ua.getAuthorities().contains(a), "You must to be a Customer for this action");
 
+		Assert.isTrue(application.getCustomer().getUserAccount().equals(ua) || application.getDemand().getCustomer().getUserAccount().equals(ua), "You are not the owner of this application");
+
 		final Application res = this.applicationRepository.save(application);
 
 		return res;
@@ -97,11 +90,8 @@ public class ApplicationService {
 		a.setAuthority(Authority.CUSTOMER);
 		final UserAccount ua = LoginService.getPrincipal();
 		Assert.isTrue(ua.getAuthorities().contains(a), "You must to be a Customer for this acction");
-		
-		
-		Customer c = customerService.findByUserAccountId(LoginService.getPrincipal().getId());
 
-		return this.applicationRepository.findApplicationMyDemand(c.getId());
+		return this.applicationRepository.findApplicationMyDemand(ua.getId());
 	}
 
 	public void accept(final int applicationId) {

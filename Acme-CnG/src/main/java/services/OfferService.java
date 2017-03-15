@@ -99,8 +99,15 @@ public class OfferService {
 	}
 
 	//Utility Methods
-	public Collection<Offer> findNoBannedRequest() {
-		return this.offerRepository.findNoBannedRequest();
+	public Collection<Offer> findNoBannedOffers() {
+		final Authority a = new Authority();
+		a.setAuthority(Authority.ADMIN);
+		final Authority c = new Authority();
+		c.setAuthority(Authority.CUSTOMER);
+		final UserAccount ua = LoginService.getPrincipal();
+		Assert.isTrue(ua.getAuthorities().contains(a) || ua.getAuthorities().contains(c), "You must to be autenticate for this action");
+
+		return this.offerRepository.findNoBannedOffers();
 	}
 
 	public Collection<Offer> searchOffers(final String keyword) {
