@@ -27,10 +27,8 @@ public class MessageService {
 
 	//Supporting services
 
-	/*
-	 * @Autowired
-	 * private Validator validator;
-	 */
+	//	@Autowired
+	//	private Validator			validator;
 
 	//Constructors
 	public MessageService() {
@@ -110,6 +108,7 @@ public class MessageService {
 
 		final Message res = this.messageRepository.save(message);
 		return res;
+
 	}
 
 }
