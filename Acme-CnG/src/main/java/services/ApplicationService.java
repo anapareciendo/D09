@@ -102,7 +102,7 @@ public class ApplicationService {
 
 		final Application application = this.applicationRepository.findOne(applicationId);
 		Assert.notNull(application, "The id is not from an application");
-		Assert.isTrue(application.getCustomer().getUserAccount().equals(ua), "You are not the owner of this application");
+		Assert.isTrue(application.getDemand().getCustomer().getUserAccount().equals(ua), "You are not the owner of this demand");
 
 		application.setStatus(Status.ACCEPTED);
 		this.applicationRepository.save(application);
@@ -116,7 +116,7 @@ public class ApplicationService {
 
 		final Application application = this.applicationRepository.findOne(applicationId);
 		Assert.notNull(application, "The id is not from an application");
-		Assert.isTrue(application.getCustomer().getUserAccount().equals(ua), "You are not the owner of this application");
+		Assert.isTrue(application.getDemand().getCustomer().getUserAccount().equals(ua), "You are not the owner of this demand");
 
 		application.setStatus(Status.DENIED);
 		this.applicationRepository.save(application);
