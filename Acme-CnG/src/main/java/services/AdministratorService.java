@@ -60,7 +60,7 @@ public class AdministratorService {
 	}
 
 	public Administrator save(Administrator admin) {
-		Assert.notNull(admin, "The tenant to save cannot be null.");
+		Assert.notNull(admin, "The administrator to save cannot be null.");
 		Administrator res = administratorRepository.save(admin);
 
 		return res;
