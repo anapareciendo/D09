@@ -1,5 +1,8 @@
 package useCases;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -8,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import security.Authority;
+import security.UserAccount;
 import services.CustomerService;
 import utilities.AbstractTest;
+import domain.Customer;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -23,27 +29,44 @@ public class RegisterCustomerTest extends AbstractTest{
 	private CustomerService customerService;
 	
 	@Test
-	public void driver(){
+	public void driverCreate(){
 		Object testingData[][] = {
-				{"customer1",null},
-				{"",null},
+				{"customerTest","pass","Aloy","Ramos","aloyR@gmail.com","+34122332687",null},
+				{"customerTest","pass",null,"Ramos","aloyR@gmail.com","+34122332687",IllegalArgumentException.class}
 
 		};
 		
 		for(int i = 0; i < testingData.length; i++){
 			template((String) testingData[i][0],
-					(Class<?>) testingData[i][1]);
+					(String) testingData[i][1],
+					(String) testingData[i][2],
+					(String) testingData[i][3],
+					(String) testingData[i][4],
+					(String) testingData[i][5],
+					(Class<?>) testingData[i][6]);
 		}
 	}
 	
-	protected void template(String user, Class<?> expected){
+	protected void template(String username, String password, String name, String surname, String email, String phone, Class<?> expected){
 		Class<?> caught;
 		caught = null;
 		try{
-			
-				authenticate(user);
+				Collection<Authority> authorities = new ArrayList<Authority>();
+				Authority a = new Authority();
+				a.setAuthority(Authority.CUSTOMER);
+				authorities.add(a);
+				UserAccount ua = new UserAccount();
+				ua.setUsername(username);
+				ua.setPassword(password);
+				ua.setAuthorities(authorities);
 				
-				unauthenticate();
+				Customer save = customerService.create(ua);
+				save.setName(name);
+				save.setSurname(surname);
+				save.setEmail(email);
+				save.setPhone(phone);
+				
+				customerService.save(save);
 		
 		} catch(Throwable oops){
 			caught = oops.getClass();

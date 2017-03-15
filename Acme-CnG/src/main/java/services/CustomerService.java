@@ -41,6 +41,7 @@ public class CustomerService {
 
 	//Simple CRUD methods
 	public Customer create(final UserAccount ua) {
+		Assert.notNull(ua);
 		Customer res;
 		res = new Customer();
 		res.setPostComments(new ArrayList<Comment>());
@@ -64,6 +65,12 @@ public class CustomerService {
 
 	public Customer save(final Customer customer) {
 		Assert.notNull(customer, "The customer to save cannot be null.");
+		
+		Assert.isTrue(customer.getName() != null);
+		Assert.isTrue(customer.getSurname() != null);
+		Assert.isTrue(customer.getEmail() != null);
+		Assert.isTrue(customer.getPhone() != null);
+		
 		final Customer res = this.customerRepository.save(customer);
 
 		return res;
