@@ -23,8 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import services.CustomerService;
-import services.MessageService;
 import utilities.AbstractTest;
 import domain.Actor;
 import domain.Message;
@@ -45,9 +43,9 @@ public class MessageTest extends AbstractTest {
 	@Test
 	public void driverCreate(){
 		Object testingData[][] = {
-				{29, 30, "customer1",null},
-				{0, 29, "customer1",IllegalArgumentException.class},
-				{29, 0, "customer1",IllegalArgumentException.class}
+				{33, 34, "customer1",null},
+				{0, 34, "customer1",IllegalArgumentException.class},
+				{33, 0, "customer1",IllegalArgumentException.class}
 		};
 		
 		for(int i = 0; i < testingData.length; i++){
@@ -81,6 +79,7 @@ public class MessageTest extends AbstractTest {
 	}
 	
 	//-------------Save Message tests-------------
+	@SuppressWarnings("unchecked")
 	@Test
 	public void driverSave(){
 		Collection<String> attachments = new ArrayList<String>();
@@ -107,8 +106,8 @@ public class MessageTest extends AbstractTest {
 		caught=null;
 		try{
 			authenticate(username);
-			Actor s = customerService.findOne(29);
-			Actor r = customerService.findOne(30);
+			Actor s = customerService.findOne(33);
+			Actor r = customerService.findOne(34);
 			
 			Message save = messageService.create(s, r);
 			
@@ -129,9 +128,9 @@ public class MessageTest extends AbstractTest {
 	@Test
 	public void driverDelete(){
 		Object testingData[][] = {
-				{31, "customer1",null},
-				{45, "customer1", IllegalArgumentException.class},
-				{31, "customer2",IllegalArgumentException.class}
+				{35, "customer1",null},
+				{35, "customer2", IllegalArgumentException.class},
+				//{31, "customer2",IllegalArgumentException.class}
 		};
 		
 		for(int i = 0; i < testingData.length; i++){
