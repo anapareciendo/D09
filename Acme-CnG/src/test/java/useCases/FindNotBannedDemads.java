@@ -26,7 +26,7 @@ public class FindNotBannedDemads extends AbstractTest{
 	private RequestService requestService;
 	
 	@Test
-	public void driverCreate(){
+	public void driver(){
 		Object testingData[][] = {
 				{"customer1",null},
 				{"",IllegalArgumentException.class},
@@ -53,7 +53,5 @@ public class FindNotBannedDemads extends AbstractTest{
 		}
 		checkExceptions(expected, caught);
 	}
-
-	
 	
 }
