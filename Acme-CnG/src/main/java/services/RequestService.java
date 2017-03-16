@@ -116,5 +116,19 @@ public class RequestService {
 
 		return this.requestRepository.searchRequests(keyword);
 	}
+	
+	public void ban(final int requestId) {
+		final Authority b = new Authority();
+		b.setAuthority(Authority.ADMIN);
+
+		final UserAccount ua = LoginService.getPrincipal();
+		Assert.isTrue(ua.getAuthorities().contains(b), "You must to be an Admin for this action");
+
+		final Request request= this.requestRepository.findOne(requestId);
+		Assert.notNull(request, "This id is not from an request");
+
+		request.setBanned(true);
+		this.requestRepository.save(request);
+	}
 
 }
