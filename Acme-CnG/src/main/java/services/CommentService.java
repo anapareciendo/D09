@@ -64,12 +64,12 @@ public class CommentService {
 		Assert.notNull(comment, "The comment to save cannot be null.");
 		Assert.notNull(comment.getPosted());
 		Assert.notNull(comment.getCommentable());
-		
+
 		Assert.isTrue(comment.getMoment() != null);
 		Assert.isTrue(comment.getTitle() != null);
 		Assert.isTrue(comment.getText() != null);
 		Assert.isTrue(comment.getStars() > 0 && comment.getStars() <= 5, "The stars must be between 1 and 5");
-		
+
 		final Comment res = this.commentRepository.save(comment);
 		res.getPosted().getComments().add(res);
 		res.getCommentable().getComments().add(res);
@@ -104,6 +104,18 @@ public class CommentService {
 
 		comment.setBanned(true);
 		this.commentRepository.save(comment);
+	}
+
+	public Collection<Comment> findReceivedComments() {
+		final Authority b = new Authority();
+		b.setAuthority(Authority.ADMIN);
+		final Authority a = new Authority();
+		a.setAuthority(Authority.CUSTOMER);
+
+		final UserAccount ua = LoginService.getPrincipal();
+		Assert.isTrue(ua.getAuthorities().contains(b) || ua.getAuthorities().contains(a), "You must to be an autenticated for this action");
+
+		return this.commentRepository.findReceivedComments(ua.getId());
 	}
 
 }
