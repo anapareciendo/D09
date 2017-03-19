@@ -11,9 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import security.LoginService;
+import services.CustomerService;
 import services.OfferService;
 import services.PlaceService;
 import utilities.AbstractTest;
+import domain.Customer;
 import domain.Offer;
 import domain.Place;
 
@@ -30,6 +33,9 @@ public class PostAnOffer extends AbstractTest{
 	
 	@Autowired
 	private PlaceService placeService;
+	
+	@Autowired
+	private CustomerService customerService;
 	
 	@Test
 	public void driver(){
@@ -61,7 +67,8 @@ public class PostAnOffer extends AbstractTest{
 			
 			Place o = placeService.findOne(origin);
 			Place d = placeService.findOne(destination);
-			Offer save = offerService.create(o, d);
+			Customer c = customerService.findByUserAccountId(LoginService.getPrincipal().getId());
+			Offer save = offerService.create(o, d, c);
 			save.setTitle(title);
 			save.setDescription(description);
 			save.setMoment(moment);

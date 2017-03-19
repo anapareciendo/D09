@@ -21,9 +21,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import security.LoginService;
 import services.PlaceService;
 import services.RequestService;
 import utilities.AbstractTest;
+import domain.Customer;
 import domain.Place;
 import domain.Request;
 
@@ -38,7 +40,8 @@ public class RequestTest extends AbstractTest {
 	private RequestService requestService;
 	@Autowired
 	private PlaceService placeService;
-
+	@Autowired
+	private CustomerService customerService;
 
 
 	//Create a request with same of place null and a correct one
@@ -72,7 +75,8 @@ public class RequestTest extends AbstractTest {
 				d = placeService.findOne(destination);
 				placeService.save(d);
 			}
-			requestService.create(o, d);
+			Customer c = customerService.findByUserAccountId(LoginService.getPrincipal().getId());
+			requestService.create(o, d, c);
 			unauthenticate();
 		} catch(Throwable oops){
 			caught = oops.getClass();
@@ -110,8 +114,8 @@ public class RequestTest extends AbstractTest {
 			
 				Place d = placeService.findOne(38);
 				placeService.save(d);
-
-			Request save = requestService.create(o, d);
+			Customer c = customerService.findByUserAccountId(LoginService.getPrincipal().getId());
+			Request save = requestService.create(o, d, c);
 			save.setTitle(title);
 			save.setDescription(description);
 			save.setMoment(moment);

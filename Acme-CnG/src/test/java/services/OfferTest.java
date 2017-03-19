@@ -21,9 +21,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import security.LoginService;
 import services.OfferService;
 import services.PlaceService;
 import utilities.AbstractTest;
+import domain.Customer;
 import domain.Offer;
 import domain.Place;
 
@@ -38,7 +40,8 @@ public class OfferTest extends AbstractTest {
 	private OfferService offerService;
 	@Autowired
 	private PlaceService placeService;
-
+	@Autowired
+	private CustomerService customerService;
 
 
 
@@ -73,7 +76,8 @@ public class OfferTest extends AbstractTest {
 				d = placeService.findOne(destination);
 				placeService.save(d);
 			}
-			offerService.create(o, d);
+			Customer c = customerService.findByUserAccountId(LoginService.getPrincipal().getId());
+			offerService.create(o, d, c);
 			unauthenticate();
 		} catch(Throwable oops){
 			caught = oops.getClass();
@@ -111,8 +115,8 @@ public class OfferTest extends AbstractTest {
 			
 				Place d = placeService.findOne(38);
 				placeService.save(d);
-
-			Offer save = offerService.create(o, d);
+			Customer c = customerService.findByUserAccountId(LoginService.getPrincipal().getId());
+			Offer save = offerService.create(o, d, c);
 			save.setTitle(title);
 			save.setDescription(description);
 			save.setMoment(moment);
