@@ -106,7 +106,7 @@ public class CommentService {
 		this.commentRepository.save(comment);
 	}
 
-	public Collection<Comment> findReceivedComments() {
+	public Collection<Comment> findReceivedComments(final int id) {
 		final Authority b = new Authority();
 		b.setAuthority(Authority.ADMIN);
 		final Authority a = new Authority();
@@ -115,7 +115,7 @@ public class CommentService {
 		final UserAccount ua = LoginService.getPrincipal();
 		Assert.isTrue(ua.getAuthorities().contains(b) || ua.getAuthorities().contains(a), "You must to be an autenticated for this action");
 
-		return this.commentRepository.findReceivedComments(ua.getId());
+		return this.commentRepository.findReceivedComments(id);
 	}
 
 }

@@ -12,7 +12,7 @@ import domain.Comment;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
-	@Query("select c from Comment c where c.banned=false and c.recipient.userAccount.id=?1")
+	@Query("select c from Comment c where c.banned=false and c.commentable.id=?1")
 	Collection<Comment> findReceivedComments(int id);
 
 }

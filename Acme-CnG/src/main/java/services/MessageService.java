@@ -97,6 +97,8 @@ public class MessageService {
 		final Message message = this.messageRepository.findOne(messageId);
 		Assert.notNull(message, "This id is not from an message");
 
+		Assert.isTrue(LoginService.getPrincipal().equals(message.getSender().getUserAccount()), "You are note the owner of this message");
+
 		final Message copy = new Message();
 		copy.setRecipient(message.getRecipient());
 		copy.setSender(message.getSender());
@@ -105,6 +107,19 @@ public class MessageService {
 		copy.setAttachments(new ArrayList<String>());
 		copy.getAttachments().addAll(message.getAttachments());
 		copy.setMoment(Calendar.getInstance().getTime());
+
+		final Message res = this.messageRepository.save(copy);
+		return res;
+
+	}
+	public Message replay(final int messageId, final String text) {
+		final Message message = this.messageRepository.findOne(messageId);
+		Assert.notNull(message, "This id is not from an message");
+		Assert.notNull(text, "The text cannot be null");
+		Assert.isTrue(LoginService.getPrincipal().equals(message.getSender().getUserAccount()), "You are note the owner of this message");
+
+		message.setText(message.getText() + "\n\nReply:\n" + text);
+		message.setTitle("RE:" + message.getTitle());
 
 		final Message res = this.messageRepository.save(message);
 		return res;

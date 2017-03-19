@@ -16,6 +16,7 @@ import security.LoginService;
 import security.UserAccount;
 import domain.Application;
 import domain.Comment;
+import domain.Customer;
 import domain.Offer;
 import domain.Place;
 
@@ -34,7 +35,7 @@ public class OfferService {
 	}
 
 	//Simple CRUD methods
-	public Offer create(final Place origin, final Place destination) {
+	public Offer create(final Place origin, final Place destination, final Customer customer) {
 		Assert.notNull(origin, "The origin place cannot be null");
 		Assert.notNull(destination, "The destination place cannot be null");
 		Offer res;
@@ -42,6 +43,7 @@ public class OfferService {
 
 		res.setOrigin(origin);
 		res.setDestination(destination);
+		res.setCustomer(customer);
 		res.setMoment(Calendar.getInstance().getTime());
 		res.setApplications(new ArrayList<Application>());
 		res.setComments(new ArrayList<Comment>());

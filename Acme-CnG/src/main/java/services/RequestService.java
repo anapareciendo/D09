@@ -16,6 +16,7 @@ import security.LoginService;
 import security.UserAccount;
 import domain.Application;
 import domain.Comment;
+import domain.Customer;
 import domain.Place;
 import domain.Request;
 
@@ -34,7 +35,7 @@ public class RequestService {
 	}
 
 	//Simple CRUD methods
-	public Request create(final Place origin, final Place destination) {
+	public Request create(final Place origin, final Place destination, final Customer customer) {
 		Assert.notNull(origin, "The origin place cannot be null");
 		Assert.notNull(destination, "The destination place cannot be null");
 		Request res;
@@ -42,6 +43,7 @@ public class RequestService {
 
 		res.setOrigin(origin);
 		res.setDestination(destination);
+		res.setCustomer(customer);
 		res.setMoment(Calendar.getInstance().getTime());
 		res.setApplications(new ArrayList<Application>());
 		res.setComments(new ArrayList<Comment>());
@@ -116,7 +118,7 @@ public class RequestService {
 
 		return this.requestRepository.searchRequests(keyword);
 	}
-	
+
 	public void ban(final int requestId) {
 		final Authority b = new Authority();
 		b.setAuthority(Authority.ADMIN);
@@ -124,7 +126,7 @@ public class RequestService {
 		final UserAccount ua = LoginService.getPrincipal();
 		Assert.isTrue(ua.getAuthorities().contains(b), "You must to be an Admin for this action");
 
-		final Request request= this.requestRepository.findOne(requestId);
+		final Request request = this.requestRepository.findOne(requestId);
 		Assert.notNull(request, "This id is not from an request");
 
 		request.setBanned(true);
