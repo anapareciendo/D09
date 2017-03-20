@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import services.AdministratorService;
-import services.CustomerService;
 import services.MessageService;
 import utilities.AbstractTest;
 
@@ -22,11 +20,7 @@ import utilities.AbstractTest;
 public class ForwardMessageTest extends AbstractTest {
 
 	@Autowired
-	private AdministratorService	adminService;
-	@Autowired
-	private CustomerService			customerService;
-	@Autowired
-	private MessageService			messageService;
+	private MessageService	messageService;
 
 
 	@Test

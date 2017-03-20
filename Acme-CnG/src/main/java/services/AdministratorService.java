@@ -23,12 +23,14 @@ public class AdministratorService {
 
 	//Managed repository
 	@Autowired
-	private AdministratorRepository administratorRepository;
+	private AdministratorRepository	administratorRepository;
+
 
 	//Validator
-	/*@Autowired
-	private Validator validator;*/
-
+	/*
+	 * @Autowired
+	 * private Validator validator;
+	 */
 
 	//Supporting services
 
@@ -38,7 +40,7 @@ public class AdministratorService {
 	}
 
 	//Simple CRUD methods
-	public Administrator create(UserAccount ua) {
+	public Administrator create(final UserAccount ua) {
 		Administrator res;
 		res = new Administrator();
 		res.setPostComments(new ArrayList<Comment>());
@@ -50,56 +52,56 @@ public class AdministratorService {
 	}
 
 	public Collection<Administrator> findAll() {
-		Collection<Administrator> res = administratorRepository.findAll();
+		final Collection<Administrator> res = this.administratorRepository.findAll();
 		return res;
 	}
 
-	public Administrator findOne(int adminId) {
-		Administrator res = administratorRepository.findOne(adminId);
+	public Administrator findOne(final int adminId) {
+		final Administrator res = this.administratorRepository.findOne(adminId);
 		return res;
 	}
 
-	public Administrator save(Administrator admin) {
+	public Administrator save(final Administrator admin) {
 		Assert.notNull(admin, "The administrator to save cannot be null.");
-		Administrator res = administratorRepository.save(admin);
+		final Administrator res = this.administratorRepository.save(admin);
 
 		return res;
 	}
 
-	public void delete(Administrator admin) {
-		UserAccount ua = LoginService.getPrincipal();
+	public void delete(final Administrator admin) {
+		final UserAccount ua = LoginService.getPrincipal();
 		Assert.notNull(ua);
-		Authority a = new Authority();
+		final Authority a = new Authority();
 		a.setAuthority(Authority.ADMIN);
 		Assert.isTrue(ua.getAuthorities().contains(a), "You must to be a admin to delete an actor.");
 
 		Assert.notNull(admin, "The adminstrator to delete cannot be null.");
-		Assert.isTrue(administratorRepository.exists(admin.getId()));
+		Assert.isTrue(this.administratorRepository.exists(admin.getId()));
 
 		Assert.isNull(admin.getPostComments().isEmpty(), "The administrator cannot be delete with post comments");
 		Assert.isNull(admin.getComments().isEmpty(), "The administrator cannot be delete with comments");
 		Assert.isNull(admin.getReceivedMessages().isEmpty(), "The administrator cannot be delete with messages");
 		Assert.isNull(admin.getSenderMessages().isEmpty(), "The administrator cannot be delete with sender messages");
 
-		administratorRepository.delete(admin);
+		this.administratorRepository.delete(admin);
 	}
 
 	//Utilites methods
-	public Administrator findByUserAccountId(int id){
+	public Administrator findByUserAccountId(final int id) {
 		Assert.notNull(id);
-		return administratorRepository.findByUserAccountId(id);
+		return this.administratorRepository.findByUserAccountId(id);
 	}
 
 	//Para el dashboard
-	
-	/*private void isAdministrator(){
-		UserAccount ua = LoginService.getPrincipal();
-		Assert.notNull(ua);
-		Authority a = new Authority();
-		a.setAuthority(Authority.ADMIN);
-		Assert.isTrue(ua.getAuthorities().contains(a), "You must to be a administrator for this action.");
-	}*/
-	
-	
-	
+
+	/*
+	 * private void isAdministrator(){
+	 * UserAccount ua = LoginService.getPrincipal();
+	 * Assert.notNull(ua);
+	 * Authority a = new Authority();
+	 * a.setAuthority(Authority.ADMIN);
+	 * Assert.isTrue(ua.getAuthorities().contains(a), "You must to be a administrator for this action.");
+	 * }
+	 */
+
 }
