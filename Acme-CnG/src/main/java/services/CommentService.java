@@ -16,6 +16,7 @@ import security.UserAccount;
 import domain.Actor;
 import domain.Comment;
 import domain.Commentable;
+import domain.Offer;
 
 @Service
 @Transactional
@@ -116,6 +117,17 @@ public class CommentService {
 		Assert.isTrue(ua.getAuthorities().contains(b) || ua.getAuthorities().contains(a), "You must to be an autenticated for this action");
 
 		return this.commentRepository.findReceivedComments(id);
+	}
+
+	public Collection<Offer> findNoBannedComments() {
+		final Authority a = new Authority();
+		a.setAuthority(Authority.ADMIN);
+		final Authority c = new Authority();
+		c.setAuthority(Authority.CUSTOMER);
+		final UserAccount ua = LoginService.getPrincipal();
+		Assert.isTrue(ua.getAuthorities().contains(a) || ua.getAuthorities().contains(c), "You must to be autenticate for this action");
+
+		return this.commentRepository.findNoBannedComments();
 	}
 
 }
