@@ -11,17 +11,28 @@
 package controllers;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.BannerService;
+import domain.Banner;
+
 @Controller
 @RequestMapping("/welcome")
 public class WelcomeController extends AbstractController {
 
+	// Services -------------------------------------------------------
+	@Autowired
+	private BannerService bannerService;
+	
 	// Constructors -----------------------------------------------------------
 
 	public WelcomeController() {
@@ -35,13 +46,25 @@ public class WelcomeController extends AbstractController {
 		ModelAndView result;
 		SimpleDateFormat formatter;
 		String moment;
+		String show;
 
 		formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		moment = formatter.format(new Date());
+		
+		List<Banner> banners = new ArrayList<Banner>(bannerService.findAll());
+		if(!banners.isEmpty()){
+			Collections.shuffle(banners);
+			Banner banner = banners.get(0);
+			bannerService.save(banner);
+			show = banner.getLogo();
+		}else{
+			show= "";
+		}
 
 		result = new ModelAndView("welcome/index");
 		result.addObject("name", name);
 		result.addObject("moment", moment);
+		result.addObject("banner", show);
 
 		return result;
 	}

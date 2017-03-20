@@ -9,7 +9,7 @@ import domain.Offer;
 
 @Component
 @Transactional
-public class OfferStringConverter implements Converter<Offer, String>{
+public class OfferToStringConverter implements Converter<Offer, String>{
 
 	@Override
 	public String convert(Offer offer) {

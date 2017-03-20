@@ -16,6 +16,18 @@
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
+<div style="background-image: url(./images/banner.jpg); padding:5px; width: 260px; border: 2px solid black; border-radius: 5px;">
+		<h2>
+			<jstl:if test="${banner == ''}">
+				<spring:message code="recipe.banner"/>
+			</jstl:if>
+			<jstl:out value="${banner}"/>
+		</h2>
+		<jstl:if test="${banner == ''}">
+			<spring:message code="recipe.banner.not"/>
+		</jstl:if>
+	</div>
+
 <p><spring:message code="welcome.greeting.prefix" /> ${name}<spring:message code="welcome.greeting.suffix" /></p>
 
 <p><spring:message code="welcome.greeting.current.time" /> ${moment}</p> 
