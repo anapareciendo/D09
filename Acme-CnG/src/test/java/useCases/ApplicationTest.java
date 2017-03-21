@@ -28,10 +28,10 @@ public class ApplicationTest extends AbstractTest {
 		final Object testingDataAccept[][] = {
 			{
 				"customer2", 46, null
-			//El customer2 es el dueño de la offer a la que se refiere la application con id=46
+			//El customer2 es el dueño de la request a la que se refiere la application con id=46
 			}, {
 				"customer1", 46, IllegalArgumentException.class
-			//El customer1 no es el dueño del a offer a la que se refiere la application con id=46
+			//El customer1 no es el dueño del a request a la que se refiere la application con id=46
 			}, {
 				"admin1", 46, IllegalArgumentException.class
 			//El admin1 no es un customer, por lo que no puede aceptar applications
@@ -42,24 +42,21 @@ public class ApplicationTest extends AbstractTest {
 				null, 46, IllegalArgumentException.class
 			//El usuario no esta logado 
 			}, {
-				"customer2", 48, null
-			//El customer2 es el dueño de la request a la que se refiere la application con id=46
+				"customer1", 48, null
+			//El customer1 es el dueño de la offer a la que se refiere la application con id=48
 			}, {
-				"customer1", 48, IllegalArgumentException.class
-			//El customer1 no es el dueño del a request a la que se refiere la application con id=46
-			}, {
-				"admin1", 48, IllegalArgumentException.class
-			//El admin1 no es un customer, por lo que no puede aceptar applications
+				"customer2", 48, IllegalArgumentException.class
+			//El customer2 no es el dueño del a request a la que se refiere la application con id=46
 			},
 		};
 
 		final Object testingDataDeny[][] = {
 			{
 				"customer2", 46, null
-			//El customer2 es el dueño de la offer a la que se refiere la application con id=46
+			//El customer2 es el dueño de la request a la que se refiere la application con id=46
 			}, {
 				"customer1", 46, IllegalArgumentException.class
-			//El customer1 no es el dueño del a offer a la que se refiere la application con id=46
+			//El customer1 no es el dueño del a request a la que se refiere la application con id=46
 			}, {
 				"admin1", 46, IllegalArgumentException.class
 			//El admin1 no es un customer, por lo que no puede aceptar applications
@@ -68,16 +65,13 @@ public class ApplicationTest extends AbstractTest {
 			//El id=250 no pertenece a una application
 			}, {
 				null, 46, IllegalArgumentException.class
-			//El usuario no esta logado
+			//El usuario no esta logado 
 			}, {
-				"customer2", 48, null
-			//El customer2 es el dueño de la request a la que se refiere la application con id=46
+				"customer1", 48, null
+			//El customer1 es el dueño de la offer a la que se refiere la application con id=48
 			}, {
-				"customer1", 48, IllegalArgumentException.class
-			//El customer1 no es el dueño del a request a la que se refiere la application con id=46
-			}, {
-				"admin1", 48, IllegalArgumentException.class
-			//El admin1 no es un customer, por lo que no puede aceptar applications
+				"customer2", 48, IllegalArgumentException.class
+			//El customer2 no es el dueño del a request a la que se refiere la application con id=46
 			},
 		};
 
@@ -86,7 +80,6 @@ public class ApplicationTest extends AbstractTest {
 		for (int i = 0; i < testingDataDeny.length; i++)
 			this.templateDeny((String) testingDataDeny[i][0], (Integer) testingDataDeny[i][1], (Class<?>) testingDataDeny[i][2]);
 	}
-
 	protected void templateAccept(final String username, final Integer id, final Class<?> expected) {
 		Class<?> caught;
 		caught = null;
