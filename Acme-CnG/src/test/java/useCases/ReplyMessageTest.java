@@ -37,8 +37,8 @@ public class ReplyMessageTest extends AbstractTest {
 	public void driver() {
 		final Object testingData[][] = {
 			{
-				"customer1", "Texto", 35, null
-			//El customer1 es el dueñod el mensaje a responder
+				"customer1", 35, "Texto", null
+			//El customer1 es el dueño del mensaje a responder
 			}, {
 				"admin1", 35, "Texto", IllegalArgumentException.class
 			//El admin1 no es el dueño del mensaje a responder
