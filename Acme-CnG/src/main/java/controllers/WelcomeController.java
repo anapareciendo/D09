@@ -12,7 +12,6 @@ package controllers;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -53,7 +52,6 @@ public class WelcomeController extends AbstractController {
 		
 		List<Banner> banners = new ArrayList<Banner>(bannerService.findAll());
 		if(!banners.isEmpty()){
-			Collections.shuffle(banners);
 			Banner banner = banners.get(0);
 			show = banner.getLogo();
 		}else{

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.OfferRepository;
 import security.Authority;
@@ -27,6 +29,14 @@ public class OfferService {
 	//Managed repository
 	@Autowired
 	private OfferRepository	offerRepository;
+	
+	//Supporting services
+	@Autowired
+	private CustomerService customerService;
+	
+	@Autowired
+	private Validator validator;
+
 
 
 	//Constructors
@@ -134,5 +144,24 @@ public class OfferService {
 
 		offer.setBanned(true);
 		this.offerRepository.save(offer);
+	}
+	
+	public Offer reconstruct(Offer offer, BindingResult binding) {
+		Offer res;
+		Customer c = customerService.findByUserAccountId(LoginService.getPrincipal().getId());
+		if(offer.getId()==0){
+
+			res = this.create(offer.getOrigin(), offer.getDestination(), c);
+		}else{
+			Offer aux = offerRepository.findOne(offer.getId());
+			offerRepository.delete(aux);
+			res= this.create(aux.getDestination(), aux.getOrigin(), c);
+		}
+		res.setTitle(offer.getTitle());
+		res.setDescription(offer.getDescription());
+		res.setBanned(offer.getBanned());
+		
+		validator.validate(res, binding);
+		return res;
 	}
 }

@@ -58,6 +58,15 @@
 					<li><a href="j_spring_security_logout"><spring:message code="master.page.logout" /> </a></li>
 				</ul>
 			</li>
+			
+			<security:authorize access="hasRole('CUSTOMER')">
+			<li><a class="fNiv"><spring:message code="master.page.offer" /></a>
+				<ul>
+					<li class="arrow"></li>
+						<li><a href="offer/create.do"><spring:message code="master.page.offer.create" /></a></li>
+				</ul>
+			</li>
+			</security:authorize>
 		</security:authorize>
 	</ul>
 </div>
