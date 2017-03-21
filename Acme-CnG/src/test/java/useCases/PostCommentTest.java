@@ -70,6 +70,9 @@ public class PostCommentTest extends AbstractTest {
 			this.authenticate(username);
 			final Customer customer = this.customerService.findByUserAccountId(LoginService.getPrincipal().getId());
 			final Comment c = this.commentService.create(customer, customer);
+			c.setText(text);
+			c.setTitle(title);
+			c.setStars(stars);
 			this.commentService.save(c);
 			this.unauthenticate();
 		} catch (final Throwable oops) {
