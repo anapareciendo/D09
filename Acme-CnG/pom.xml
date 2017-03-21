@@ -18,7 +18,7 @@
 	<!-- Artifact identification and properties -->
 
 	<groupId>Design-and-Testing</groupId>
-	<artifactId>Acme-CnG-Project</artifactId>
+	<artifactId>Acme-CnG</artifactId>
 	<version>1.8</version>
 	<packaging>war</packaging>
 	
@@ -28,9 +28,9 @@
 
 	<!-- Indexing information -->
 
-	<name>Acme-CnG Project</name>
-	<url>http://www.acme-cng-project.com</url>
-	<description>This is D&amp;T's Acme-CnG project.</description>
+	<name>Acme-CnG</name>
+	<url>http://www.acme-cng.com</url>
+	<description>This is D&amp;T's Acme-CnG.</description>
 	
 	<!-- Build commands -->
 
