@@ -55,7 +55,6 @@ public class WelcomeController extends AbstractController {
 		if(!banners.isEmpty()){
 			Collections.shuffle(banners);
 			Banner banner = banners.get(0);
-			bannerService.save(banner);
 			show = banner.getLogo();
 		}else{
 			show= "";
