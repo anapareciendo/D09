@@ -30,7 +30,8 @@ public class ForwardMessageTest extends AbstractTest {
 			{
 				"customer1", 35, null
 			},
-			//Reenvio offer
+
+			//Id erronea
 			{
 				"customer1", 42, IllegalArgumentException.class
 			},
@@ -38,7 +39,7 @@ public class ForwardMessageTest extends AbstractTest {
 		};
 
 		for (int i = 0; i < testingData.length; i++)
-			this.template((String) testingData[i][0], (int) testingData[i][4], (Class<?>) testingData[i][5]);
+			this.template((String) testingData[i][0], (int) testingData[i][1], (Class<?>) testingData[i][2]);
 	}
 
 	protected void template(final String username, final int id, final Class<?> expected) {
