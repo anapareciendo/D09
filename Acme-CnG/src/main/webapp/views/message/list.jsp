@@ -36,7 +36,7 @@
 	<display:column property="moment" title="${momentHeader }" sortable="true" />
 	
 	<spring:message code="message.title" var="titletHeader" />
-	<display:column property="title" title="${titleHeader }" sortable="true" />
+	<display:column property="title" title="${titleHeader }" sortable="false" />
 	
 	<spring:message code="message.text" var="textHeader" />
 	<display:column property="text" title="${textHeader }" sortable="false" />
