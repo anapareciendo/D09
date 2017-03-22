@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import services.OfferService;
-import services.RequestService;
+import services.Demand2Service;
+import services.DemandService;
 import utilities.AbstractTest;
 
 @ContextConfiguration(locations = {
@@ -21,9 +21,9 @@ public class FindNotBannedDemads extends AbstractTest{
 
 	//Use case: Find not banned demands (Level C)
 	@Autowired
-	private OfferService offerService;
+	private Demand2Service offerService;
 	@Autowired
-	private RequestService requestService;
+	private DemandService requestService;
 	
 	@Test
 	public void driver(){

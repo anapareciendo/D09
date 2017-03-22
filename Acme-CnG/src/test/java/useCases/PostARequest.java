@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import security.LoginService;
 import services.CustomerService;
 import services.PlaceService;
-import services.RequestService;
+import services.DemandService;
 import utilities.AbstractTest;
 import domain.Customer;
 import domain.Place;
@@ -29,7 +29,7 @@ public class PostARequest extends AbstractTest{
 	
 	//Use case: Post a request (Level C)
 	@Autowired
-	private RequestService requestService;
+	private DemandService requestService;
 	
 	@Autowired
 	private PlaceService placeService;

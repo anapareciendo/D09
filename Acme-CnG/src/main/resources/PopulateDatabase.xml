@@ -110,6 +110,9 @@
 		<property name="email" value="jucoba@gmail.com" />
 		<property name="userAccount" ref="userAccount2" />
 		<property name="phone" value="+34122332687" />	
+		<property name="demands">
+			<list></list>
+		</property>
 		<property name="postComments">
 			<list></list>
 		</property>
@@ -133,6 +136,9 @@
 		<property name="email" value="dodibu@gmail.com" />
 		<property name="userAccount" ref="userAccount4" />
 		<property name="phone" value="+34122332687" />	
+		<property name="demands">
+			<list></list>
+		</property>
 		<property name="postComments">
 			<list></list>
 		</property>
@@ -196,13 +202,14 @@
 	</bean>
 	
 	<!-- Offer -->
-	<bean id="offer1" class="domain.Offer">
+	<bean id="offer1" class="domain.Demand">
 		<property name="title" value="offer1" />
 		<property name="description" value="I want go to Madrid"/>
 		<property name="moment" value="2016/09/06 12:45"/>
 		<property name="customer" ref="customer1" />	
 		<property name="origin" ref="place1" />
 		<property name="destination" ref="place2" />
+		<property name="type" value="OFFER"/>
 		<property name="comments">
 			<list></list>
 		</property>
@@ -211,13 +218,14 @@
 		</property>
 	</bean>
 	
-	<bean id="offer2" class="domain.Offer">
+	<bean id="offer2" class="domain.Demand">
 		<property name="title" value="offer 1" />
 		<property name="description" value="I want go to Madrid"/>
 		<property name="moment" value="2016/09/06 12:45"/>
 		<property name="customer" ref="customer1" />	
 		<property name="origin" ref="place2" />
 		<property name="destination" ref="place3" />
+		<property name="type" value="OFFER"/>
 		<property name="comments">
 			<list></list>
 		</property>
@@ -226,13 +234,14 @@
 		</property>
 	</bean>
 	
-	<bean id="offer3" class="domain.Offer">
+	<bean id="offer3" class="domain.Demand">
 		<property name="title" value="offer 2" />
 		<property name="description" value="I want go to Seville"/>
 		<property name="moment" value="2017/12/06 12:45"/>
 		<property name="customer" ref="customer2" />	
 		<property name="origin" ref="place1" />
 		<property name="destination" ref="place4" />
+		<property name="type" value="OFFER"/>
 		<property name="comments">
 			<list></list>
 		</property>
@@ -243,13 +252,14 @@
 	
 	<!-- Request -->
 	
-	<bean id="request1" class="domain.Request">
+	<bean id="request1" class="domain.Demand">
 		<property name="title" value="request1" />
 		<property name="description" value="Description request 1"/>
 		<property name="moment" value="2017/06/09 12:45"/>
 		<property name="customer" ref="customer1" />	
 		<property name="origin" ref="place1" />
 		<property name="destination" ref="place4" />
+		<property name="type" value="REQUEST"/>
 		<property name="comments">
 			<list></list>
 		</property>
@@ -258,13 +268,14 @@
 		</property>
 	</bean>
 	
-	<bean id="request2" class="domain.Request">
+	<bean id="request2" class="domain.Demand">
 		<property name="title" value="request2" />
 		<property name="description" value="Description request 2"/>
 		<property name="moment" value="2016/02/23 12:45"/>
 		<property name="customer" ref="customer2" />	
 		<property name="origin" ref="place2" />
 		<property name="destination" ref="place3" />
+		<property name="type" value="REQUEST"/>
 		<property name="comments">
 			<list></list>
 		</property>

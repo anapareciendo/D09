@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import services.RequestService;
+import services.DemandService;
 import utilities.AbstractTest;
 import domain.Request;
 
@@ -31,7 +31,7 @@ public class BanARequestTest extends AbstractTest {
 
 	
 	@Autowired
-	private RequestService requestService;
+	private DemandService requestService;
 	
 
 	//Apply for a request

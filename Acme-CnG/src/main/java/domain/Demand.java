@@ -20,7 +20,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public abstract class Demand extends Commentable {
+public class Demand extends Commentable {
 
 	//----------------------Attributes-------------------------
 
@@ -28,7 +28,16 @@ public abstract class Demand extends Commentable {
 	private String	description;
 	private Date	moment;
 	private boolean	banned;
+	private Type type;
 
+	@Valid
+	@NotNull
+	public Type getType() {
+		return type;
+	}
+	public void setType(Type type) {
+		this.type = type;
+	}
 
 	@NotBlank
 	@SafeHtml

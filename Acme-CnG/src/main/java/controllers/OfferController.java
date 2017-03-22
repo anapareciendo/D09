@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import security.LoginService;
 import services.CustomerService;
-import services.OfferService;
+import services.Demand2Service;
 import services.PlaceService;
 import domain.Customer;
 import domain.Offer;
@@ -26,7 +26,7 @@ import domain.Place;
 public class OfferController extends AbstractController{
 
 	@Autowired
-	private OfferService offerService;
+	private Demand2Service offerService;
 	
 	@Autowired
 	private PlaceService placeService;

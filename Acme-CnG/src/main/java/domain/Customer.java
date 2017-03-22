@@ -16,8 +16,17 @@ public class Customer extends Actor {
 
 	//---------------------Relationships--------------------------
 	private Collection<Application>	applications;
+	private Collection<Demand> demands;
 
-
+	@Valid
+	@NotNull
+	@OneToMany(mappedBy="customer")
+	public Collection<Demand> getDemands() {
+		return demands;
+	}
+	public void setDemands(Collection<Demand> demands) {
+		this.demands = demands;
+	}
 	@Valid
 	@NotNull
 	@OneToMany(mappedBy = "customer")

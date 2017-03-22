@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import security.LoginService;
 import services.ApplicationService;
 import services.CustomerService;
-import services.RequestService;
+import services.DemandService;
 import utilities.AbstractTest;
 import domain.Application;
 import domain.Customer;
@@ -37,7 +37,7 @@ public class ApplyRequestTest extends AbstractTest {
 	@Autowired
 	private ApplicationService appService;
 	@Autowired
-	private RequestService requestService;
+	private DemandService requestService;
 	@Autowired
 	private CustomerService customerService;
 

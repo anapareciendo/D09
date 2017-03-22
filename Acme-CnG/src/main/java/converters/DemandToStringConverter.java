@@ -4,21 +4,21 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import domain.Request;
+import domain.Demand;
 
 
 @Component
 @Transactional
-public class RequestToStringConverter implements Converter<Request, String>{
+public class DemandToStringConverter implements Converter<Demand, String>{
 
 	@Override
-	public String convert(Request request) {
+	public String convert(Demand demand) {
 		String result;
 
-		if (request == null)
+		if (demand == null)
 			result = null;
 		else
-			result = String.valueOf(request.getId());
+			result = String.valueOf(demand.getId());
 
 		return result;
 	}

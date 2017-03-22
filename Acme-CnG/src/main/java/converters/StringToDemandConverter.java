@@ -5,24 +5,24 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import repositories.RequestRepository;
-import domain.Request;
+import repositories.DemandRepository;
+import domain.Demand;
 
 @Component
 @Transactional
-public class StringToRequestConverter implements Converter<String, Request>{
+public class StringToDemandConverter implements Converter<String, Demand>{
 
 	@Autowired
-	RequestRepository requestRepository;
+	DemandRepository demandRepository;
 
 	@Override
-	public Request convert(String text) {
-		Request result;
+	public Demand convert(String text) {
+		Demand result;
 		int id;
 
 		try {
 			id = Integer.valueOf(text);
-			result = requestRepository.findOne(id);
+			result = demandRepository.findOne(id);
 		} catch (Exception oops) {
 			throw new IllegalArgumentException(oops);
 		}

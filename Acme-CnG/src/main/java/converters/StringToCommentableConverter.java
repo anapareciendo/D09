@@ -17,8 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import repositories.AdministratorRepository;
 import repositories.CustomerRepository;
-import repositories.OfferRepository;
-import repositories.RequestRepository;
+import repositories.DemandRepository;
 import domain.Commentable;
 
 @Component
@@ -30,9 +29,7 @@ public class StringToCommentableConverter implements Converter<String, Commentab
 	@Autowired
 	CustomerRepository customerRepository;
 	@Autowired
-	OfferRepository offerRepository;
-	@Autowired
-	RequestRepository requestRepository;
+	DemandRepository demandRepository;
 
 	@Override
 	public Commentable convert(String text) {
@@ -47,11 +44,8 @@ public class StringToCommentableConverter implements Converter<String, Commentab
 			if(result == null){
 				result = customerRepository.findOne(id);
 			}if(result == null){
-				result = offerRepository.findOne(id);
-			}if(result == null){
-				result = requestRepository.findOne(id);
+				result = demandRepository.findOne(id);
 			}
-			
 		} catch (Exception oops) {
 			throw new IllegalArgumentException(oops);
 		}

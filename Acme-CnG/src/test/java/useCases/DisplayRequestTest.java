@@ -19,7 +19,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import services.CommentService;
-import services.RequestService;
+import services.DemandService;
 import utilities.AbstractTest;
 
 @ContextConfiguration(locations = {
@@ -32,7 +32,7 @@ public class DisplayRequestTest extends AbstractTest {
 	@Autowired
 	private CommentService	commentService;
 	@Autowired
-	private RequestService	requestService;
+	private DemandService	requestService;
 
 
 	//Apply for a request

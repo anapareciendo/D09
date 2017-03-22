@@ -22,7 +22,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import security.LoginService;
-import services.OfferService;
+import services.Demand2Service;
 import services.PlaceService;
 import utilities.AbstractTest;
 import domain.Customer;
@@ -37,7 +37,7 @@ import domain.Place;
 public class OfferTest extends AbstractTest {
 
 	@Autowired
-	private OfferService offerService;
+	private Demand2Service offerService;
 	@Autowired
 	private PlaceService placeService;
 	@Autowired

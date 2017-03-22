@@ -20,7 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import services.ApplicationService;
 import services.CustomerService;
-import services.OfferService;
+import services.Demand2Service;
 import utilities.AbstractTest;
 import domain.Application;
 import domain.Customer;
@@ -38,7 +38,7 @@ public class ApplicationTest extends AbstractTest {
 	@Autowired
 	private CustomerService customerService;
 	@Autowired
-	private OfferService offerService;
+	private Demand2Service offerService;
 
 
 

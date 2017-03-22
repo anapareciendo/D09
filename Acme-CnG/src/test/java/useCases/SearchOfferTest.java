@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import services.OfferService;
+import services.Demand2Service;
 import utilities.AbstractTest;
 
 @ContextConfiguration(locations = {
@@ -29,7 +29,7 @@ import utilities.AbstractTest;
 public class SearchOfferTest extends AbstractTest {
 
 	@Autowired
-	private OfferService offerService;
+	private Demand2Service offerService;
 
 	//Search for Offer
 	@Test
