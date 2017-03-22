@@ -60,6 +60,13 @@
 				</ul>
 			</li>
 			
+			<li><a class="fNiv"><spring:message code="master.page.message" /></a>
+				<ul>
+					<li class="arrow"></li>
+						<li><a href="message/list.do"><spring:message code="master.page.message.list" /></a></li>
+				</ul>
+			</li>
+			
 			<security:authorize access="hasRole('CUSTOMER')">
 			<li><a class="fNiv"><spring:message code="master.page.offer" /></a>
 				<ul>
