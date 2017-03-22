@@ -22,10 +22,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import domain.Demand;
-
+import services.AdministratorService;
+import services.CustomerService;
 import services.DemandService;
 import utilities.AbstractTest;
+import domain.Administrator;
+import domain.Customer;
+import domain.Demand;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -37,14 +40,30 @@ public class BanAOfferTest extends AbstractTest {
 	
 	@Autowired
 	private DemandService demandService;
+	@Autowired
+	private AdministratorService adminService;
+	@Autowired
+	private CustomerService customerService;
 	
 
-	//Apply for a request
+	/* *----Ban an offer that he or she finds inappropriate.-----*
+	  -El orden de los parámetros es:Usuario que se va a autenticar, error esperado
+	  
+	  Cobertura del test tanto para aceptar applications como para denegarlas:
+			//El usuario autenticado es un admin (test positivo)
+			//El usuario autenticado es un customer (test negativo)
+				
+	 */
 	@Test
 	public void driver(){
+		List<Customer> customers= new ArrayList<Customer>();
+		customers.addAll(customerService.findAll());
+		
+		List<Administrator> admins = new ArrayList<Administrator>();
+		admins.addAll(adminService.findAll());
 		Object testingData[][] = {
-				{"admin1",null},
-				{"customer1",IllegalArgumentException.class},
+				{admins.get(0).getUserAccount().getUsername(),null},
+				{customers.get(0).getUserAccount().getUsername(),IllegalArgumentException.class},
 		};
 		
 		for(int i = 0; i < testingData.length; i++){

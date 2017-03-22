@@ -22,8 +22,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import services.AdministratorService;
 import services.DemandService;
 import utilities.AbstractTest;
+import domain.Administrator;
 import domain.Demand;
 
 @ContextConfiguration(locations = {
@@ -36,13 +38,28 @@ public class BanARequestTest extends AbstractTest {
 	
 	@Autowired
 	private DemandService demandService;
+	@Autowired
+	private AdministratorService adminService;
+
 	
 
-	//Apply for a request
+	/* *----Ban a request that he or she finds inappropriate.-----*
+	  -El orden de los parámetros es:Usuario que se va a autenticar, error esperado
+	  
+	  Cobertura del test tanto para aceptar applications como para denegarlas:
+			//El usuario autenticado es un admin (test positivo)
+			//El usuario no se autentica (test negativo)
+				
+	 */
+
 	@Test
 	public void driver(){
+		
+		List<Administrator> admins = new ArrayList<Administrator>();
+		admins.addAll(adminService.findAll());
+		
 		Object testingData[][] = {
-				{"admin1",null},
+				{admins.get(0).getUserAccount().getUsername(),null},
 				{null,IllegalArgumentException.class},
 		};
 		

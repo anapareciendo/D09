@@ -23,10 +23,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import security.LoginService;
+import services.AdministratorService;
 import services.ApplicationService;
 import services.CustomerService;
 import services.DemandService;
 import utilities.AbstractTest;
+import domain.Administrator;
 import domain.Application;
 import domain.Customer;
 import domain.Demand;
@@ -44,13 +46,29 @@ public class ApplyOfferTest extends AbstractTest {
 	private DemandService demandService;
 	@Autowired
 	private CustomerService customerService;
+	@Autowired
+	private AdministratorService adminService;
 
-	//Apply for a request
+	
+	/* *----Apply for an offer or a request, which must be accepted by the customer who posted it.-----*
+	  -El orden de los parámetros es:Usuario que se va a autenticar, error esperado
+	  
+	  Cobertura del test tanto para aceptar applications como para denegarlas:
+	  		//El usuario autenticado es un customer (test positivo)
+			//El usuario autenticado es un admin (test negativo)
+				
+	 */
 	@Test
 	public void driver(){
+		List<Customer> customers= new ArrayList<Customer>();
+		customers.addAll(customerService.findAll());
+		
+		List<Administrator> admins = new ArrayList<Administrator>();
+		admins.addAll(adminService.findAll());
+		
 		Object testingData[][] = {
-				{"customer1",null},
-				{"admin1",IllegalArgumentException.class},
+				{customers.get(0).getUserAccount().getUsername(),null},
+				{admins.get(0).getUserAccount().getUsername(),IllegalArgumentException.class},
 		};
 		
 		for(int i = 0; i < testingData.length; i++){

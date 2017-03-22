@@ -10,6 +10,9 @@
 
 package useCases;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -18,8 +21,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import services.AdministratorService;
 import services.BannerService;
 import utilities.AbstractTest;
+import domain.Administrator;
 import domain.Banner;
 
 @ContextConfiguration(locations = {
@@ -31,14 +36,24 @@ public class ChangeBannerTest extends AbstractTest {
 
 	@Autowired
 	private BannerService	bannerService;
+	@Autowired
+	private AdministratorService adminService;
 
-
-	//Apply for a request
+	/* *----Change the banner that the system shows on the welcome page.-----*
+	  -El orden de los parámetros es:Usuario que se va a autenticar, error esperado
+	  
+	  Cobertura del test tanto para aceptar applications como para denegarlas:
+			//El usuario autenticado es un admin (test positivo)
+			//El usuario no se autentica (test negativo)
+				
+	 */
 	@Test
 	public void driver() {
+		List<Administrator> admins = new ArrayList<Administrator>();
+		admins.addAll(adminService.findAll());
 		final Object testingData[][] = {
 			{
-				"admin1", null
+				admins.get(0).getUserAccount().getUsername(), null
 			}, {
 				null, IllegalArgumentException.class
 			},
@@ -53,7 +68,8 @@ public class ChangeBannerTest extends AbstractTest {
 		caught = null;
 		try {
 			this.authenticate(username);
-			final Banner b = this.bannerService.findOne(52);
+			List<Banner> banners = (List<Banner>) this.bannerService.findAll();
+			Banner b =  banners.get(0);
 			b.setLogo("Nuevo logo");
 			this.bannerService.save(b);
 			this.unauthenticate();
