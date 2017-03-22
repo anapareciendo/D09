@@ -23,7 +23,7 @@
 <display:table name="ms" id="row" requestURI="${requestURI }"
 	pagesize="5" class="displaytag">
 	
-	<%-- <display:column>
+	<display:column>
 	  	<div>
 	  	<a href="message/delete.do?messageId=${row.id}">
 	  		<spring:message code="message.delete" var="deleteHeader" />
@@ -31,7 +31,6 @@
 	  	</a>
 	  	</div>
   	</display:column>
-  	 --%>
 	
 	<spring:message code="message.moment" var="momentHeader" />
 	<display:column property="moment" title="${momentHeader }" sortable="true" />

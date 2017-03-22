@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import security.LoginService;
@@ -97,4 +98,20 @@ public class MessageController extends AbstractController{
 		return result;
 	}
 	
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(@RequestParam int messageId) {
+		ModelAndView result;
+		
+		try {
+			Message ms = messageService.findOne(messageId);
+			messageService.delete(ms);
+			result = new ModelAndView("redirect:list.do");
+		} catch (Throwable oops) {
+		
+			result = new ModelAndView("redirect:list.do");
+			result.addObject("message", "message.commit.error");
+		}
+
+		return result;
+	}
 }
