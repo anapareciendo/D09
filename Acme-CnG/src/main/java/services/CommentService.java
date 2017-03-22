@@ -16,7 +16,6 @@ import security.UserAccount;
 import domain.Actor;
 import domain.Comment;
 import domain.Commentable;
-import domain.Offer;
 
 @Service
 @Transactional
@@ -120,7 +119,7 @@ public class CommentService {
 		return this.commentRepository.findReceivedComments(id);
 	}
 
-	public Collection<Offer> findNoBannedComments() {
+	public Collection<Comment> findNoBannedComments() {
 		final Authority a = new Authority();
 		a.setAuthority(Authority.ADMIN);
 		final Authority c = new Authority();

@@ -1,8 +1,11 @@
 
 package useCases;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -36,13 +39,18 @@ public class ExangeMessageTest extends AbstractTest {
 	@Autowired
 	private MessageService			messageService;
 
-
+	//TODO:Descripción del caso de uso
 	@Test
 	public void driver() {
+		List<Actor> actors = new ArrayList<Actor>();
+		actors.addAll(adminService.findAll());
+		actors.addAll(customerService.findAll());
+		Collections.shuffle(actors);
+		
 		final Object testingData[][] = {
 			//Usuario autenticado y existe el recipient
 			{
-				30, Calendar.getInstance().getTime(), "title", "text", "customer1", null
+				actors.get(0).getUserAccount().getId(), Calendar.getInstance().getTime(), "title", "text", "customer1", null
 			},
 			//Usuario autenticado y no existe el recipient
 			{
