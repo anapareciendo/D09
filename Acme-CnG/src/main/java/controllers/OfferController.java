@@ -14,10 +14,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import security.LoginService;
 import services.CustomerService;
-import services.Demand2Service;
+import services.DemandService;
 import services.PlaceService;
 import domain.Customer;
-import domain.Offer;
 import domain.Place;
 
 @Controller
@@ -26,7 +25,7 @@ import domain.Place;
 public class OfferController extends AbstractController{
 
 	@Autowired
-	private Demand2Service offerService;
+	private DemandService demandService;
 	
 	@Autowired
 	private PlaceService placeService;
@@ -38,55 +37,55 @@ public class OfferController extends AbstractController{
 		super();
 	}
 	
-	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create() {
-		ModelAndView result;
-		List<Place> places = new ArrayList<Place>();
-		places.addAll(placeService.findAll());
-		
-		result = new ModelAndView("offer/create");
-		
-		if(places.isEmpty()){
-			result.addObject("vacio", true);
-		}else{
-			Customer c = customerService.findByUserAccountId(LoginService.getPrincipal().getId());
-			Offer offer = offerService.create(places.get(0), places.get(0), c);
-			result.addObject("offer", offer);
-			result.addObject("places",places);
-		}
-		return result;
-	}
-	
-	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(Offer offer, BindingResult binding) {
-		ModelAndView result;
-		
-		Offer res = offerService.reconstruct(offer, binding);
-		if(!binding.hasErrors()){
-			try{	
-				offerService.save(res);
-				result = new ModelAndView("welcome/index");
-				result.addObject("message","offer.all.green");
-					 
-			} catch (Throwable oops) {
-					
-				Collection<Place> places = placeService.findAll();
-				result = new ModelAndView("offer/create");
-				result.addObject("offer", offer);
-				result.addObject("places",places);
-				result.addObject("message", "offer.commit.error");
-					
-				}
-		}else{
-			Collection<Place> places = placeService.findAll();
-			result = new ModelAndView("offer/create");
-			result.addObject("offer", offer);
-			result.addObject("places",places);
-//			result.addObject("errors", binding.getAllErrors());
-		}
-			
-		return result;
-	}
+//	@RequestMapping(value = "/create", method = RequestMethod.GET)
+//	public ModelAndView create() {
+//		ModelAndView result;
+//		List<Place> places = new ArrayList<Place>();
+//		places.addAll(placeService.findAll());
+//		
+//		result = new ModelAndView("offer/create");
+//		
+//		if(places.isEmpty()){
+//			result.addObject("vacio", true);
+//		}else{
+//			Customer c = customerService.findByUserAccountId(LoginService.getPrincipal().getId());
+//			Offer offer = offerService.create(places.get(0), places.get(0), c);
+//			result.addObject("offer", offer);
+//			result.addObject("places",places);
+//		}
+//		return result;
+//	}
+//	
+//	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
+//	public ModelAndView save(Offer offer, BindingResult binding) {
+//		ModelAndView result;
+//		
+//		Offer res = offerService.reconstruct(offer, binding);
+//		if(!binding.hasErrors()){
+//			try{	
+//				offerService.save(res);
+//				result = new ModelAndView("welcome/index");
+//				result.addObject("message","offer.all.green");
+//					 
+//			} catch (Throwable oops) {
+//					
+//				Collection<Place> places = placeService.findAll();
+//				result = new ModelAndView("offer/create");
+//				result.addObject("offer", offer);
+//				result.addObject("places",places);
+//				result.addObject("message", "offer.commit.error");
+//					
+//				}
+//		}else{
+//			Collection<Place> places = placeService.findAll();
+//			result = new ModelAndView("offer/create");
+//			result.addObject("offer", offer);
+//			result.addObject("places",places);
+////			result.addObject("errors", binding.getAllErrors());
+//		}
+//			
+//		return result;
+//	}
 	
 }
 

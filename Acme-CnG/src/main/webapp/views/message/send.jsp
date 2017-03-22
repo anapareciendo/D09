@@ -21,11 +21,8 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <form:form action="message/sendMessages.do" modelAttribute="ms">
-	<form:hidden path="id" />
-	<form:hidden path="version" />
-	<form:hidden path="moment" />
 	
-	<acme:select items="${actors}" itemLabel="name" code="message.recipient" path="recipient"/>
+	<acme:select items="${actors}" itemLabel="userAccount.username" code="message.recipient" path="recipient"/>
 	<acme:textbox code="message.title" path="title"/>
 	<acme:textarea code="message.text" path="text"/>
 	<acme:textarea code="message.attachments" path="attachments"/>

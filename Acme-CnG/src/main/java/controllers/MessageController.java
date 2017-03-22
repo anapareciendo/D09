@@ -3,8 +3,6 @@ package controllers;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -68,7 +66,7 @@ public class MessageController extends AbstractController{
 	}
 	
 	@RequestMapping(value = "/sendMessages", method = RequestMethod.POST, params = "save")
-	public ModelAndView sendMessages(@Valid Message ms, BindingResult binding) {
+	public ModelAndView sendMessages(Message ms, BindingResult binding) {
 		ModelAndView result;
 		Message res = messageService.reconstruct(ms, binding);
 		if(!binding.hasErrors()){
@@ -78,7 +76,6 @@ public class MessageController extends AbstractController{
 
 					 
 			} catch (Throwable oops) {
-					
 				Collection<Actor> actors = new ArrayList<Actor>();
 				actors.addAll(adminService.findAll());
 				actors.addAll(customerService.findAll());

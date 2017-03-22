@@ -29,6 +29,10 @@ public class MessageService {
 
 	//Supporting services
 	@Autowired
+	private AdministratorService administratorService;
+	@Autowired
+	private CustomerService customerService;
+	@Autowired
 	private Validator validator;
 	
 
@@ -68,8 +72,8 @@ public class MessageService {
 		Assert.notNull(message.getRecipient());
 
 		Assert.isTrue(message.getMoment() != null);
-		Assert.isTrue(message.getTitle() != null && message.getTitle() != "");
-		Assert.isTrue(message.getText() != null && message.getText() != "");
+		Assert.isTrue(message.getTitle() != null);
+		Assert.isTrue(message.getText() != null);
 
 		final Message res = this.messageRepository.save(message);
 		res.getSender().getSenderMessages().add(res);
@@ -129,15 +133,14 @@ public class MessageService {
 	}
 	
 	public Message reconstruct(Message ms, BindingResult binding) {
-		Message res;
-		
-		if(ms.getId()==0){
-			res = this.create(ms.getRecipient(), ms.getRecipient());
-		}else{
-			Message aux = messageRepository.findOne(ms.getId());
-			messageRepository.delete(aux);
-			res= this.create(aux.getSender(), aux.getRecipient());
+		Integer uaId = LoginService.getPrincipal().getId();
+		Actor sender = customerService.findByUserAccountId(uaId);
+		if(sender==null){
+			sender = administratorService.findByUserAccountId(uaId);
 		}
+		
+		Message res = this.create(sender, ms.getRecipient());
+		
 		res.setTitle(ms.getTitle());
 		res.setText(ms.getText());
 		res.setAttachments(ms.getAttachments());
