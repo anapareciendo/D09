@@ -20,7 +20,7 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
 	//Select r from Request r;
 	
 	//Average number of offers and request per customer.
-	//Select avg(c.offers.size) from Customer c;
+	//select avg(c.offers.size) from Customer c;
 	//Select avg(c.requests.size) from Customer c;
 	
 	//Average number of applications per offer or request.

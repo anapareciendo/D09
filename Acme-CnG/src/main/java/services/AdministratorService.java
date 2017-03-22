@@ -48,6 +48,7 @@ public class AdministratorService {
 		res.setReceivedMessages(new ArrayList<Message>());
 		res.setSenderMessages(new ArrayList<Message>());
 		res.setUserAccount(ua);
+		administratorRepository.flush();
 		return res;
 	}
 
@@ -64,6 +65,7 @@ public class AdministratorService {
 	public Administrator save(final Administrator admin) {
 		Assert.notNull(admin, "The administrator to save cannot be null.");
 		final Administrator res = this.administratorRepository.save(admin);
+		administratorRepository.flush();
 
 		return res;
 	}

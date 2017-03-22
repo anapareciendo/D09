@@ -56,6 +56,7 @@ public class CustomerService {
 		res.setSenderMessages(new ArrayList<Message>());
 		res.setApplications(new ArrayList<Application>());
 		res.setUserAccount(ua);
+		customerRepository.flush();
 		return res;
 	}
 
@@ -78,7 +79,7 @@ public class CustomerService {
 		Assert.isTrue(customer.getPhone() != null);
 		
 		final Customer res = this.customerRepository.save(customer);
-
+		customerRepository.flush();
 		return res;
 	}
 

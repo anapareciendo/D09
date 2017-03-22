@@ -46,6 +46,7 @@ public class ExangeMessageTest extends AbstractTest {
 		actors.addAll(adminService.findAll());
 		actors.addAll(customerService.findAll());
 		Collections.shuffle(actors);
+	
 		
 		final Object testingData[][] = {
 			//Usuario autenticado y existe el recipient
@@ -60,7 +61,7 @@ public class ExangeMessageTest extends AbstractTest {
 			{
 				30, Calendar.getInstance().getTime(), "title", "text", "noUser", IllegalArgumentException.class
 			},
-			//Usuario autenticado y existe el recipient. Primero creo el mensaje, luego modifico al usuario y luego envío.
+	//		//Usuario autenticado y existe el recipient. Primero creo el mensaje, luego modifico al usuario y luego envío.
 			{
 				28, Calendar.getInstance().getTime(), "title", "text", "customer1", null
 			},
