@@ -22,8 +22,8 @@ import domain.Place;
 
 @Controller
 @Transactional
-@RequestMapping("/offer")
-public class OfferController extends AbstractController{
+@RequestMapping("/request")
+public class RequestController extends AbstractController{
 
 	@Autowired
 	private DemandService demandService;
@@ -34,7 +34,7 @@ public class OfferController extends AbstractController{
 	@Autowired
 	private CustomerService customerService;
 	
-	public OfferController() {
+	public RequestController() {
 		super();
 	}
 	
@@ -44,43 +44,43 @@ public class OfferController extends AbstractController{
 		List<Place> places = new ArrayList<Place>();
 		places.addAll(placeService.findAll());
 		
-		result = new ModelAndView("offer/create");
+		result = new ModelAndView("request/create");
 		
 		if(places.isEmpty()){
 			result.addObject("vacio", true);
 		}else{
 			Customer c = customerService.findByUserAccountId(LoginService.getPrincipal().getId());
-			Demand offer = demandService.createOffer(places.get(0), places.get(0), c);
-			result.addObject("offer", offer);
+			Demand request = demandService.createRequest(places.get(0), places.get(0), c);
+			result.addObject("request", request);
 			result.addObject("places",places);
 		}
 		return result;
 	}
 	
 	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(Demand offer, BindingResult binding) {
+	public ModelAndView save(Demand request, BindingResult binding) {
 		ModelAndView result;
 		
-		Demand res = demandService.reconstructOffer(offer, binding);
+		Demand res = demandService.reconstructRequest(request, binding);
 		if(!binding.hasErrors()){
 			try{	
 				demandService.save(res);
 				result = new ModelAndView("welcome/index");
-				result.addObject("message","offer.all.green");
+				result.addObject("message","request.all.green");
 					 
 			} catch (Throwable oops) {
 					
 				Collection<Place> places = placeService.findAll();
-				result = new ModelAndView("offer/create");
-				result.addObject("offer", offer);
+				result = new ModelAndView("request/create");
+				result.addObject("request", request);
 				result.addObject("places",places);
-				result.addObject("message", "offer.commit.error");
+				result.addObject("message", "request.commit.error");
 					
 				}
 		}else{
 			Collection<Place> places = placeService.findAll();
-			result = new ModelAndView("offer/create");
-			result.addObject("offer", offer);
+			result = new ModelAndView("request/create");
+			result.addObject("request", request);
 			result.addObject("places",places);
 //			result.addObject("errors", binding.getAllErrors());
 		}

@@ -69,10 +69,11 @@
 			</li>
 			
 			<security:authorize access="hasRole('CUSTOMER')">
-			<li><a class="fNiv"><spring:message code="master.page.offer" /></a>
+			<li><a class="fNiv"><spring:message code="master.page.demand" /></a>
 				<ul>
 					<li class="arrow"></li>
 						<li><a href="offer/create.do"><spring:message code="master.page.offer.create" /></a></li>
+						<li><a href="request/create.do"><spring:message code="master.page.request.create" /></a></li>
 				</ul>
 			</li>
 			</security:authorize>
