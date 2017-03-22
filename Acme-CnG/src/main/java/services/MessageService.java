@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.MessageRepository;
 import security.LoginService;
@@ -26,9 +28,9 @@ public class MessageService {
 
 
 	//Supporting services
-
-	//	@Autowired
-	//	private Validator			validator;
+	@Autowired
+	private Validator validator;
+	
 
 	//Constructors
 	public MessageService() {
@@ -124,6 +126,25 @@ public class MessageService {
 		final Message res = this.messageRepository.save(message);
 		return res;
 
+	}
+	
+	public Message reconstruct(Message ms, BindingResult binding) {
+		Message res;
+		
+		if(ms.getId()==0){
+			res = this.create(ms.getRecipient(), ms.getRecipient());
+		}else{
+			Message aux = messageRepository.findOne(ms.getId());
+			messageRepository.delete(aux);
+			res= this.create(aux.getSender(), aux.getRecipient());
+		}
+		res.setTitle(ms.getTitle());
+		res.setText(ms.getText());
+		res.setAttachments(ms.getAttachments());
+		res.setRecipient(ms.getRecipient());
+		
+		validator.validate(res, binding);
+		return res;
 	}
 
 }

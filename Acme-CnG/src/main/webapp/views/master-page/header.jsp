@@ -64,6 +64,7 @@
 				<ul>
 					<li class="arrow"></li>
 						<li><a href="message/list.do"><spring:message code="master.page.message.list" /></a></li>
+						<li><a href="message/send.do"><spring:message code="master.page.message.send" /></a></li>
 				</ul>
 			</li>
 			
