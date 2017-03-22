@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import domain.Actor;
 import domain.Administrator;
+import domain.Customer;
+import domain.Demand;
 
 @Repository
 public interface AdministratorRepository extends JpaRepository<Administrator, Integer> {
@@ -19,21 +21,34 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
 	//Level C
 	
 	//Ratio of offers versus requests
-	//select o from Offer o;
-	//select r from Request r;
+	@Query("select d from Demand d where d.type=0")
+	Demand ratioOffer();
+	@Query("select d from Demand d where d.type=1")
+	Demand ratioRequest();
 	
-	//Average number of offers and request per customer.
-	//select avg(c.offers.size) from Customer c;
-	//Select avg(c.requests.size) from Customer c;
+	//Average number of offers per customer.
+	@Query("select avg(c.demands.size) from Customer c join c.demands d where d.type=0")
+	Double avgOffersCustomer();
+
+	//Average number request per customer.
+	@Query("select avg(c.demands.size) from Customer c join c.demands d where d.type=1")
+	Double avgRequestsCustomer();
 	
-	//Average number of applications per offer or request.
-	//select avg(a.demand.size) from Application a;
+	//Average number of applications per offer.
+	@Query("select avg(d.applications.size) from Demand d where d.type=0")
+	Double avgApplicationsOffer();
+	
+	//Average number of applications per request.
+	@Query("select avg(d.applications.size) from Demand d where d.type=1")
+	Double avgApplicationsRequest();
 	
 	//The customer who has more applications accepted
-	//select distinct(d.customer) from Demand d join d.application a where d.application.size = (select max(d.application.size) from Demand d join d.application a where a.status = 1) AND r.status = 1
+	@Query("select distinct(d.customer) from Demand d join d.applications a where d.applications.size = (select max(d.applications.size) from Demand d join d.applications a where a.status = 1) AND a.status = 1")
+	Customer customerMoreApplicationAccepted();
 	
 	//The customer who has more applications denied.
-	//Probar la de arriba
+	@Query("select distinct(d.customer) from Demand d join d.applications a where d.applications.size = (select max(d.applications.size) from Demand d join d.applications a where a.status = 2) AND a.status = 2")
+	Customer customerMoreApplicationDenied();
 	
 	//Level B
 	
@@ -41,10 +56,13 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
 	@Query("select avg(a.comments.size) from Actor a")
 	Double avgCommentPerActor();
 	
-	
 	//Average number of comments per offer
+	@Query("select avg(d.comments.size) from Demand d where d.type=0")
+	Double avgCommentPerOffer();
+	
 	//Average number of comments per request
-	//Probar la primera
+	@Query("select avg(d.comments.size) from Demand d where d.type=1")
+	Double avgCommentPerRequest();
 	
 	// Average number of comments posted by administrators
 	@Query("select avg(a.postComments.size) from Administrator a")
@@ -53,9 +71,7 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
 	// Average number of comments posted by customer
 	@Query("select avg(c.postComments.size) from Customer c")
 	Double avgCommentPostCustomer();
-	
-	//The actors who have posted ±10% the average number of comments per actor
-	
+		
 	//Level A
 	
 	//The minimum, the average, and the maximum number of messages sent per actor
