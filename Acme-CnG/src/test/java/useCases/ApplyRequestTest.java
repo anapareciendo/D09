@@ -10,6 +10,10 @@
 
 package useCases;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -25,7 +29,7 @@ import services.DemandService;
 import utilities.AbstractTest;
 import domain.Application;
 import domain.Customer;
-import domain.Request;
+import domain.Demand;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -37,7 +41,7 @@ public class ApplyRequestTest extends AbstractTest {
 	@Autowired
 	private ApplicationService appService;
 	@Autowired
-	private DemandService requestService;
+	private DemandService demandService;
 	@Autowired
 	private CustomerService customerService;
 
@@ -60,11 +64,15 @@ public class ApplyRequestTest extends AbstractTest {
 		caught = null;
 		try{
 			authenticate(username);
-			requestService.findNoBannedRequest();
-			Request re= requestService.findOne(45);
-			Customer cus= customerService.findByUserAccountId(LoginService.getPrincipal().getId());
-			Application ap= appService.create(cus, re);
-			appService.save(ap);
+			List<Demand> demands = new ArrayList<Demand>();
+			demands.addAll(demandService.findNoBannedRequests());
+			Collections.shuffle(demands);
+			if(!demands.isEmpty()){
+				Demand re= demands.get(0);
+				Customer cus= customerService.findByUserAccountId(LoginService.getPrincipal().getId());
+				Application ap= appService.create(cus, re);
+				appService.save(ap);
+			}
 			unauthenticate();
 		} catch(Throwable oops){
 			caught = oops.getClass();

@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import services.Demand2Service;
+import services.DemandService;
 import utilities.AbstractTest;
 
 @ContextConfiguration(locations = {
@@ -29,7 +29,7 @@ import utilities.AbstractTest;
 public class SearchOfferTest extends AbstractTest {
 
 	@Autowired
-	private Demand2Service offerService;
+	private DemandService demandService;
 
 	//Search for Offer
 	@Test
@@ -51,7 +51,7 @@ public class SearchOfferTest extends AbstractTest {
 		caught = null;
 		try{
 			authenticate(username);
-			offerService.searchOffers(keyword);
+			demandService.searchOffers(keyword);
 			unauthenticate();
 		} catch(Throwable oops){
 			caught = oops.getClass();

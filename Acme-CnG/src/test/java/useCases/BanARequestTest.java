@@ -10,6 +10,10 @@
 
 package useCases;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -20,7 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import services.DemandService;
 import utilities.AbstractTest;
-import domain.Request;
+import domain.Demand;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -31,7 +35,7 @@ public class BanARequestTest extends AbstractTest {
 
 	
 	@Autowired
-	private DemandService requestService;
+	private DemandService demandService;
 	
 
 	//Apply for a request
@@ -53,9 +57,13 @@ public class BanARequestTest extends AbstractTest {
 		caught = null;
 		try{
 			authenticate(username);
-			requestService.findNoBannedRequest();
-			Request re= requestService.findOne(44);
-			requestService.ban(re.getId());
+			List<Demand> demands = new ArrayList<Demand>();
+			demands.addAll(demandService.findNoBannedRequests());
+			Collections.shuffle(demands);
+			if(!demands.isEmpty()){
+				Demand re= demands.get(0);
+				demandService.ban(re.getId());
+			}
 			unauthenticate();
 		} catch(Throwable oops){
 			caught = oops.getClass();

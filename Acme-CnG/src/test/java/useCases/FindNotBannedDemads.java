@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import services.Demand2Service;
 import services.DemandService;
 import utilities.AbstractTest;
 
@@ -21,7 +20,7 @@ public class FindNotBannedDemads extends AbstractTest{
 
 	//Use case: Find not banned demands (Level C)
 	@Autowired
-	private Demand2Service offerService;
+	private DemandService demandService;
 	@Autowired
 	private DemandService requestService;
 	
@@ -44,8 +43,8 @@ public class FindNotBannedDemads extends AbstractTest{
 		caught = null;
 		try{
 			authenticate(user);
-			offerService.findNoBannedOffers();
-			requestService.findNoBannedRequest();
+			demandService.findNoBannedOffers();
+			demandService.findNoBannedRequests();
 			unauthenticate();
 		
 		} catch(Throwable oops){

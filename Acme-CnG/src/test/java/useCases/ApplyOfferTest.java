@@ -10,6 +10,10 @@
 
 package useCases;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -21,11 +25,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import security.LoginService;
 import services.ApplicationService;
 import services.CustomerService;
-import services.Demand2Service;
+import services.DemandService;
 import utilities.AbstractTest;
 import domain.Application;
 import domain.Customer;
-import domain.Offer;
+import domain.Demand;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -37,7 +41,7 @@ public class ApplyOfferTest extends AbstractTest {
 	@Autowired
 	private ApplicationService appService;
 	@Autowired
-	private Demand2Service offerService;
+	private DemandService demandService;
 	@Autowired
 	private CustomerService customerService;
 
@@ -60,11 +64,15 @@ public class ApplyOfferTest extends AbstractTest {
 		caught = null;
 		try{
 			authenticate(username);
-			offerService.findNoBannedOffers();
-			Offer re= offerService.findOne(41);
-			Customer cus= customerService.findByUserAccountId(LoginService.getPrincipal().getId());
-			Application ap= appService.create(cus, re);
-			appService.save(ap);
+			List<Demand> demands = new ArrayList<Demand>();
+			demands.addAll(demandService.findNoBannedOffers());
+			Collections.shuffle(demands);
+			if(!demands.isEmpty()){
+				Demand re= demands.get(0);
+				Customer cus= customerService.findByUserAccountId(LoginService.getPrincipal().getId());
+				Application ap= appService.create(cus, re);
+				appService.save(ap);
+			}
 			unauthenticate();
 		} catch(Throwable oops){
 			caught = oops.getClass();

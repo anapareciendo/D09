@@ -1,8 +1,5 @@
 package useCases;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -11,11 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import security.Authority;
-import security.UserAccount;
 import services.CustomerService;
 import utilities.AbstractTest;
 import domain.Customer;
+import forms.ActorForm;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -32,7 +28,7 @@ public class RegisterCustomerTest extends AbstractTest{
 	public void driverCreate(){
 		Object testingData[][] = {
 				{"customerTest","pass","Aloy","Ramos","aloyR@gmail.com","+34122332687",null},
-				{"customerTest","pass",null,"Ramos","aloyR@gmail.com","+34122332687",IllegalArgumentException.class}
+				{"customerTest2","pass",null,"Ramos","aloyR@gmail.com","+34122332687",IllegalArgumentException.class}
 
 		};
 		
@@ -51,22 +47,21 @@ public class RegisterCustomerTest extends AbstractTest{
 		Class<?> caught;
 		caught = null;
 		try{
-				Collection<Authority> authorities = new ArrayList<Authority>();
-				Authority a = new Authority();
-				a.setAuthority(Authority.CUSTOMER);
-				authorities.add(a);
-				UserAccount ua = new UserAccount();
-				ua.setUsername(username);
-				ua.setPassword(password);
-				ua.setAuthorities(authorities);
+				ActorForm actor = new ActorForm();
+				actor.setUsername(username);
+				actor.setPassword1(password);
+				actor.setPassword2(password);
+				actor.setName(name);
+				actor.setSurname(surname);
+				actor.setEmail(email);
+				actor.setPhone(phone);
+				String[] conditions={"acepto"};
+				actor.setConditions(conditions);
 				
-				Customer save = customerService.create(ua);
-				save.setName(name);
-				save.setSurname(surname);
-				save.setEmail(email);
-				save.setPhone(phone);
-				
-				customerService.save(save);
+//				Hay que poner un binding aqui, para poder probar el reconstruct
+//				Habra que mirar las diapositivas nuevas
+				Customer res =customerService.reconstruct(actor, null); 
+				customerService.save(res);
 		
 		} catch(Throwable oops){
 			caught = oops.getClass();

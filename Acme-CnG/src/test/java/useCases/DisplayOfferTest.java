@@ -19,7 +19,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import services.CommentService;
-import services.Demand2Service;
+import services.DemandService;
 import utilities.AbstractTest;
 
 @ContextConfiguration(locations = {
@@ -32,7 +32,7 @@ public class DisplayOfferTest extends AbstractTest {
 	@Autowired
 	private CommentService	commentService;
 	@Autowired
-	private Demand2Service	offerService;
+	private DemandService	demandService;
 
 
 	//Apply for a request
@@ -59,7 +59,7 @@ public class DisplayOfferTest extends AbstractTest {
 		caught = null;
 		try {
 			this.authenticate(username);
-			this.offerService.findOne(id);
+			this.demandService.findOne(id);
 			this.commentService.findReceivedComments(id);
 			this.unauthenticate();
 		} catch (final Throwable oops) {

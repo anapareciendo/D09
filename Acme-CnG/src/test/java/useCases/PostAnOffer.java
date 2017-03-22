@@ -1,7 +1,10 @@
 package useCases;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -13,11 +16,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import security.LoginService;
 import services.CustomerService;
-import services.Demand2Service;
+import services.DemandService;
 import services.PlaceService;
 import utilities.AbstractTest;
 import domain.Customer;
-import domain.Offer;
+import domain.Demand;
 import domain.Place;
 
 @ContextConfiguration(locations = {
@@ -29,7 +32,7 @@ public class PostAnOffer extends AbstractTest{
 	
 	//Use case: Post an offer (Level C)
 	@Autowired
-	private Demand2Service offerService;
+	private DemandService demandService;
 	
 	@Autowired
 	private PlaceService placeService;
@@ -40,42 +43,44 @@ public class PostAnOffer extends AbstractTest{
 	@Test
 	public void driver(){
 		Object testingData[][] = {
-				{38,39,"title","description",Calendar.getInstance().getTime(),Boolean.FALSE,"customer1",null},
-				{38,39,"title","description",Calendar.getInstance().getTime(),Boolean.FALSE,"noUser",IllegalArgumentException.class},
+				{"title","description",Calendar.getInstance().getTime(),Boolean.FALSE,"customer1",null},
+				{"title","description",Calendar.getInstance().getTime(),Boolean.FALSE,"admin1",IllegalArgumentException.class},
 
 		};
 		
 		for(int i = 0; i < testingData.length; i++){
-			template((int)testingData[i][0], 
-					(int) testingData[i][1],
-					(String) testingData[i][2],
-					(String) testingData[i][3],
-					(Date) testingData[i][4],
-					(Boolean) testingData[i][5],
-					(String) testingData[i][6],
-					(Class<?>) testingData[i][7]);
+			template((String) testingData[i][0],
+					(String) testingData[i][1],
+					(Date) testingData[i][2],
+					(Boolean) testingData[i][3],
+					(String) testingData[i][4],
+					(Class<?>) testingData[i][5]);
 		}
 	}
 	
-	protected void template(int origin, int destination, String title, String description,
+	protected void template(String title, String description,
 		Date moment,boolean banned, String user, Class<?> expected){
 		
 		Class<?> caught;
 		caught = null;
 		try{
 			authenticate(user);
-			
-			Place o = placeService.findOne(origin);
-			Place d = placeService.findOne(destination);
-			Customer c = customerService.findByUserAccountId(LoginService.getPrincipal().getId());
-			Offer save = offerService.create(o, d, c);
-			save.setTitle(title);
-			save.setDescription(description);
-			save.setMoment(moment);
-			save.setBanned(banned);
-			
-			offerService.save(save);
-			
+			List<Place> places = new ArrayList<Place>();
+			places.addAll(placeService.findAll());
+			if(!places.isEmpty()){
+				Collections.shuffle(places);
+				Place o = places.get(0);
+				Collections.shuffle(places);
+				Place d = places.get(0);
+				Customer c = customerService.findByUserAccountId(LoginService.getPrincipal().getId());
+				Demand save = demandService.createOffer(o, d, c);
+				save.setTitle(title);
+				save.setDescription(description);
+				save.setMoment(moment);
+				save.setBanned(banned);
+				
+				demandService.save(save);
+			}
 			unauthenticate();
 		
 		} catch(Throwable oops){

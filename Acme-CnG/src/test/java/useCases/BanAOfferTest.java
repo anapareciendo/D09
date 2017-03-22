@@ -10,6 +10,10 @@
 
 package useCases;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -18,9 +22,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import services.Demand2Service;
+import domain.Demand;
+
+import services.DemandService;
 import utilities.AbstractTest;
-import domain.Offer;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -31,7 +36,7 @@ public class BanAOfferTest extends AbstractTest {
 
 	
 	@Autowired
-	private Demand2Service offerService;
+	private DemandService demandService;
 	
 
 	//Apply for a request
@@ -39,7 +44,7 @@ public class BanAOfferTest extends AbstractTest {
 	public void driver(){
 		Object testingData[][] = {
 				{"admin1",null},
-				{null,IllegalArgumentException.class},
+				{"customer1",IllegalArgumentException.class},
 		};
 		
 		for(int i = 0; i < testingData.length; i++){
@@ -53,9 +58,13 @@ public class BanAOfferTest extends AbstractTest {
 		caught = null;
 		try{
 			authenticate(username);
-			offerService.findNoBannedOffers();
-			Offer re= offerService.findOne(41);
-			offerService.ban(re.getId());
+			List<Demand> demands = new ArrayList<Demand>();
+			demands.addAll(demandService.findNoBannedOffers());
+			Collections.shuffle(demands);
+			if(!demands.isEmpty()){
+				Demand re= demands.get(0);
+				demandService.ban(re.getId());
+			}
 			unauthenticate();
 		} catch(Throwable oops){
 			caught = oops.getClass();

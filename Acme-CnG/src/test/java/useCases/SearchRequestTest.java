@@ -29,7 +29,7 @@ import utilities.AbstractTest;
 public class SearchRequestTest extends AbstractTest {
 
 	@Autowired
-	private DemandService requestService;
+	private DemandService demandService;
 
 	//Search for Request
 	@Test
@@ -51,7 +51,7 @@ public class SearchRequestTest extends AbstractTest {
 		caught = null;
 		try{
 			authenticate(username);
-			requestService.searchRequest(keyword);
+			demandService.searchRequest(keyword);
 			unauthenticate();
 		} catch(Throwable oops){
 			caught = oops.getClass();
