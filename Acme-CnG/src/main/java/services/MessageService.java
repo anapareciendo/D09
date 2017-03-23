@@ -99,14 +99,15 @@ public class MessageService {
 		return this.messageRepository.findMyMessages(LoginService.getPrincipal().getId());
 	}
 
-	public Message copy(final int messageId) {
+	public Message forward(final int messageId, final Actor recipient) {
 		final Message message = this.messageRepository.findOne(messageId);
 		Assert.notNull(message, "This id is not from an message");
-
+		
+		Assert.notNull(recipient,"This id is no t from an actor");
 		Assert.isTrue(LoginService.getPrincipal().equals(message.getRecipient().getUserAccount()), "You are note the owner of this message");
 
 		final Message copy = new Message();
-		copy.setRecipient(message.getSender());
+		copy.setRecipient(recipient);
 		copy.setSender(message.getRecipient());
 		copy.setText(message.getText());
 		copy.setTitle(message.getTitle());

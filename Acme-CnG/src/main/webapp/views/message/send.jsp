@@ -22,22 +22,23 @@
 
 <form:form action="message/sendMessages.do" modelAttribute="ms">
 	
-	<jstl:if test="${reply == true}">
-		<form:hidden path="id"/>
-	</jstl:if>
+	<jstl:choose>
+  		<jstl:when test="${mode == 'save'}">
+  			<acme:select items="${actors}" itemLabel="userAccount.username" code="message.recipient" path="recipient"/>
+  			<acme:textbox code="message.title" path="title"/>
+  			<acme:textarea code="message.text" path="text"/>
+  			<acme:textarea code="message.attachments" path="attachments"/>
+  		</jstl:when>
+  		<jstl:when test="${mode == 'reply'}">
+  			<form:hidden path="id"/>
+  			<acme:textarea code="message.text" path="text"/>
+  		</jstl:when>
+  		<jstl:when test="${mode == 'forward'}">
+  			<form:hidden path="id"/>
+  			<acme:select items="${actors}" itemLabel="userAccount.username" code="message.recipient" path="recipient"/>
+  		</jstl:when>
+  	</jstl:choose>
 	
-	<jstl:if test="${reply != true}">
-		<acme:select items="${actors}" itemLabel="userAccount.username" code="message.recipient" path="recipient"/>
-	
-		<acme:textbox code="message.title" path="title"/>
-	</jstl:if>
-	
-	<acme:textarea code="message.text" path="text"/>
-	
-	<jstl:if test="${reply != true}">
-		<acme:textarea code="message.attachments" path="attachments"/>
-	</jstl:if>	
-
 	<input type="submit" name="${mode}" value="<spring:message code="message.save" />" />
 	<input type="button" name="cancel" value="<spring:message code="message.cancel" />" onclick="window.location='welcome/index.do'" /> <br />
 

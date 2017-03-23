@@ -13,10 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import services.AdministratorService;
 import services.CustomerService;
 import services.MessageService;
 import utilities.AbstractTest;
-import domain.Customer;
+import domain.Actor;
 import domain.Message;
 
 @ContextConfiguration(locations = {
@@ -30,32 +31,34 @@ public class ForwardMessageTest extends AbstractTest {
 	private MessageService	messageService;
 	@Autowired
 	private CustomerService customerService;
+	@Autowired
+	private AdministratorService administratorService;
 
 	/* *---- List the messages that he or she’s got and forward them.-----*
 	  -El orden de los parámetros es:Usuario que se va a autenticar, mensaje (en caso de ser negativo, 
 	  el mensaje no existe), error esperado
 	  
 	  Cobertura del test:
-			//Reenvía un mensaje con un customer autenticado (test positivo)
-			//Reenvía un mensaje que no es valido (test negativo)
+			//Reenvía un mensaje con un actor autenticado (test positivo)
+			//Reenvía un mensaje con un usuario no autenticado (test negativo)
 				
 	 */
 
 	@Test
 	public void driver() {
 		
-		List<Customer> customers= new ArrayList<Customer>();
-		customers.addAll(customerService.findAll());
-		
-		
+		List<Actor> actors= new ArrayList<Actor>();
+		actors.addAll(customerService.findAll());
+		actors.addAll(administratorService.findAll());
+		Collections.shuffle(actors);
 		
 		final Object testingData[][] = {
 			//Reenvio mensaje
 			{
-				customers.get(0).getUserAccount().getUsername(), null
+				actors.get(0).getUserAccount().getUsername(), null
 			},
 
-			//Id erronea
+			//No esta autenticado
 			{
 				null, IllegalArgumentException.class
 			},
@@ -75,8 +78,12 @@ public class ForwardMessageTest extends AbstractTest {
 			List<Message> messages = new ArrayList<Message>();
 			messages.addAll(messageService.findMyMessages());
 			Collections.shuffle(messages);
-			if(!messages.isEmpty()){
-				this.messageService.copy(messages.get(0).getId());
+			List<Actor> actors= new ArrayList<Actor>();
+			actors.addAll(customerService.findAll());
+			actors.addAll(administratorService.findAll());
+			Collections.shuffle(actors);
+			if(!messages.isEmpty() && !actors.isEmpty()){
+				this.messageService.forward(messages.get(0).getId(),actors.get(0));
 			}
 			this.unauthenticate();
 
