@@ -22,7 +22,14 @@
 
 <form:form action="message/sendMessages.do" modelAttribute="ms">
 	
-	<acme:select items="${actors}" itemLabel="userAccount.username" code="message.recipient" path="recipient"/>
+	<jstl:if test="${reply == false}">
+		<acme:select items="${actors}" itemLabel="userAccount.username" code="message.recipient" path="recipient"/>
+	</jstl:if>
+	
+	<jstl:if test="${reply == true}">
+		<form:hidden path="recipient" />
+	</jstl:if>
+	
 	<acme:textbox code="message.title" path="title"/>
 	<acme:textarea code="message.text" path="text"/>
 	<acme:textarea code="message.attachments" path="attachments"/>
