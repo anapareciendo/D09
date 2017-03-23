@@ -41,9 +41,9 @@
 	<spring:message code="message.text" var="textHeader" />
 	<display:column property="text" title="${textHeader }" sortable="false" />
 	
-	<spring:message code="message.recipient" var="recipientHeader" />
-	<display:column title="${recipientHeader }" sortable="false">
-		<jstl:out value="${row.recipient.userAccount.username}" />
+	<spring:message code="message.sender" var="senderHeader" />
+	<display:column title="${senderHeader }" sortable="false">
+		<jstl:out value="${row.sender.userAccount.username}" />
 	</display:column>
 	
 	

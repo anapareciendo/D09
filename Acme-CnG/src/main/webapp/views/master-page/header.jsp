@@ -77,6 +77,21 @@
 				</ul>
 			</li>
 			</security:authorize>
+			
+			<security:authorize access="hasRole('ADMIN')">
+			<li><a class="fNiv"><spring:message code="master.page.banner" /></a>
+				<ul>
+					<li class="arrow"></li>
+						<li><a href="banner/edit.do"><spring:message code="master.page.banner.edit" /></a></li>
+				</ul>
+			</li>
+			<li><a class="fNiv"><spring:message code="master.page.demand" /></a>
+				<ul>
+					<li class="arrow"></li>
+						<li><a href="demand/list.do"><spring:message code="master.page.demand.list" /></a></li>
+				</ul>
+			</li>
+			</security:authorize>
 		</security:authorize>
 	</ul>
 </div>

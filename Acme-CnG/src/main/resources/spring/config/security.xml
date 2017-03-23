@@ -60,6 +60,10 @@
 		<security:intercept-url pattern="/message/sendMessages.do" access="isAuthenticated()" />
 		<security:intercept-url pattern="/message/delete.do" access="isAuthenticated()" />   
 		
+		<security:intercept-url pattern="/banner/edit.do" access="hasRole('ADMIN')" />
+		
+		<security:intercept-url pattern="/demand/list.do" access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/demand/ban.do" access="hasRole('ADMIN')" />
 	
 		<security:intercept-url pattern="/**" access="hasRole('NONE')" />
 

@@ -30,6 +30,8 @@
 		<value>/views/offer/tiles.xml</value>
 		<value>/views/request/tiles.xml</value>
 		<value>/views/message/tiles.xml</value>
+		<value>/views/banner/tiles.xml</value>
+		<value>/views/demand/tiles.xml</value>
 	</util:list>
 
 </beans>
