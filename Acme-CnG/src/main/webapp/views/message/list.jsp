@@ -54,6 +54,15 @@
 	<display:column title="${senderHeader }" sortable="false">
 		<jstl:out value="${row.sender.userAccount.username}" />
 	</display:column>
+	not empty
+	<display:column>
+		<jstl:if test="${not empty row.attachments}">
+	  		<div>
+	  		<spring:message code="message.attachments" var="attachmentsHeader" />
+	  		<jstl:out value="${row.attachments}" />
+	  		</div>
+		</jstl:if>
+	</display:column>
 	
 	
 </display:table>
