@@ -10,6 +10,9 @@
 
 package useCases;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -18,7 +21,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import domain.Administrator;
+import domain.Customer;
+import domain.Demand;
+
+import services.AdministratorService;
 import services.CommentService;
+import services.CustomerService;
 import services.DemandService;
 import utilities.AbstractTest;
 
@@ -27,26 +36,48 @@ import utilities.AbstractTest;
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class DisplayRequestTest extends AbstractTest {
+public class DisplayDemandTest extends AbstractTest {
 
 	@Autowired
 	private CommentService	commentService;
 	@Autowired
-	private DemandService	requestService;
+	private DemandService	demandService;
+	@Autowired
+	private CustomerService customerService;
+	@Autowired
+	private AdministratorService adminService;
 
 
-	//Apply for a request
+	//
+	/* *----Display demands. Incluye la demand en si y los comentarios recibidos.-----*
+	  -El orden de los parámetros es:Usuario que se va a autenticar,demands del sistema, error esperado
+	  
+	  Cobertura del test tanto para aceptar applications como para denegarlas:
+	  		//El usuario autenticado es un customer (test positivo)
+			//El usuario autenticado es un admin (test positivo)
+			//No hay usuario autenticado (test negativo)
+				
+	 */
 	@Test
 	public void driver() {
+		List<Customer> customers= new ArrayList<Customer>();
+		customers.addAll(customerService.findAll());
+		
+		List<Administrator> admins = new ArrayList<Administrator>();
+		admins.addAll(adminService.findAll());
+		
+		List<Demand> demands=new ArrayList<Demand>();
+		demands.addAll(demandService.findAll());
+		
 		final Object testingData[][] = {
 			{
-				"customer2", 44, null
+				customers.get(0).getUserAccount().getUsername(), demands.get(0).getId(), null
 			//Esta autenticado como customer
 			}, {
-				"admin1", 44, null
+				admins.get(0).getUserAccount().getUsername(), demands.get(0).getId(), null
 			//Esta autenticado como admin
 			}, {
-				null, 41, IllegalArgumentException.class
+				null, demands.get(0).getId(), IllegalArgumentException.class
 			//no esta autenticado
 			},
 		};
@@ -59,7 +90,7 @@ public class DisplayRequestTest extends AbstractTest {
 		caught = null;
 		try {
 			this.authenticate(username);
-			this.requestService.findOne(id);
+			this.demandService.findOne(id);
 			this.commentService.findReceivedComments(id);
 			this.unauthenticate();
 		} catch (final Throwable oops) {

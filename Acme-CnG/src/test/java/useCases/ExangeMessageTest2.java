@@ -116,7 +116,6 @@ public class ExangeMessageTest2 extends AbstractTest {
 		List<Actor> actors = new ArrayList<Actor>();
 		actors.addAll(adminService.findAll());
 		actors.addAll(customerService.findAll());
-		Collections.shuffle(actors);
 		
 		Object testingData[][] = {
 				//Usuario autenticado y existe receptor.Modifico el sender antes de enviar el mensaje

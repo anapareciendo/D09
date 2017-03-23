@@ -10,6 +10,9 @@
 
 package useCases;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -36,23 +39,36 @@ public class PostCommentTest extends AbstractTest {
 	private CommentService	commentService;
 	@Autowired
 	private CustomerService	customerService;
-
-
-	//Apply for a request
+	
+	/* *---- Post a comment on another actor, on an offer, or a request.-----*
+	  -El orden de los parametros es: usuario que se va a autenticar, título del comentario, texto del comentario,
+	  estrellas que tiene, error esperado
+	  
+	  Cobertura del test:
+			//El usuario autenticado es un customer y envia bien un comentario(test positivo)
+			//El usuario autenticado es un customer y envia bien un comentario puesto que se puede enviar un comentario en blanco(test positivo)
+			//El usuario autenticado es un customer y envia un comentario con el título nulo(test negativo)	
+			//El usuario autenticado es un customer y envia un comentario con el texto nulo(test negativo)
+			//Un usuario sin autenticar, envía un comentario (test negativo)
+	 */
+	
 	@Test
 	public void driver() {
+		List<Customer> customers= new ArrayList<Customer>();
+		customers.addAll(customerService.findAll());
+		
 		final Object testingData[][] = {
 			{
-				"customer2", "prueba", "texto", 5, null
+				customers.get(0).getUserAccount().getUsername(), "prueba", "texto", 5, null
 			//El customer2 postea comentar bien
 			}, {
-				"customer1", "", "", 5, null
+				customers.get(0).getUserAccount().getUsername(), "", "", 5, null
 			//El customer2 poste comentario blank pero no nonull
 			}, {
-				"customer1", null, "", 1, IllegalArgumentException.class
+				customers.get(0).getUserAccount().getUsername(), null, "", 1, IllegalArgumentException.class
 			//El customer1 postea comentario con el titulo a null
 			}, {
-				"customer2", "", null, 1, IllegalArgumentException.class
+				customers.get(0).getUserAccount().getUsername(), "", null, 1, IllegalArgumentException.class
 			//El customer1 postea comentario con el texto a null
 			}, {
 				null, "", "", 1, IllegalArgumentException.class

@@ -48,7 +48,7 @@ public class ApplyOfferTest extends AbstractTest {
 	private CustomerService customerService;
 	@Autowired
 	private AdministratorService adminService;
-
+	
 	
 	/* *----Apply for an offer or a request, which must be accepted by the customer who posted it.-----*
 	  -El orden de los parámetros es:Usuario que se va a autenticar, error esperado
@@ -97,6 +97,9 @@ public class ApplyOfferTest extends AbstractTest {
 		}
 		checkExceptions(expected, caught);
 	}
+	
+	
+	
 	
 	
 	

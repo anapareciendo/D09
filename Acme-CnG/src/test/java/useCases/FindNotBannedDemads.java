@@ -1,5 +1,8 @@
 package useCases;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -8,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import services.CustomerService;
 import services.DemandService;
 import utilities.AbstractTest;
+import domain.Customer;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -18,17 +23,32 @@ import utilities.AbstractTest;
 @Transactional
 public class FindNotBannedDemads extends AbstractTest{
 
-	//Use case: Find not banned demands (Level C)
+	//
+	
+	/* *----Demands banned must not be displayed to a general audience, only to the administrators and the customer who posted it.-----*
+	  -El orden de los parámetros es:Usuario que se va a autenticar, error esperado
+	  
+	  Cobertura del test tanto para aceptar applications como para denegarlas:
+			//El usuario autenticado es un customer (test positivo)
+			//El usuario no está autenticado (test negativo)
+				
+	 */
+	
 	@Autowired
 	private DemandService demandService;
 	@Autowired
-	private DemandService requestService;
+	private CustomerService customerService;
+
 	
 	@Test
 	public void driver(){
+
+		List<Customer> customers= new ArrayList<Customer>();
+		customers.addAll(customerService.findAll());
+		
 		Object testingData[][] = {
-				{"customer1",null},
-				{"",IllegalArgumentException.class},
+				{customers.get(0).getUserAccount().getUsername(),null},
+				{null,IllegalArgumentException.class},
 
 		};
 		

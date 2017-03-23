@@ -15,10 +15,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import security.LoginService;
+import services.AdministratorService;
 import services.CustomerService;
 import services.DemandService;
 import services.PlaceService;
 import utilities.AbstractTest;
+import domain.Administrator;
 import domain.Customer;
 import domain.Demand;
 import domain.Place;
@@ -28,9 +30,18 @@ import domain.Place;
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class PostARequest extends AbstractTest{
+public class PostADemand extends AbstractTest{
 	
-	//Use case: Post a request (Level C)
+	
+	/* *---- Post a demand in which he or she advertises that he’s going to move from a place another place and would like to share his or her car with someone else.-----*
+	  -El orden de los parametros es: titulo de la demand,descripción de la demand, momento de la demand, demand no baneada,
+	  usuario que se va a autenticar, error esperado
+	  
+	  Cobertura del test:
+			//El usuario autenticado es un customer (test positivo)
+			//El usuario no está autenticado (test negativo)
+				
+	 */
 	@Autowired
 	private DemandService demandService;
 	
@@ -40,11 +51,21 @@ public class PostARequest extends AbstractTest{
 	@Autowired
 	private CustomerService customerService;
 	
+	@Autowired
+	private AdministratorService adminService;
+	
 	@Test
 	public void driver(){
+		
+		List<Customer> customers= new ArrayList<Customer>();
+		customers.addAll(customerService.findAll());
+		
+		List<Administrator> admins = new ArrayList<Administrator>();
+		admins.addAll(adminService.findAll());
+		
 		Object testingData[][] = {
-				{"title","description",Calendar.getInstance().getTime(),Boolean.FALSE,"customer1",null},
-				{"title","description",Calendar.getInstance().getTime(),Boolean.FALSE,"admin1",IllegalArgumentException.class},
+				{"title","description",Calendar.getInstance().getTime(),Boolean.FALSE,customers.get(0).getUserAccount().getUsername(),null},
+				{"title","description",Calendar.getInstance().getTime(),Boolean.FALSE,admins.get(0).getUserAccount().getUsername(),IllegalArgumentException.class},
 
 		};
 		
@@ -73,8 +94,7 @@ public class PostARequest extends AbstractTest{
 				Collections.shuffle(places);
 				Place d = places.get(0);
 				Customer c = customerService.findByUserAccountId(LoginService.getPrincipal().getId());
-				
-				Demand save = demandService.createRequest(o, d, c);
+				Demand save = demandService.createOffer(o, d, c);
 				save.setTitle(title);
 				save.setDescription(description);
 				save.setMoment(moment);

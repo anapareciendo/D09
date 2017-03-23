@@ -20,7 +20,13 @@ import forms.ActorForm;
 @Transactional
 public class RegisterCustomerTest extends AbstractTest{
 	
-	//Use case: view the banner (Level C)
+	/* *---- RegisterCustomer.-----*
+	  -El orden de los parametros es: username, password, name, surname, email, phone, error esperado
+	  
+	  Cobertura del test:
+			//El usuario se registra correctamente(test positivo)
+			//El usuario con un name nulo(test negativo)
+	 */
 	@Autowired
 	private CustomerService customerService;
 	
@@ -58,8 +64,7 @@ public class RegisterCustomerTest extends AbstractTest{
 				String[] conditions={"acepto"};
 				actor.setConditions(conditions);
 				
-//				Hay que poner un binding aqui, para poder probar el reconstruct
-//				Habra que mirar las diapositivas nuevas
+
 				Customer res =customerService.reconstruct(actor, null); 
 				customerService.save(res);
 		

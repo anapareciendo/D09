@@ -10,6 +10,9 @@
 
 package useCases;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -18,8 +21,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import services.AdministratorService;
+import services.CustomerService;
 import services.MessageService;
 import utilities.AbstractTest;
+import domain.Administrator;
+import domain.Customer;
+import domain.Message;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -30,17 +38,31 @@ public class ReplyMessageTest extends AbstractTest {
 
 	@Autowired
 	private MessageService	messageService;
+	@Autowired
+	private CustomerService customerService;
+	@Autowired
+	private AdministratorService adminService;
 
 
 	//Apply for a request
 	@Test
 	public void driver() {
+		
+		List<Customer> customers= new ArrayList<Customer>();
+		customers.addAll(customerService.findAll());
+		
+		List<Administrator> admins = new ArrayList<Administrator>();
+		admins.addAll(adminService.findAll());
+		
+		Customer c= customers.get(0);
+		List<Message> msn= (List<Message>) c.getReceivedMessages();
+		int idMsn= msn.get(0).getId();
 		final Object testingData[][] = {
 			{
-				"customer1", 35, "Texto", null
+				customers.get(0).getUserAccount().getUsername(), idMsn, "Texto", null
 			//El customer1 es el dueño del mensaje a responder
 			}, {
-				"admin1", 35, "Texto", IllegalArgumentException.class
+				admins.get(0).getUserAccount().getUsername(), -20, "Texto", IllegalArgumentException.class
 			//El admin1 no es el dueño del mensaje a responder
 			},
 		};

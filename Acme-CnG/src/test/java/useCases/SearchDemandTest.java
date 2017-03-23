@@ -10,6 +10,9 @@
 
 package useCases;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -18,6 +21,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import domain.Administrator;
+import domain.Customer;
+
+import services.AdministratorService;
+import services.CustomerService;
 import services.DemandService;
 import utilities.AbstractTest;
 
@@ -26,17 +34,35 @@ import utilities.AbstractTest;
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class SearchOfferTest extends AbstractTest {
+public class SearchDemandTest extends AbstractTest {
 
 	@Autowired
 	private DemandService demandService;
+	@Autowired
+	private CustomerService customerService;
+	@Autowired
+	private AdministratorService adminService;
 
-	//Search for Offer
+	/* *----Search demands.-----*
+	  -El orden de los parámetros es:Usuario que se va a autenticar, error esperado
+	  
+	  Cobertura del test tanto para aceptar applications como para denegarlas:
+			//El usuario autenticado es un customer (test positivo)
+			//El usuario autenticado es un admin (test negativo)
+				
+	 */
 	@Test
 	public void driver(){
+		
+		List<Customer> customers= new ArrayList<Customer>();
+		customers.addAll(customerService.findAll());
+		
+		List<Administrator> admins = new ArrayList<Administrator>();
+		admins.addAll(adminService.findAll());
+		
 		Object testingData[][] = {
-				{"customer1","want",null},
-				{"admin1","want", IllegalArgumentException.class},
+				{customers.get(0).getUserAccount().getUsername(),"want",null},
+				{admins.get(0).getUserAccount().getUsername(),"want", IllegalArgumentException.class},
 		};
 		
 		for(int i = 0; i < testingData.length; i++){
