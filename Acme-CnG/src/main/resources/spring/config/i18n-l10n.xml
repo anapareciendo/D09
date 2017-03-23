@@ -31,6 +31,7 @@
 		<value>/views/request/messages</value>
 		<value>/views/message/messages</value>
 		<value>/views/banner/messages</value>
+		<value>/views/demand/messages</value>
 	</util:list>
 
 </beans>
