@@ -117,7 +117,7 @@ public class MessageController extends AbstractController{
 	@RequestMapping(value = "/sendMessages", method = RequestMethod.POST, params = "reply")
 	public ModelAndView replyMessages(Message ms) {
 		ModelAndView result;
-//		try{
+		try{
 			messageService.replay(ms.getId(), ms.getText());
 			
 			Collection<Message> messages = messageService.findMyMessages();
@@ -126,13 +126,13 @@ public class MessageController extends AbstractController{
 			result.addObject("ms", messages);
 			result.addObject("message", "message.commit.ok");
 			
-//		}catch(Throwable oops){
-//			result = new ModelAndView("message/send");
-//			result.addObject("ms",ms);
-//			result.addObject("mode","reply");
-//			result.addObject("reply",true);
-//			result.addObject("message", "message.commit.error");
-//		}
+		}catch(Throwable oops){
+			result = new ModelAndView("message/send");
+			result.addObject("ms",ms);
+			result.addObject("mode","reply");
+			result.addObject("reply",true);
+			result.addObject("message", "message.commit.error");
+		}
 		return result;
 	}
 	

@@ -30,10 +30,13 @@
 		<acme:select items="${actors}" itemLabel="userAccount.username" code="message.recipient" path="recipient"/>
 	
 		<acme:textbox code="message.title" path="title"/>
-		<acme:textarea code="message.attachments" path="attachments"/>
 	</jstl:if>
+	
 	<acme:textarea code="message.text" path="text"/>
 	
+	<jstl:if test="${reply != true}">
+		<acme:textarea code="message.attachments" path="attachments"/>
+	</jstl:if>	
 
 	<input type="submit" name="${mode}" value="<spring:message code="message.save" />" />
 	<input type="button" name="cancel" value="<spring:message code="message.cancel" />" onclick="window.location='welcome/index.do'" /> <br />
