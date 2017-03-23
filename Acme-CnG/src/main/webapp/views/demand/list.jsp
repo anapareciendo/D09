@@ -23,14 +23,16 @@
 <display:table name="demand" id="row" requestURI="${requestURI }"
 	pagesize="5" class="displaytag">
 	
-	<%-- <display:column>
-	  	<div>
-	  	<a href="message/delete.do?messageId=${row.id}">
-	  		<spring:message code="message.delete" var="deleteHeader" />
-	  		<jstl:out value="${deleteHeader}" />
-	  	</a>
-	  	</div>
-  	</display:column> --%>
+	<display:column>
+		<jstl:if test="${row.banned == false}">
+	  		<div>
+	  		<a href="demand/ban.do?demandId=${row.id}">
+	  			<spring:message code="demand.ban" var="banHeader" />
+	  			<jstl:out value="${banHeader}" />
+	  		</a>
+	  		</div>
+		</jstl:if>
+	</display:column>
 	
 	<spring:message code="demand.title" var="titletHeader" />
 	<display:column property="title" title="${titleHeader }" sortable="true" />

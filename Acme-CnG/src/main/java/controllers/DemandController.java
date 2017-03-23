@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.DemandService;
@@ -27,6 +28,16 @@ public class DemandController extends AbstractController{
 		result = new ModelAndView("demand/list");
 		result.addObject("requestURI", "demand/list.do");
 		result.addObject("demand", demands);
+
+		return result;
+	}
+	@RequestMapping(value = "/ban", method = RequestMethod.GET)
+	public ModelAndView ban(@RequestParam int demandId) {
+		ModelAndView result;
+	
+		demandService.ban(demandId);
+		
+		result = new ModelAndView("redirect:list.do");
 
 		return result;
 	}
