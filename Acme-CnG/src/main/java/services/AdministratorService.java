@@ -13,8 +13,11 @@ import repositories.AdministratorRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
+import domain.Actor;
 import domain.Administrator;
 import domain.Comment;
+import domain.Customer;
+import domain.Demand;
 import domain.Message;
 
 @Service
@@ -96,14 +99,158 @@ public class AdministratorService {
 
 	//Para el dashboard
 
-	/*
-	 * private void isAdministrator(){
-	 * UserAccount ua = LoginService.getPrincipal();
-	 * Assert.notNull(ua);
-	 * Authority a = new Authority();
-	 * a.setAuthority(Authority.ADMIN);
-	 * Assert.isTrue(ua.getAuthorities().contains(a), "You must to be a administrator for this action.");
-	 * }
-	 */
+	
+	 private void isAdministrator(){
+	  UserAccount ua = LoginService.getPrincipal();
+	  Assert.notNull(ua);
+	  Authority a = new Authority();
+	  a.setAuthority(Authority.ADMIN);
+	  Assert.isTrue(ua.getAuthorities().contains(a), "You must to be a administrator for this action.");
+	 }
+	 
+	 //Level C
+	 
+	 //Ratio of offers versus requests
+	 public Demand ratioOffer(){
+			this.isAdministrator();
+			return administratorRepository.ratioOffer();
+		}
+	 public Demand ratioRequest(){
+			this.isAdministrator();
+			return administratorRepository.ratioRequest();
+		}
+	 
+	//Average number of offers per customer.
+	 public Double avgOffersCustomer(){
+			this.isAdministrator();
+			return administratorRepository.avgOffersCustomer();
+		}
+	 
+	//Average number request per customer.
+	 public Double avgRequestsCustomer(){
+			this.isAdministrator();
+			return administratorRepository.avgRequestsCustomer();
+		}
+	 
+	//Average number of applications per offer.
+	 public Double avgApplicationsOffer(){
+			this.isAdministrator();
+			return administratorRepository.avgApplicationsOffer();
+		}
+	 
+	//Average number of applications per request.
+	 public Double avgApplicationsRequest(){
+			this.isAdministrator();
+			return administratorRepository.avgApplicationsRequest();
+		}
+	 
+	//The customer who has more applications accepted
+	 public Customer customerMoreApplicationAccepted(){
+			this.isAdministrator();
+			return administratorRepository.customerMoreApplicationAccepted();
+		}
+	//The customer who has more applications denied.
+	 public Customer customerMoreApplicationDenied(){
+			this.isAdministrator();
+			return administratorRepository.customerMoreApplicationDenied();
+		}
+	 
+	 //Level B
+	 
+	//Average number of comments per actor
+	 public Double avgCommentPerActor(){
+			this.isAdministrator();
+			return administratorRepository.avgCommentPerActor();
+		}
+	 
+	//Average number of comments per offer
+	 public Double avgCommentPerOffer(){
+			this.isAdministrator();
+			return administratorRepository.avgCommentPerOffer();
+		}
+	 
+	//Average number of comments per request
+	 public Double avgCommentPerRequest(){
+			this.isAdministrator();
+			return administratorRepository.avgCommentPerRequest();
+		}
+	 
+	// Average number of comments posted by administrators
+	 public Double avgCommentPostAdmin(){
+			this.isAdministrator();
+			return administratorRepository.avgCommentPostAdmin();
+		}
+	 
+	// Average number of comments posted by customer
+	 public Double avgCommentPostCustomer(){
+			this.isAdministrator();
+			return administratorRepository.avgCommentPostCustomer();
+		}
+	 
+	 //Level A
+	 
+	//The minimum, the average, and the maximum number of messages sent per actor
+	 public Double minSentMessagePerActor(){
+			this.isAdministrator();
+			return administratorRepository.minSentMessagePerActor();
+		}
+	//The maximum number of messages sent per actor
+	 public Double maxSentMessagePerActor(){
+			this.isAdministrator();
+			return administratorRepository.maxSentMessagePerActor();
+		}
+	 
+	//The average of messages sent per actor
+	 public Double avgSentMessagePerActor(){
+			this.isAdministrator();
+			return administratorRepository.avgSentMessagePerActor();
+		}
+	 
+	//The minimum of messages received per actor.
+	 public Double minReciveMessagePerActor(){
+			this.isAdministrator();
+			return administratorRepository.minReciveMessagePerActor();
+		}
+	 
+	 //The maximum number of messages received per actor.
+	 public Double maxReciveMessagePerActor(){
+			this.isAdministrator();
+			return administratorRepository.maxReciveMessagePerActor();
+		}
+	 
+	//The average of messages received per actor.
+	 public Double avgReciveMessagePerActor(){
+			this.isAdministrator();
+			return administratorRepository.avgReciveMessagePerActor();
+		}
+	 
+	//The actors who have sent more messages
+	 public Collection<Actor> actorsSentMoreMessages(){
+			this.isAdministrator();
+			return administratorRepository.actorsSentMoreMessages();
+		}
+	 
+	//The actors who have got more messages
+	 public Collection<Actor> actorsGotMoreMessages(){
+			this.isAdministrator();
+			return administratorRepository.actorsGotMoreMessages();
+		}
+
+
+	 
+
+	 
+
+
+
+
+
+	 
+	 
+
+
+
+	
+
 
 }

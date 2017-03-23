@@ -86,7 +86,7 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
 	@Query("select avg(a.senderMessages.size) from Actor a")
 	Double avgSentMessagePerActor();
 	
-	//The minimum, the average, and the maximum number of messages received per actor.
+	//The minimum of messages received per actor.
 	@Query("select min(a.receivedMessages.size) from Actor a")
 	Double minReciveMessagePerActor();
 	
