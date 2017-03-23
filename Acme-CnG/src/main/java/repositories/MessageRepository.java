@@ -12,6 +12,6 @@ import domain.Message;
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Integer> {
 
-	@Query("select m from Message m where m.sender.userAccount.id=?1")
+	@Query("select m from Message m where m.recipient.userAccount.id=?1")
 	Collection<Message> findMyMessages(int id);
 }
