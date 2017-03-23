@@ -54,29 +54,30 @@ public class ReplyMessageTest extends AbstractTest {
 		List<Administrator> admins = new ArrayList<Administrator>();
 		admins.addAll(adminService.findAll());
 		
-		Customer c= customers.get(0);
-		List<Message> msn= (List<Message>) c.getReceivedMessages();
-		int idMsn= msn.get(0).getId();
 		final Object testingData[][] = {
 			{
-				customers.get(0).getUserAccount().getUsername(), idMsn, "Texto", null
+				customers.get(0).getUserAccount().getUsername(), "Texto", null
 			//El customer1 es el dueño del mensaje a responder
-			}, {
-				admins.get(0).getUserAccount().getUsername(), -20, "Texto", IllegalArgumentException.class
+			}, 
+			{
+				null, "Texto", IllegalArgumentException.class
 			//El admin1 no es el dueño del mensaje a responder
 			},
 		};
 
 		for (int i = 0; i < testingData.length; i++)
-			this.template((String) testingData[i][0], (int) testingData[i][1], (String) testingData[i][2], (Class<?>) testingData[i][3]);
+			this.template((String) testingData[i][0],(String) testingData[i][1], (Class<?>) testingData[i][2]);
 	}
-	protected void template(final String username, final int id, final String text, final Class<?> expected) {
+	protected void template(final String username, final String text, final Class<?> expected) {
 		Class<?> caught;
 		caught = null;
 		try {
 			this.authenticate(username);
-			this.messageService.findMyMessages();
-			this.messageService.replay(id, text);
+			List<Message> messages = new ArrayList<Message>();
+			messages.addAll(this.messageService.findMyMessages());
+			if(!messages.isEmpty()){
+				this.messageService.replay(messages.get(0).getId(), text);
+			}
 			this.unauthenticate();
 		} catch (final Throwable oops) {
 			caught = oops.getClass();

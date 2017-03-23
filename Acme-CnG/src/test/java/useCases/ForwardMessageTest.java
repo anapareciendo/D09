@@ -2,6 +2,7 @@
 package useCases;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -46,35 +47,37 @@ public class ForwardMessageTest extends AbstractTest {
 		List<Customer> customers= new ArrayList<Customer>();
 		customers.addAll(customerService.findAll());
 		
-		List<Message> msn= (List<Message>) messageService.findAll();
-		
 		
 		
 		final Object testingData[][] = {
 			//Reenvio mensaje
 			{
-				customers.get(0).getUserAccount().getUsername(), msn.get(0).getId(), null
+				customers.get(0).getUserAccount().getUsername(), null
 			},
 
 			//Id erronea
 			{
-				customers.get(0).getUserAccount().getUsername(), -20, IllegalArgumentException.class
+				null, IllegalArgumentException.class
 			},
 
 		};
 
 		for (int i = 0; i < testingData.length; i++)
-			this.template((String) testingData[i][0], (int) testingData[i][1], (Class<?>) testingData[i][2]);
+			this.template((String) testingData[i][0], (Class<?>) testingData[i][1]);
 	}
 
-	protected void template(final String username, final int id, final Class<?> expected) {
+	protected void template(final String username, final Class<?> expected) {
 
 		Class<?> caught;
 		caught = null;
 		try {
 			this.authenticate(username);
-
-			this.messageService.copy(id);
+			List<Message> messages = new ArrayList<Message>();
+			messages.addAll(messageService.findMyMessages());
+			Collections.shuffle(messages);
+			if(!messages.isEmpty()){
+				this.messageService.copy(messages.get(0).getId());
+			}
 			this.unauthenticate();
 
 		} catch (final Throwable oops) {

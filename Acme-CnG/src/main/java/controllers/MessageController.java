@@ -61,6 +61,7 @@ public class MessageController extends AbstractController{
 
 		result = new ModelAndView("message/send");
 		result.addObject("ms", ms);
+		result.addObject("mode","save");
 		result.addObject("actors", actors);
 		result.addObject("reply",false);
 
@@ -68,28 +69,14 @@ public class MessageController extends AbstractController{
 	}
 	
 	@RequestMapping(value = "/reply", method = RequestMethod.GET)
-	public ModelAndView reply(@RequestParam int senderId) {
+	public ModelAndView reply(@RequestParam int messageId) {
 		ModelAndView result;
 		
-		int uaId=LoginService.getPrincipal().getId();
-		Actor actor = adminService.findByUserAccountId(uaId);
-		if(actor == null){
-			actor = customerService.findByUserAccountId(uaId);
-		}
-		
-		Actor recipient = adminService.findOne(senderId);
-		if(recipient == null){
-			recipient = customerService.findOne(senderId);
-		}
-		
-		Message ms = messageService.create(actor, recipient);
-		Collection<Actor> actors = new ArrayList<Actor>();
-		actors.addAll(adminService.findAll());
-		actors.addAll(customerService.findAll());
-
+		Message ms = new Message();
+		ms.setId(messageId);
 		result = new ModelAndView("message/send");
-		result.addObject("ms", ms);
-		result.addObject("actors", actors);
+		result.addObject("ms",ms);
+		result.addObject("mode","reply");
 		result.addObject("reply",true);
 
 		return result;
@@ -127,6 +114,28 @@ public class MessageController extends AbstractController{
 		return result;
 	}
 	
+	@RequestMapping(value = "/sendMessages", method = RequestMethod.POST, params = "reply")
+	public ModelAndView replyMessages(Message ms) {
+		ModelAndView result;
+//		try{
+			messageService.replay(ms.getId(), ms.getText());
+			
+			Collection<Message> messages = messageService.findMyMessages();
+			result = new ModelAndView("message/list");
+			result.addObject("requestURI", "message/list.do");
+			result.addObject("ms", messages);
+			result.addObject("message", "message.commit.ok");
+			
+//		}catch(Throwable oops){
+//			result = new ModelAndView("message/send");
+//			result.addObject("ms",ms);
+//			result.addObject("mode","reply");
+//			result.addObject("reply",true);
+//			result.addObject("message", "message.commit.error");
+//		}
+		return result;
+	}
+	
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView delete(@RequestParam int messageId) {
 		ModelAndView result;
@@ -140,6 +149,21 @@ public class MessageController extends AbstractController{
 			result = new ModelAndView("redirect:list.do");
 			result.addObject("message", "message.commit.error");
 		}
+
+		return result;
+	}
+	
+	@RequestMapping(value = "/forward", method = RequestMethod.GET)
+	public ModelAndView forward(@RequestParam int messageId) {
+		ModelAndView result;
+		
+		messageService.copy(messageId);
+		
+		Collection<Message> messages = messageService.findMyMessages();
+		result = new ModelAndView("message/list");
+		result.addObject("requestURI", "message/list.do");
+		result.addObject("ms", messages);
+		result.addObject("message", "message.commit.ok");
 
 		return result;
 	}

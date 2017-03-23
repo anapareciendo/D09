@@ -34,9 +34,18 @@
   	
   	<display:column>
 	  	<div>
-	  	<a href="message/reply.do?senderId=${row.sender.id}">
+	  	<a href="message/reply.do?messageId=${row.id}">
 	  		<spring:message code="message.reply" var="replyHeader" />
 	  		<jstl:out value="${replyHeader}" />
+	  	</a>
+	  	</div>
+  	</display:column>
+  	
+  	<display:column>
+	  	<div>
+	  	<a href="message/forward.do?messageId=${row.id}">
+	  		<spring:message code="message.forward" var="forwardHeader" />
+	  		<jstl:out value="${forwardHeader}" />
 	  	</a>
 	  	</div>
   	</display:column>
@@ -44,7 +53,7 @@
 	<spring:message code="message.moment" var="momentHeader" />
 	<display:column property="moment" title="${momentHeader }" sortable="true" />
 	
-	<spring:message code="message.title" var="titletHeader" />
+	<spring:message code="message.title" var="titleHeader" />
 	<display:column property="title" title="${titleHeader }" sortable="false" />
 	
 	<spring:message code="message.text" var="textHeader" />
@@ -55,10 +64,10 @@
 		<jstl:out value="${row.sender.userAccount.username}" />
 	</display:column>
 	not empty
-	<display:column>
+	<spring:message code="message.attachments" var="attachmentsHeader" />
+	<display:column title="${attachmentsHeader }" sortable="false">
 		<jstl:if test="${not empty row.attachments}">
 	  		<div>
-	  		<spring:message code="message.attachments" var="attachmentsHeader" />
 	  		<jstl:out value="${row.attachments}" />
 	  		</div>
 		</jstl:if>
