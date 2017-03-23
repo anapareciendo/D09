@@ -127,7 +127,7 @@ public class MessageService {
 		Message res = new Message();
 		res.setRecipient(message.getSender());
 		res.setSender(message.getRecipient());
-		res.setText(message.getText() + "<br>Reply:<br>" + text);
+		res.setText(message.getText() + "<br>RE:" + text);
 		res.setTitle("RE: " + message.getTitle());
 		res.setAttachments(new ArrayList<String>());
 		res.getAttachments().addAll(message.getAttachments());
