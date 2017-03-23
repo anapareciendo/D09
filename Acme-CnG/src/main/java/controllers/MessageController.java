@@ -62,6 +62,35 @@ public class MessageController extends AbstractController{
 		result = new ModelAndView("message/send");
 		result.addObject("ms", ms);
 		result.addObject("actors", actors);
+		result.addObject("reply",false);
+
+		return result;
+	}
+	
+	@RequestMapping(value = "/reply", method = RequestMethod.GET)
+	public ModelAndView reply(@RequestParam int senderId) {
+		ModelAndView result;
+		
+		int uaId=LoginService.getPrincipal().getId();
+		Actor actor = adminService.findByUserAccountId(uaId);
+		if(actor == null){
+			actor = customerService.findByUserAccountId(uaId);
+		}
+		
+		Actor recipient = adminService.findOne(senderId);
+		if(recipient == null){
+			recipient = customerService.findOne(senderId);
+		}
+		
+		Message ms = messageService.create(actor, recipient);
+		Collection<Actor> actors = new ArrayList<Actor>();
+		actors.addAll(adminService.findAll());
+		actors.addAll(customerService.findAll());
+
+		result = new ModelAndView("message/send");
+		result.addObject("ms", ms);
+		result.addObject("actors", actors);
+		result.addObject("reply",true);
 
 		return result;
 	}

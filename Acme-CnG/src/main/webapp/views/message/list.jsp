@@ -31,6 +31,15 @@
 	  	</a>
 	  	</div>
   	</display:column>
+  	
+  	<display:column>
+	  	<div>
+	  	<a href="message/reply.do?senderId=${row.sender.id}">
+	  		<spring:message code="message.reply" var="replyHeader" />
+	  		<jstl:out value="${replyHeader}" />
+	  	</a>
+	  	</div>
+  	</display:column>
 	
 	<spring:message code="message.moment" var="momentHeader" />
 	<display:column property="moment" title="${momentHeader }" sortable="true" />

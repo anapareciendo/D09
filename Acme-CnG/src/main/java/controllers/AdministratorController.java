@@ -10,14 +10,21 @@
 
 package controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import services.AdministratorService;
 
 @Controller
 @RequestMapping("/administrator")
 public class AdministratorController extends AbstractController {
 
+	@Autowired
+	private AdministratorService adminService;
+	
 	// Constructors -----------------------------------------------------------
 
 	public AdministratorController() {
@@ -45,5 +52,14 @@ public class AdministratorController extends AbstractController {
 
 		return result;
 	}
+	
+	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
+	public ModelAndView display() {
+		ModelAndView result;
+		result = new ModelAndView("administrator/dashboard");
+		return result;
+		
+	}
+	
 
 }
