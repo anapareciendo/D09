@@ -1,5 +1,8 @@
 package useCases;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -8,10 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import security.Authority;
+import security.UserAccount;
 import services.CustomerService;
 import utilities.AbstractTest;
 import domain.Customer;
-import forms.ActorForm;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -53,21 +57,42 @@ public class RegisterCustomerTest extends AbstractTest{
 		Class<?> caught;
 		caught = null;
 		try{
-				ActorForm actor = new ActorForm();
-				actor.setUsername(username);
-				actor.setPassword1(password);
-				actor.setPassword2(password);
-				actor.setName(name);
-				actor.setSurname(surname);
-				actor.setEmail(email);
-				actor.setPhone(phone);
-				String[] conditions={"acepto"};
-				actor.setConditions(conditions);
-				
-
-				Customer res =customerService.reconstruct(actor, null); 
-				customerService.save(res);
-		
+			
+			final Collection<Authority> authorities = new ArrayList<Authority>();
+			final Authority a = new Authority();
+			a.setAuthority(Authority.CUSTOMER);
+			authorities.add(a);
+			final UserAccount ua = new UserAccount();
+			ua.setUsername(username);
+			ua.setPassword(password);
+			ua.setAuthorities(authorities);
+			
+			final Customer c = this.customerService.create(ua);
+			c.setName(name);
+			c.setSurname(surname);
+			c.setEmail(email);
+			c.setPhone(phone);
+			
+			
+			this.customerService.save(c);
+			authenticate(c.getUserAccount().getUsername());
+			authenticate(username);
+			unauthenticate();
+//				ActorForm actor = new ActorForm();
+//				actor.setUsername(username);
+//				actor.setPassword1(password);
+//				actor.setPassword2(password);
+//				actor.setName(name);
+//				actor.setSurname(surname);
+//				actor.setEmail(email);
+//				actor.setPhone(phone);
+//				String[] conditions={"acepto"};
+//				actor.setConditions(conditions);
+//				
+//
+//				Customer res =customerService.reconstruct(actor, null); 
+//				customerService.save(res);
+//		
 		} catch(Throwable oops){
 			caught = oops.getClass();
 		}

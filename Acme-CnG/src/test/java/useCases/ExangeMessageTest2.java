@@ -145,11 +145,18 @@ public class ExangeMessageTest2 extends AbstractTest {
 			if (s == null){
 				s = this.adminService.findByUserAccountId(LoginService.getPrincipal().getId());
 			}
+			if (this.customerService.findByUserAccountId(LoginService.getPrincipal().getId())==null &&
+				this.adminService.findByUserAccountId(LoginService.getPrincipal().getId())==null	){
+				s=null;
+			}
 				
 			//Busco el actor que recibe el mensaje
 			Actor r= customerService.findOne(recipient);
 			if(r==null){
 				r=adminService.findOne(recipient);
+			}
+			if(adminService.findOne(recipient)==null && customerService.findOne(recipient)==null ){
+				r=null;
 			}
 			
 			//Creo y envío el mensaje
@@ -208,11 +215,10 @@ public class ExangeMessageTest2 extends AbstractTest {
 		List<Actor> actors = new ArrayList<Actor>();
 		actors.addAll(adminService.findAll());
 		actors.addAll(customerService.findAll());
-		Collections.shuffle(actors);
 		
 		Object testingData[][] = {
 				//Creo el usuario que va a enviar el mensaje de nuevas.
-				{null,actors.get(1).getId(),"titulo","text",1,null},
+				{"name",actors.get(1).getId(),"titulo","text",1,null},
 				//Creo el usuario que va a recibir el mensaje de nuevas.
 				{actors.get(0).getUserAccount().getUsername(),-30,"titulo","text",2,null},
 				
@@ -248,6 +254,7 @@ public class ExangeMessageTest2 extends AbstractTest {
 				c.setSurname("surname");
 				c.setEmail("email@hola.com");
 				c.setPhone("+34122332687");
+				
 				
 				this.customerService.save(c);
 				authenticate(c.getUserAccount().getUsername());

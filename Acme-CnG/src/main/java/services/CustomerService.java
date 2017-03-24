@@ -21,6 +21,7 @@ import security.UserAccount;
 import domain.Application;
 import domain.Comment;
 import domain.Customer;
+import domain.Demand;
 import domain.Message;
 import forms.ActorForm;
 
@@ -55,8 +56,8 @@ public class CustomerService {
 		res.setReceivedMessages(new ArrayList<Message>());
 		res.setSenderMessages(new ArrayList<Message>());
 		res.setApplications(new ArrayList<Application>());
+		res.setDemands(new ArrayList<Demand>());
 		res.setUserAccount(ua);
-		customerRepository.flush();
 		return res;
 	}
 
@@ -73,10 +74,10 @@ public class CustomerService {
 	public Customer save(final Customer customer) {
 		Assert.notNull(customer, "The customer to save cannot be null.");
 		
-		Assert.isTrue(customer.getName() != null);
-		Assert.isTrue(customer.getSurname() != null);
-		Assert.isTrue(customer.getEmail() != null);
-		Assert.isTrue(customer.getPhone() != null);
+		Assert.isTrue(customer.getName() != null && customer.getName() != "");
+		Assert.isTrue(customer.getSurname() != null && customer.getSurname() != "");
+		Assert.isTrue(customer.getEmail() != null && customer.getEmail() != "");
+		Assert.isTrue(customer.getPhone() != null && customer.getPhone() != "");
 		
 		final Customer res = this.customerRepository.save(customer);
 		customerRepository.flush();
