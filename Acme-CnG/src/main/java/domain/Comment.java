@@ -79,7 +79,8 @@ public class Comment extends DomainEntity {
 
 	//---------------------Relationships--------------------------
 	private Actor		posted;
-	private Commentable	commentable;
+	private CommentableActor	commentableActor;
+	private CommentableDemand commentableDemand;
 
 
 	@Valid
@@ -92,14 +93,25 @@ public class Comment extends DomainEntity {
 		this.posted = posted;
 	}
 
+	
 	@Valid
-	@NotNull
-	@ManyToOne(optional = false)
-	public Commentable getCommentable() {
-		return this.commentable;
+	@ManyToOne(optional = true)
+	public CommentableActor getCommentableActor() {
+		return commentableActor;
 	}
-	public void setCommentable(final Commentable commentable) {
-		this.commentable = commentable;
+	public void setCommentableActor(CommentableActor commentableActor) {
+		this.commentableActor = commentableActor;
 	}
 
+	
+	@Valid
+	@ManyToOne(optional = true)
+	public CommentableDemand getCommentableDemand() {
+		return commentableDemand;
+	}
+	public void setCommentableDemand(CommentableDemand commentableDemand) {
+		this.commentableDemand = commentableDemand;
+	}
+
+	
 }

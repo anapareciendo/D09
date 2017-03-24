@@ -4,15 +4,15 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import domain.Commentable;
+import domain.CommentableActor;
 
 
 @Component
 @Transactional
-public class CommentableToStringConverter implements Converter<Commentable, String>{
+public class CommentableActorToStringConverter implements Converter<CommentableActor, String>{
 
 	@Override
-	public String convert(Commentable commentable) {
+	public String convert(CommentableActor commentable) {
 		String result;
 
 		if (commentable == null)

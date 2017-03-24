@@ -24,7 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import utilities.AbstractTest;
 import domain.Actor;
 import domain.Comment;
-import domain.Commentable;
+import domain.CommentableDemand;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -60,7 +60,7 @@ public class CommentTest extends AbstractTest {
 	protected void templateCreate(int sender, int commentable, Class<?> expected){
 		Class<?> caught;
 		Actor s = null;
-		Commentable b = null;
+		CommentableDemand b = null;
 		caught = null;
 		try{
 			authenticate("customer1");
@@ -71,7 +71,7 @@ public class CommentTest extends AbstractTest {
 				b = offerService.findOne(commentable);
 				
 			}
-			commentService.create(s, b);
+			commentService.createDemand(s, b);
 			unauthenticate();
 		} catch(Throwable oops){
 			caught = oops.getClass();

@@ -15,37 +15,25 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import repositories.AdministratorRepository;
-import repositories.CustomerRepository;
 import repositories.DemandRepository;
-import domain.Commentable;
+import domain.CommentableDemand;
 
 @Component
 @Transactional
-public class StringToCommentableConverter implements Converter<String, Commentable> {
+public class StringToCommentableDemandConverter implements Converter<String, CommentableDemand> {
 
-	@Autowired
-	AdministratorRepository adminRepository;
-	@Autowired
-	CustomerRepository customerRepository;
 	@Autowired
 	DemandRepository demandRepository;
 
 	@Override
-	public Commentable convert(String text) {
-		Commentable result;
+	public CommentableDemand convert(String text) {
+		CommentableDemand result;
 		int id;
 
 		try {
 			id = Integer.valueOf(text);
 			
-			result = adminRepository.findOne(id);
-			
-			if(result == null){
-				result = customerRepository.findOne(id);
-			}if(result == null){
-				result = demandRepository.findOne(id);
-			}
+			result = demandRepository.findOne(id);
 		} catch (Exception oops) {
 			throw new IllegalArgumentException(oops);
 		}

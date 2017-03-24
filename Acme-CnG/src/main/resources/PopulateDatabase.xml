@@ -309,7 +309,7 @@
 		<property name="text" value="Actualizar la foto de mi perfil" />
 		<property name="stars" value="3" />
 		<property name="posted" ref="admin1" />
-		<property name="commentable" ref="request1" />
+		<property name="commentableDemand" ref="request1" />
 	</bean>
 	
 	<bean id="comment2" class="domain.Comment">
@@ -318,7 +318,7 @@
 		<property name="text" value="Tu perfil contiene información util." />
 		<property name="stars" value="5" />
 		<property name="posted" ref="customer2" />
-		<property name="commentable" ref="offer1" />
+		<property name="commentableDemand" ref="offer1" />
 	</bean>
 	
 	<bean id="comment3" class="domain.Comment">
@@ -327,7 +327,7 @@
 		<property name="text" value="Tu perfil me parece interesante, negociemos." />
 		<property name="stars" value="4" />
 		<property name="posted" ref="customer2" />
-		<property name="commentable" ref="admin1" />
+		<property name="commentableActor" ref="admin1" />
 	</bean>
 	
 	<!-- Banner -->

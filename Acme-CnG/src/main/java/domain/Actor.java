@@ -20,7 +20,7 @@ import security.UserAccount;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public abstract class Actor extends Commentable {
+public abstract class Actor extends CommentableActor {
 
 	//	-------------------Attributes----------------------------------------
 	private String	name;

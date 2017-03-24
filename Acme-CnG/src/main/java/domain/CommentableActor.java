@@ -12,14 +12,14 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public abstract class Commentable extends DomainEntity {
+public abstract class CommentableActor extends DomainEntity {
 
 	//	-------------------Attributes----------------------------------------
 	private Collection<Comment> comments;
 	
 	@Valid
 	@NotNull
-	@OneToMany(mappedBy = "commentable")
+	@OneToMany(mappedBy = "commentableActor")
 	public Collection<Comment> getComments() {
 		return comments;
 	}

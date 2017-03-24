@@ -20,7 +20,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class Demand extends Commentable {
+public class Demand extends CommentableDemand {
 
 	//----------------------Attributes-------------------------
 
