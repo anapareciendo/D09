@@ -23,18 +23,20 @@
 <display:table name="demand" id="row" requestURI="${requestURI }"
 	pagesize="5" class="displaytag">
 	
+	<security:authorize access="hasRole('ADMIN')">
 	<display:column>
-		<jstl:if test="${row.banned == false}">
-	  		<div>
-	  		<a href="demand/ban.do?demandId=${row.id}">
-	  			<spring:message code="demand.ban" var="banHeader" />
-	  			<jstl:out value="${banHeader}" />
-	  		</a>
-	  		</div>
-		</jstl:if>
+			<jstl:if test="${row.banned == false}">
+	  			<div>
+	  				<a href="demand/admin/ban.do?demandId=${row.id}">
+		  				<spring:message code="demand.ban" var="banHeader" />
+	  					<jstl:out value="${banHeader}" />
+	  				</a>
+	  			</div>
+	  		</jstl:if>
 	</display:column>
+	</security:authorize>
 	
-	<spring:message code="demand.title" var="titletHeader" />
+	<spring:message code="demand.title" var="titleHeader" />
 	<display:column property="title" title="${titleHeader }" sortable="true" />
 	
 	<spring:message code="demand.moment" var="momentHeader" />
@@ -43,8 +45,10 @@
 	<spring:message code="demand.description" var="descriptionHeader" />
 	<display:column property="description" title="${descriptionHeader }" sortable="false" />
 	
+	<security:authorize access="hasRole('ADMIN')">
 	<spring:message code="demand.banned" var="bannedHeader" />
 	<display:column property="banned" title="${bannedHeader }" sortable="true" />
+	</security:authorize>
 	
 	<spring:message code="demand.origin" var="originHeader" />
 	<display:column title="${originHeader }" sortable="false">
@@ -55,6 +59,17 @@
 	<display:column title="${destinationHeader }" sortable="false">
 		<jstl:out value="${row.destination.address}" />
 	</display:column>
+	
+	<security:authorize access="hasRole('CUSTOMER')">
+	<display:column>
+		<div>
+			<a href="demand/customer/apply.do?demandId=${row.id}">
+				<spring:message code="demand.apply" var="appHeader" />
+				<jstl:out value="${appHeader}" />
+			</a>
+		</div>
+	</display:column>
+	</security:authorize>
 	
 	
 </display:table>

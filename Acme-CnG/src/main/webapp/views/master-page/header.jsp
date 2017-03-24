@@ -74,6 +74,16 @@
 					<li class="arrow"></li>
 						<li><a href="offer/create.do"><spring:message code="master.page.offer.create" /></a></li>
 						<li><a href="request/create.do"><spring:message code="master.page.request.create" /></a></li>
+						<li><a href="demand/customer/offer.do"><spring:message code="master.page.offer.apply" /></a></li>
+						<li><a href="demand/customer/request.do"><spring:message code="master.page.request.apply" /></a></li>
+				</ul>
+			</li>
+			
+			<li><a class="fNiv"><spring:message code="master.page.application" /></a>
+				<ul>
+					<li class="arrow"></li>
+						<li><a href="application/customer/offer.do"><spring:message code="master.page.app.offer" /></a></li>
+						<li><a href="application/customer/request.do"><spring:message code="master.page.app.request" /></a></li>
 				</ul>
 			</li>
 			</security:authorize>
@@ -88,7 +98,7 @@
 			<li><a class="fNiv"><spring:message code="master.page.demand" /></a>
 				<ul>
 					<li class="arrow"></li>
-						<li><a href="demand/list.do"><spring:message code="master.page.demand.list" /></a></li>
+						<li><a href="demand/admin/list.do"><spring:message code="master.page.demand.list" /></a></li>
 				</ul>
 			</li>
 			</security:authorize>

@@ -18,7 +18,12 @@ public interface DemandRepository extends JpaRepository<Demand, Integer> {
 
 	@Query("select d from Demand d where d.banned=false and d.type=0") //OFFER
 	Collection<Demand> findNoBannedOffers();
-
+	
+//	@Query("select d from Demand d where d.customer.userAccount.id=?1 and d.type=1") //REQUEST
+//	Collection<Demand> findMyRequests(int uaId);
+//
+//	@Query("select d from Demand d where d.customer.userAccount.id=?1 and d.type=0") //OFFER
+//	Collection<Demand> findMyOffers(int uaId);
 	
 	@Query("select d from Demand d where d.title like '%'||:keyword||'%' or d.description like '%'||:keyword||'%' or d.destination.address like '%'||:keyword||'%' or d.origin.address like '%'||:keyword||'%' and d.type=1")
 	Collection<Demand> searchRequests(@Param("keyword") String keyword);

@@ -35,6 +35,8 @@ public class DemandService {
 	@Autowired
 	private CustomerService customerService;
 	@Autowired
+	private ApplicationService applicationService;
+	@Autowired
 	private Validator validator;
 
 	//Constructors
@@ -145,6 +147,23 @@ public class DemandService {
 
 		return this.demandRepository.findNoBannedOffers();
 	}
+	
+//	public Collection<Demand> findMyRequests(){
+//		final Authority c = new Authority();
+//		c.setAuthority(Authority.CUSTOMER);
+//		final UserAccount ua = LoginService.getPrincipal();
+//		Assert.isTrue(ua.getAuthorities().contains(c), "You must to be a customer for this action");
+//		return demandRepository.findMyRequests(ua.getId());
+//	}
+//
+//	public Collection<Demand> findMyOffers(){
+//		final Authority c = new Authority();
+//		c.setAuthority(Authority.CUSTOMER);
+//		final UserAccount ua = LoginService.getPrincipal();
+//		Assert.isTrue(ua.getAuthorities().contains(c), "You must to be a customer for this action");
+//		return demandRepository.findMyOffers(ua.getId());
+//	}
+	
 	public Collection<Demand> searchRequest(final String keyword) {
 		final Authority b = new Authority();
 		b.setAuthority(Authority.CUSTOMER);
@@ -176,6 +195,26 @@ public class DemandService {
 
 		request.setBanned(true);
 		this.demandRepository.save(request);
+	}
+	
+	public Type apply(final int demandId) {
+		Type res = Type.OFFER;
+		final Authority b = new Authority();
+		b.setAuthority(Authority.CUSTOMER);
+
+		final UserAccount ua = LoginService.getPrincipal();
+		Assert.isTrue(ua.getAuthorities().contains(b), "You must to be a Customer for this action");
+
+		final Demand demand = this.demandRepository.findOne(demandId);
+		Assert.notNull(demand, "This id is not from an request");
+
+		Application app = applicationService.create(customerService.findByUserAccountId(ua.getId()), demand);
+		applicationService.save(app);
+		
+		if(demand.getType()==Type.REQUEST){
+			res=Type.REQUEST;
+		}
+		return res;
 	}
 	
 	public Demand reconstructOffer(Demand demand, BindingResult binding) {

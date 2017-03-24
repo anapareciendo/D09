@@ -1,4 +1,4 @@
-package controllers;
+package controllers.admin;
 
 import java.util.Collection;
 
@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.DemandService;
+import controllers.AbstractController;
 import domain.Demand;
 
 @Controller
-@RequestMapping("/demand")
-public class DemandController extends AbstractController{
+@RequestMapping("/demand/admin")
+public class DemandAdminController extends AbstractController{
 
 	@Autowired
 	private DemandService demandService;
@@ -22,11 +23,9 @@ public class DemandController extends AbstractController{
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
 		ModelAndView result;
-		Collection<Demand> demands;
-		
-		demands = demandService.findAll();
+		Collection<Demand> demands = demandService.findAll();
 		result = new ModelAndView("demand/list");
-		result.addObject("requestURI", "demand/list.do");
+		result.addObject("requestURI", "demand/admin/list.do");
 		result.addObject("demand", demands);
 
 		return result;

@@ -16,6 +16,7 @@ import domain.Application;
 import domain.Customer;
 import domain.Demand;
 import domain.Status;
+import domain.Type;
 
 @Service
 @Transactional
@@ -85,16 +86,24 @@ public class ApplicationService {
 	}
 
 	//Utilites methods
-	public Collection<Application> findApplicationMyDemand() {
+	public Collection<Application> findApplicationMyOffers() {
 		final Authority a = new Authority();
 		a.setAuthority(Authority.CUSTOMER);
 		final UserAccount ua = LoginService.getPrincipal();
 		Assert.isTrue(ua.getAuthorities().contains(a), "You must to be a Customer for this acction");
 
-		return this.applicationRepository.findApplicationMyDemand(ua.getId());
+		return this.applicationRepository.findApplicationMyOffers(ua.getId());
+	}
+	public Collection<Application> findApplicationMyRequests(){
+		final Authority a = new Authority();
+		a.setAuthority(Authority.CUSTOMER);
+		final UserAccount ua = LoginService.getPrincipal();
+		Assert.isTrue(ua.getAuthorities().contains(a), "You must to be a Customer for this acction");
+		
+		return this.applicationRepository.findApplicationMyRequests(ua.getId());
 	}
 
-	public void accept(final int applicationId) {
+	public Type accept(final int applicationId) {
 		final Authority a = new Authority();
 		a.setAuthority(Authority.CUSTOMER);
 		final UserAccount ua = LoginService.getPrincipal();
@@ -107,9 +116,11 @@ public class ApplicationService {
 
 		application.setStatus(Status.ACCEPTED);
 		this.applicationRepository.save(application);
+		
+		return application.getDemand().getType();
 	}
 
-	public void deny(final int applicationId) {
+	public Type deny(final int applicationId) {
 		final Authority a = new Authority();
 		a.setAuthority(Authority.CUSTOMER);
 		final UserAccount ua = LoginService.getPrincipal();
@@ -121,5 +132,7 @@ public class ApplicationService {
 
 		application.setStatus(Status.DENIED);
 		this.applicationRepository.save(application);
+		
+		return application.getDemand().getType();
 	}
 }
