@@ -40,14 +40,14 @@
 	
 	<security:authorize access="hasRole('ADMIN')">
 	<display:column>
-			<jstl:if test="${row.banned == false}">
-	  			<div>
-	  				<a href="demand/admin/ban.do?demandId=${row.id}">
-		  				<spring:message code="demand.ban" var="banHeader" />
-	  					<jstl:out value="${banHeader}" />
-	  				</a>
-	  			</div>
-	  		</jstl:if>
+		<jstl:if test="${row.banned == false}">
+	  		<div>
+	  			<a href="demand/admin/ban.do?demandId=${row.id}">
+					<spring:message code="demand.ban" var="banHeader" />
+	  				<jstl:out value="${banHeader}" />
+	  			</a>
+	  		</div>
+	  	</jstl:if>
 	</display:column>
 	</security:authorize>
 	
@@ -85,7 +85,6 @@
 		</div>
 	</display:column>
 	</security:authorize>
-	
 	
 </display:table>
 
