@@ -22,11 +22,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import security.LoginService;
-import services.Demand2Service;
-import services.PlaceService;
 import utilities.AbstractTest;
 import domain.Customer;
-import domain.Offer;
+import domain.Demand;
 import domain.Place;
 
 @ContextConfiguration(locations = {
@@ -37,7 +35,7 @@ import domain.Place;
 public class OfferTest extends AbstractTest {
 
 	@Autowired
-	private Demand2Service offerService;
+	private DemandService offerService;
 	@Autowired
 	private PlaceService placeService;
 	@Autowired
@@ -77,7 +75,7 @@ public class OfferTest extends AbstractTest {
 				placeService.save(d);
 			}
 			Customer c = customerService.findByUserAccountId(LoginService.getPrincipal().getId());
-			offerService.create(o, d, c);
+			offerService.createOffer(o, d, c);
 			unauthenticate();
 		} catch(Throwable oops){
 			caught = oops.getClass();
@@ -116,7 +114,7 @@ public class OfferTest extends AbstractTest {
 				Place d = placeService.findOne(38);
 				placeService.save(d);
 			Customer c = customerService.findByUserAccountId(LoginService.getPrincipal().getId());
-			Offer save = offerService.create(o, d, c);
+			Demand save = offerService.createOffer(o, d, c);
 			save.setTitle(title);
 			save.setDescription(description);
 			save.setMoment(moment);
@@ -150,7 +148,7 @@ public class OfferTest extends AbstractTest {
 		caught = null;
 		try{
 			authenticate(username);
-			Offer of= offerService.findOne(41);
+			Demand of= offerService.findOne(41);
 			offerService.delete(of);
 			unauthenticate();
 		} catch(Throwable oops){

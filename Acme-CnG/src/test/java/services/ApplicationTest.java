@@ -18,13 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import services.ApplicationService;
-import services.CustomerService;
-import services.Demand2Service;
 import utilities.AbstractTest;
 import domain.Application;
 import domain.Customer;
-import domain.Offer;
+import domain.Demand;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -38,7 +35,7 @@ public class ApplicationTest extends AbstractTest {
 	@Autowired
 	private CustomerService customerService;
 	@Autowired
-	private Demand2Service offerService;
+	private DemandService offerService;
 
 
 
@@ -62,7 +59,7 @@ public class ApplicationTest extends AbstractTest {
 	protected void templatecreate(int customer, int demand, Class<?> expected){
 		Class<?> caught;
 		Customer c=null;
-		Offer d= null;
+		Demand d= null;
 		caught = null;
 		try{
 			authenticate("customer2");
@@ -104,7 +101,7 @@ public class ApplicationTest extends AbstractTest {
 			authenticate(username);
 				Customer c = customerService.findOne(33);
 			
-				Offer o = offerService.findOne(41);
+				Demand o = offerService.findOne(41);
 
 			Application save = applicationService.create(c, o);
 			

@@ -76,7 +76,8 @@ public class FindApplicationTest extends AbstractTest {
 		caught = null;
 		try{
 			authenticate(username);
-			appService.findApplicationMyDemand();
+			appService.findApplicationMyOffers();
+			appService.findApplicationMyRequests();
 			unauthenticate();
 		} catch(Throwable oops){
 			caught = oops.getClass();

@@ -22,12 +22,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import security.LoginService;
-import services.PlaceService;
-import services.DemandService;
 import utilities.AbstractTest;
 import domain.Customer;
+import domain.Demand;
 import domain.Place;
-import domain.Request;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -76,7 +74,7 @@ public class RequestTest extends AbstractTest {
 				placeService.save(d);
 			}
 			Customer c = customerService.findByUserAccountId(LoginService.getPrincipal().getId());
-			requestService.create(o, d, c);
+			requestService.createRequest(o, d, c);
 			unauthenticate();
 		} catch(Throwable oops){
 			caught = oops.getClass();
@@ -115,7 +113,7 @@ public class RequestTest extends AbstractTest {
 				Place d = placeService.findOne(38);
 				placeService.save(d);
 			Customer c = customerService.findByUserAccountId(LoginService.getPrincipal().getId());
-			Request save = requestService.create(o, d, c);
+			Demand save = requestService.createRequest(o, d, c);
 			save.setTitle(title);
 			save.setDescription(description);
 			save.setMoment(moment);
@@ -149,7 +147,7 @@ public class RequestTest extends AbstractTest {
 		caught = null;
 		try{
 			authenticate(username);
-			Request re = requestService.findOne(44);
+			Demand re = requestService.findOne(44);
 			requestService.delete(re);
 			unauthenticate();
 		} catch(Throwable oops){

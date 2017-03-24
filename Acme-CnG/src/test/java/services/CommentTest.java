@@ -38,7 +38,7 @@ public class CommentTest extends AbstractTest {
 	@Autowired
 	private CustomerService customerService;
 	@Autowired
-	private Demand2Service offerService;
+	private DemandService offerService;
 	
 
 
