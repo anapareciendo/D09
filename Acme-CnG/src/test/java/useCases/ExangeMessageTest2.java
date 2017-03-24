@@ -218,7 +218,7 @@ public class ExangeMessageTest2 extends AbstractTest {
 		
 		Object testingData[][] = {
 				//Creo el usuario que va a enviar el mensaje de nuevas.
-				{"name",actors.get(1).getId(),"titulo","text",1,null},
+				{actors.get(0).getUserAccount().getUsername(),actors.get(1).getId(),"titulo","text",1,null},
 				//Creo el usuario que va a recibir el mensaje de nuevas.
 				{actors.get(0).getUserAccount().getUsername(),-30,"titulo","text",2,null},
 				
@@ -240,6 +240,27 @@ public class ExangeMessageTest2 extends AbstractTest {
 		try{
 			Actor r=null;
 			if(sr==1){
+				final Collection<Authority> authorities = new ArrayList<Authority>();
+				final Authority a = new Authority();
+				a.setAuthority(Authority.ADMIN);
+				authorities.add(a);
+				final UserAccount ua = new UserAccount();
+				ua.setUsername("username2");
+				ua.setPassword("password");
+				ua.setAuthorities(authorities);
+				
+				final Administrator c = this.adminService.create(ua);
+				c.setName("name");
+				c.setSurname("surname");
+				c.setEmail("email@hola.com");
+				c.setPhone("+34122332687");
+				
+				this.adminService.save(c);
+				r=c;
+				authenticate(username);
+				
+			}else if(sr==2){
+
 				final Collection<Authority> authorities = new ArrayList<Authority>();
 				final Authority a = new Authority();
 				a.setAuthority(Authority.CUSTOMER);
@@ -264,25 +285,7 @@ public class ExangeMessageTest2 extends AbstractTest {
 				if(r==null){
 					r=adminService.findOne(recipient);
 				}
-			}else if(sr==2){
-				final Collection<Authority> authorities = new ArrayList<Authority>();
-				final Authority a = new Authority();
-				a.setAuthority(Authority.ADMIN);
-				authorities.add(a);
-				final UserAccount ua = new UserAccount();
-				ua.setUsername("username2");
-				ua.setPassword("password");
-				ua.setAuthorities(authorities);
-				
-				final Administrator c = this.adminService.create(ua);
-				c.setName("name");
-				c.setSurname("surname");
-				c.setEmail("email@hola.com");
-				c.setPhone("+34122332687");
-				
-				this.adminService.save(c);
-				r=c;
-				authenticate(username);
+
 			}
 			
 			//Busco el actor que envía el mensaje
