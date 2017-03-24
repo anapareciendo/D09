@@ -10,17 +10,20 @@
 
 package controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.AdministratorService;
+
 @Controller
 @RequestMapping("/administrator")
 public class AdministratorController extends AbstractController {
 
-//	@Autowired
-//	private AdministratorService adminService;
+	@Autowired
+	private AdministratorService adminService;
 	
 	// Constructors -----------------------------------------------------------
 
@@ -53,7 +56,12 @@ public class AdministratorController extends AbstractController {
 	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
 	public ModelAndView display() {
 		ModelAndView result;
+		
+		Double ratioDemand = adminService.ratioDemand();
+		
 		result = new ModelAndView("administrator/dashboard");
+		result.addObject("ratioDemand", ratioDemand);		
+		
 		return result;
 		
 	}

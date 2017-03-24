@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import domain.Actor;
 import domain.Administrator;
 import domain.Customer;
-import domain.Demand;
 
 @Repository
 public interface AdministratorRepository extends JpaRepository<Administrator, Integer> {
@@ -21,10 +20,10 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
 	//Level C
 	
 	//Ratio of offers versus requests
-	@Query("select d from Demand d where d.type=0")
-	Demand ratioOffer();
-	@Query("select d from Demand d where d.type=1")
-	Demand ratioRequest();
+	@Query("select count(d) from Demand d where d.type=0")
+	Integer ratioOffer();
+	@Query("select count(d) from Demand d where d.type=1")
+	Integer ratioRequest();
 	
 	//Average number of offers per customer.
 	@Query("select avg(c.demands.size) from Customer c join c.demands d where d.type=0")

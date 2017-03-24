@@ -37,8 +37,8 @@ public class RegisterCustomerTest extends AbstractTest{
 	@Test
 	public void driverCreate(){
 		Object testingData[][] = {
-				{"customerTest","pass","Aloy","Ramos","aloyR@gmail.com","+34122332687",null},
-				{"customerTest2","pass",null,"Ramos","aloyR@gmail.com","+34122332687",IllegalArgumentException.class}
+				{"customerTest","password","Aloy","Ramos","aloyR@gmail.com","+34122332687",null},
+				{"customerTest2","password",null,"Ramos","aloyR@gmail.com","+34122332687",IllegalArgumentException.class}
 
 		};
 		
@@ -78,21 +78,7 @@ public class RegisterCustomerTest extends AbstractTest{
 			authenticate(c.getUserAccount().getUsername());
 			authenticate(username);
 			unauthenticate();
-//				ActorForm actor = new ActorForm();
-//				actor.setUsername(username);
-//				actor.setPassword1(password);
-//				actor.setPassword2(password);
-//				actor.setName(name);
-//				actor.setSurname(surname);
-//				actor.setEmail(email);
-//				actor.setPhone(phone);
-//				String[] conditions={"acepto"};
-//				actor.setConditions(conditions);
-//				
-//
-//				Customer res =customerService.reconstruct(actor, null); 
-//				customerService.save(res);
-//		
+
 		} catch(Throwable oops){
 			caught = oops.getClass();
 		}

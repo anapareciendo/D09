@@ -17,7 +17,6 @@ import domain.Actor;
 import domain.Administrator;
 import domain.Comment;
 import domain.Customer;
-import domain.Demand;
 import domain.Message;
 
 @Service
@@ -109,13 +108,11 @@ public class AdministratorService {
 	 //Level C
 	 
 	 //Ratio of offers versus requests
-	 public Demand ratioOffer(){
+	 public Double ratioDemand(){
 			this.isAdministrator();
-			return administratorRepository.ratioOffer();
-		}
-	 public Demand ratioRequest(){
-			this.isAdministrator();
-			return administratorRepository.ratioRequest();
+			Integer offer = administratorRepository.ratioOffer();
+			Integer request = administratorRepository.ratioRequest();
+			return (double) (offer/request);
 		}
 	 
 	//Average number of offers per customer.
