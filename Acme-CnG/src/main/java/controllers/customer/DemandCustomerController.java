@@ -32,6 +32,7 @@ public class DemandCustomerController extends AbstractController{
 		result = new ModelAndView("demand/list");
 		result.addObject("requestURI", "demand/customer/offer.do");
 		result.addObject("demand", demands);
+		result.addObject("type", "offer");
 
 		return result;
 	}
@@ -46,6 +47,7 @@ public class DemandCustomerController extends AbstractController{
 		result = new ModelAndView("demand/list");
 		result.addObject("requestURI", "demand/customer/request.do");
 		result.addObject("demand", demands);
+		result.addObject("type", "request");
 
 		return result;
 	}
@@ -61,6 +63,30 @@ public class DemandCustomerController extends AbstractController{
 		}else{
 			result = new ModelAndView("redirect:request.do");
 		}
+		return result;
+	}
+	
+	@RequestMapping(value = "/search", method = RequestMethod.POST, params = "search")
+	public ModelAndView search(@RequestParam String keyword, @RequestParam String type) {
+		ModelAndView result;
+		List<Demand> demands = new ArrayList<Demand>();
+		
+		result = new ModelAndView("demand/list");
+		
+		if(type.equals("offer")){
+			demands.addAll(demandService.searchOffers(keyword));
+			result.addObject("requestURI", "demand/customer/offer.do");
+			result.addObject("type", "offer");
+		}else if(type.equals("request")){
+			demands.addAll(demandService.searchRequests(keyword));
+			result.addObject("requestURI", "demand/customer/request.do");
+			result.addObject("type", "request");
+		}else{
+			result.addObject("message", "demand.search.error");
+		}
+	
+		result.addObject("demand", demands);
+
 		return result;
 	}
 }

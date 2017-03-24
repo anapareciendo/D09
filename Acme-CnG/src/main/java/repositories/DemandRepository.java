@@ -25,10 +25,10 @@ public interface DemandRepository extends JpaRepository<Demand, Integer> {
 //	@Query("select d from Demand d where d.customer.userAccount.id=?1 and d.type=0") //OFFER
 //	Collection<Demand> findMyOffers(int uaId);
 	
-	@Query("select d from Demand d where d.title like '%'||:keyword||'%' or d.description like '%'||:keyword||'%' or d.destination.address like '%'||:keyword||'%' or d.origin.address like '%'||:keyword||'%' and d.type=1")
+	@Query("select d from Demand d where (d.title like '%'||:keyword||'%' or d.description like '%'||:keyword||'%' or d.destination.address like '%'||:keyword||'%' or d.origin.address like '%'||:keyword||'%') and d.type=1 and d.banned=false")
 	Collection<Demand> searchRequests(@Param("keyword") String keyword);
 	
-	@Query("select d from Demand d where d.title like '%'||:keyword||'%' or d.description like '%'||:keyword||'%' or d.destination.address like '%'||:keyword||'%' or d.origin.address like '%'||:keyword||'%' and d.type=0")
+	@Query("select d from Demand d where (d.title like '%'||:keyword||'%' or d.description like '%'||:keyword||'%' or d.destination.address like '%'||:keyword||'%' or d.origin.address like '%'||:keyword||'%') and d.type=0 and d.banned=false")
 	Collection<Demand> searchOffers(@Param("keyword") String keyword);
 
 }

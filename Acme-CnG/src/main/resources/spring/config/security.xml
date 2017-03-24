@@ -70,6 +70,7 @@
 		<security:intercept-url pattern="/demand/customer/offer.do" access="hasRole('CUSTOMER')" /> 
 		<security:intercept-url pattern="/demand/customer/request.do" access="hasRole('CUSTOMER')" />
 		<security:intercept-url pattern="/demand/customer/apply.do" access="hasRole('CUSTOMER')" /> 
+		<security:intercept-url pattern="/demand/customer/search.do" access="hasRole('CUSTOMER')" />
 		
 		<security:intercept-url pattern="/application/customer/offer.do" access="hasRole('CUSTOMER')" /> 
 		<security:intercept-url pattern="/application/customer/request.do" access="hasRole('CUSTOMER')" />

@@ -20,6 +20,21 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
+<security:authorize access="hasRole('CUSTOMER')">
+
+	<form:form action="demand/customer/search.do">
+		<spring:message code="demand.search" />
+		
+		<input type="hidden" name="type" value="${type }">
+		<input type="text" name="keyword">
+		
+		<spring:message code="demand.go.search" var="goSearchText"/>
+		<input type="submit" name="search" value="${goSearchText}"/>
+	</form:form>
+
+</security:authorize>
+
+
 <display:table name="demand" id="row" requestURI="${requestURI }"
 	pagesize="5" class="displaytag">
 	

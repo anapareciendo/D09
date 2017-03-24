@@ -164,7 +164,7 @@ public class DemandService {
 //		return demandRepository.findMyOffers(ua.getId());
 //	}
 	
-	public Collection<Demand> searchRequest(final String keyword) {
+	public Collection<Demand> searchRequests(final String keyword) {
 		final Authority b = new Authority();
 		b.setAuthority(Authority.CUSTOMER);
 
