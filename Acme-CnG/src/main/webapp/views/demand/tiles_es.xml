@@ -21,4 +21,9 @@
 		<put-attribute name="body" value="/views/demand/list.jsp" />
 	</definition>
 	
+	<definition name="demand/display" extends="master.page">	
+		<put-attribute name="title" value="Visualizacion" />
+		<put-attribute name="body" value="/views/demand/display.jsp" />
+	</definition>
+	
 </tiles-definitions>

@@ -310,6 +310,7 @@
 		<property name="stars" value="3" />
 		<property name="posted" ref="admin1" />
 		<property name="commentable" ref="request1" />
+		<property name="banned" value="false"/>
 	</bean>
 	
 	<bean id="comment2" class="domain.Comment">
@@ -319,6 +320,17 @@
 		<property name="stars" value="5" />
 		<property name="posted" ref="customer2" />
 		<property name="commentable" ref="offer1" />
+		<property name="banned" value="false"/>
+	</bean>
+	
+	<bean id="comment4" class="domain.Comment">
+		<property name="title" value="¡Hola!" />	
+		<property name="moment" value="2017/02/28 17:45" />
+		<property name="text" value="Tu perfil no es nada cabron" />
+		<property name="stars" value="5" />
+		<property name="posted" ref="customer2" />
+		<property name="commentable" ref="offer1" />
+		<property name="banned" value="true"/>
 	</bean>
 	
 	<bean id="comment3" class="domain.Comment">
@@ -328,6 +340,7 @@
 		<property name="stars" value="4" />
 		<property name="posted" ref="customer2" />
 		<property name="commentable" ref="admin1" />
+		<property name="banned" value="false"/>
 	</bean>
 	
 	<!-- Banner -->

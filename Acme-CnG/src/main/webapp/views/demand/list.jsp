@@ -86,5 +86,14 @@
 	</display:column>
 	</security:authorize>
 	
+	<display:column>
+	  		<div>
+	  			<a href="display/demand.do?demandId=${row.id}">
+					<spring:message code="demand.display" var="displayHeader" />
+	  				<jstl:out value="${displayHeader}" />
+	  			</a>
+	  		</div>
+	</display:column>
+	
 </display:table>
 
