@@ -53,7 +53,7 @@ public class BanACommentTest extends AbstractTest {
 		caught = null;
 		try {
 			this.authenticate(username);
-			this.commentService.findNoBannedComments();
+//			this.commentService.findNoBannedComments();
 			final Comment c = this.commentService.findOne(49);
 			this.commentService.ban(c.getId());
 			this.unauthenticate();
