@@ -85,7 +85,7 @@ public class PostCommentTest extends AbstractTest {
 		try {
 			this.authenticate(username);
 			final Customer customer = this.customerService.findByUserAccountId(LoginService.getPrincipal().getId());
-			final Comment c = this.commentService.createActor(customer, customer);
+			final Comment c = this.commentService.create(customer, customer);
 			c.setText(text);
 			c.setTitle(title);
 			c.setStars(stars);

@@ -16,18 +16,18 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import repositories.DemandRepository;
-import domain.CommentableDemand;
+import domain.Commentable;
 
 @Component
 @Transactional
-public class StringToCommentableDemandConverter implements Converter<String, CommentableDemand> {
+public class StringToCommentableConverter implements Converter<String, Commentable> {
 
 	@Autowired
 	DemandRepository demandRepository;
 
 	@Override
-	public CommentableDemand convert(String text) {
-		CommentableDemand result;
+	public Commentable convert(String text) {
+		Commentable result;
 		int id;
 
 		try {

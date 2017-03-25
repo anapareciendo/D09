@@ -15,8 +15,7 @@ import security.LoginService;
 import security.UserAccount;
 import domain.Actor;
 import domain.Comment;
-import domain.CommentableActor;
-import domain.CommentableDemand;
+import domain.Commentable;
 
 @Service
 @Transactional
@@ -38,25 +37,12 @@ public class CommentService {
 	}
 
 	//Simple CRUD methods
-	public Comment createActor(final Actor sender, final CommentableActor commentable) {
+	public Comment create(final Actor sender, final Commentable commentable) {
 		Assert.notNull(sender, "The sender cannot be null");
 		Assert.notNull(commentable, "The recipient cannot be null");
 		Comment res;
 		res = new Comment();
-		res.setCommentableActor(commentable);
-		res.setPosted(sender);
-		res.setMoment(Calendar.getInstance().getTime());
-		res.setBanned(false);
-		res.setStars(0);
-
-		return res;
-	}
-	public Comment createDemand(final Actor sender, final CommentableDemand commentable) {
-		Assert.notNull(sender, "The sender cannot be null");
-		Assert.notNull(commentable, "The recipient cannot be null");
-		Comment res;
-		res = new Comment();
-		res.setCommentableDemand(commentable);
+		res.setCommentable(commentable);
 		res.setPosted(sender);
 		res.setMoment(Calendar.getInstance().getTime());
 		res.setBanned(false);
@@ -84,17 +70,9 @@ public class CommentService {
 		Assert.isTrue(comment.getText() != null);
 		Assert.isTrue(comment.getStars() > 0 && comment.getStars() <= 5, "The stars must be between 1 and 5");
 
-		Assert.isTrue((comment.getCommentableActor()!=null && comment.getCommentableDemand()==null)
-						&& (comment.getCommentableActor()==null && comment.getCommentableDemand()!=null), "Only one Commentable at the same time");
-		
 		final Comment res = this.commentRepository.save(comment);
 		res.getPosted().getComments().add(res);
-		if(comment.getCommentableActor()!=null){
-			res.getCommentableActor().getComments().add(res);
-		}else if(comment.getCommentableDemand()!=null){
-			res.getCommentableDemand().getComments().add(res);
-		}
-//		res.getCommentable().getComments().add(res);
+		res.getCommentable().getComments().add(res);
 		res.setMoment(Calendar.getInstance().getTime());
 
 		return res;
