@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.CommentRepository;
 import security.Authority;
@@ -16,6 +18,7 @@ import security.UserAccount;
 import domain.Actor;
 import domain.Comment;
 import domain.Commentable;
+import domain.Customer;
 
 @Service
 @Transactional
@@ -26,11 +29,13 @@ public class CommentService {
 	private CommentRepository	commentRepository;
 
 
-	/*
-	 * @Autowired
-	 * private Validator validator;
-	 */
-
+	//Suppoert services
+	@Autowired
+	private CustomerService customerService;
+	
+	@Autowired
+	private Validator validator;
+	
 	//Constructors
 	public CommentService() {
 		super();
@@ -68,7 +73,7 @@ public class CommentService {
 		Assert.isTrue(comment.getMoment() != null);
 		Assert.isTrue(comment.getTitle() != null);
 		Assert.isTrue(comment.getText() != null);
-		Assert.isTrue(comment.getStars() > 0 && comment.getStars() <= 5, "The stars must be between 1 and 5");
+		Assert.isTrue(comment.getStars() >= 0 && comment.getStars() <= 5, "The stars must be between 1 and 5");
 
 		final Comment res = this.commentRepository.save(comment);
 		res.getPosted().getComments().add(res);
@@ -127,6 +132,20 @@ public class CommentService {
 		Assert.isTrue(ua.getAuthorities().contains(a) || ua.getAuthorities().contains(c), "You must to be autenticate for this action");
 
 		return this.commentRepository.findNoBannedComments();
+	}
+
+	public Comment reconstruct(Comment comment, BindingResult binding) {
+		
+		Customer posted= customerService.findByUserAccountId(LoginService.getPrincipal().getId());
+		
+		Comment res = this.create(posted, comment.getCommentable());
+		res.setTitle(comment.getTitle());
+		res.setText(comment.getText());
+		res.setStars(comment.getStars());
+		
+		validator.validate(comment, binding);
+		
+		return res;
 	}
 
 }

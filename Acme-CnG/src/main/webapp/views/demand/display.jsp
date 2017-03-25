@@ -27,55 +27,53 @@
 		<p><jstl:out value="${demand.description}" /></p>
 	</div>
 	
+	
 	<display:table name="comments" id="comment">	
-
-		<jstl:if test="${comment.banned == true}">
 		<spring:message code="demand.comment.autor" var="autorHeader" />
+		<spring:message code="demand.comment.title" var="titleHeader" />
+		<spring:message code="demand.comment.text" var="textHeader" />
+		<spring:message code="demand.comment.stars" var="starsHeader" />
+		<spring:message code="demand.comment.banned" var="bannedHeader" />
+	
+		<jstl:if test="${comment.banned == false}">
 		<display:column property="posted.userAccount.username" title="${autorHeader}" sortable="false"/>
 		
-		<spring:message code="demand.comment.title" var="titleHeader" />
-		<spring:message code="demand.comment.banned" var="bannedHeader" />
-		<display:column title="${titleHeader}" sortable="false"><jstl:out value="${bannedHeader}" /></display:column>
-		
-		<spring:message code="demand.comment.text" var="textHeader" />
-		<spring:message code="demand.comment.banned" var="bannedHeader" />
-		<display:column title="${textHeader}" sortable="false"><jstl:out value="${bannedHeader}" /></display:column>
-		
-		<spring:message code="demand.comment.stars" var="starsHeader" />
-		<display:column title="${starsHeader}" sortable="false">-</display:column>
-		
-		</jstl:if>
-		
-		<jstl:if test="${comment.banned == false}">
-		<spring:message code="demand.comment.autor" var="autorHeader" />
-		<display:column property="posted.name" title="${autorHeader}" sortable="false"/>
-		
-		<spring:message code="demand.comment.title" var="titleHeader" />
 		<display:column property="title" title="${titleHeader}" sortable="false"/>
 		
-		<spring:message code="demand.comment.text" var="textHeader" />
 		<display:column property="text" title="${textHeader}" sortable="false"/>
 		
-		<spring:message code="demand.comment.stars" var="starsHeader" />
 		<display:column property="stars" title="${starsHeader}" sortable="false"/>
+		</jstl:if>
+
+		<jstl:if test="${comment.banned == true}">
+		<display:column property="posted.userAccount.username" title="${autorHeader}" sortable="false"/>
+		
+		<display:column title="${titleHeader}" sortable="false"><jstl:out value="${bannedHeader}" /></display:column>
+		
+		<display:column title="${textHeader}" sortable="false"><jstl:out value="${bannedHeader}" /></display:column>
+		
+		<display:column title="${starsHeader}" sortable="false">-</display:column>
+		</jstl:if>
 		
 		<security:authorize access="hasRole('ADMIN')">
 		<display:column>
+			<jstl:if test="${comment.banned == false}">
 			<div>
 	  			<a href="comment/admin/ban.do?commentId=${comment.id}">
 					<spring:message code="demand.comment.ban" var="banHeader" />
 	  				<jstl:out value="${banHeader}" />
 	  			</a>
 	  		</div>
+	  		</jstl:if>
 		</display:column>
 		</security:authorize>
-		</jstl:if>
-		
 	</display:table>
 	
+	<security:authorize access="hasRole('CUSTOMER')">
 	<div>
 	  	<a href="comment/customer/post.do?demandId=${demand.id}">
 			<spring:message code="demand.comment.post" var="postHeader" />
 	  		<jstl:out value="${postHeader}" />
 		</a>
 	</div>
+	</security:authorize>
