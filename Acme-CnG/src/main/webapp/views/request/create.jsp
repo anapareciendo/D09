@@ -10,13 +10,8 @@
 <jstl:if test="${vacio != true}">
 <form:form action="request/create.do" modelAttribute="request">
 
-	<form:hidden path="id" />
-	<form:hidden path="version" />
-	<form:hidden path="moment"/>
-
 	<acme:textbox code="request.title" path="title"/>
 	<acme:textbox code="request.description" path="description"/>
-	<acme:checkbox code="request.banned" value="banned" path="banned"/>
 	<acme:select items="${places}" itemLabel="address" code="request.origin" path="origin"/>
 	<acme:select items="${places}" itemLabel="address" code="request.destination" path="destination"/>
 	
