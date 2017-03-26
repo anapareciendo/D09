@@ -16,6 +16,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import services.AdministratorService;
+import services.CustomerService;
 import services.DemandService;
 import utilities.AbstractTest;
 import domain.Administrator;
+import domain.Customer;
 import domain.Demand;
 
 @ContextConfiguration(locations = {
@@ -40,6 +43,8 @@ public class BanARequestTest extends AbstractTest {
 	private DemandService demandService;
 	@Autowired
 	private AdministratorService adminService;
+	@Autowired
+	private CustomerService customerService;
 
 	
 
@@ -51,6 +56,21 @@ public class BanARequestTest extends AbstractTest {
 			//El usuario no se autentica (test negativo)
 				
 	 */
+	
+	private List<Customer> customers;
+	private List<Administrator> admins;
+	
+	@Before
+    public void setup() {
+		this.customers= new ArrayList<Customer>();
+		this.customers.addAll(customerService.findAll());
+		
+		this.admins = new ArrayList<Administrator>();
+		this.admins.addAll(adminService.findAll());
+		
+		Collections.shuffle(admins);
+		Collections.shuffle(customers);
+	}
 
 	@Test
 	public void driver(){

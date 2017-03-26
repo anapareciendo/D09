@@ -11,23 +11,22 @@
 package useCases;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import domain.Administrator;
-import domain.Customer;
-
-import services.AdministratorService;
 import services.CustomerService;
 import services.DemandService;
 import utilities.AbstractTest;
+import domain.Customer;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -40,8 +39,6 @@ public class SearchDemandTest extends AbstractTest {
 	private DemandService demandService;
 	@Autowired
 	private CustomerService customerService;
-	@Autowired
-	private AdministratorService adminService;
 
 	/* *----Search demands.-----*
 	  -El orden de los parámetros es:Usuario que se va a autenticar, error esperado
@@ -51,18 +48,22 @@ public class SearchDemandTest extends AbstractTest {
 			//El usuario autenticado es un admin (test negativo)
 				
 	 */
+	
+	private List<Customer> customers;
+	
+	@Before
+    public void setup() {
+		this.customers= new ArrayList<Customer>();
+		this.customers.addAll(this.customerService.findAll());
+		
+		Collections.shuffle(this.customers);
+	}
+	
 	@Test
 	public void driver(){
-		
-		List<Customer> customers= new ArrayList<Customer>();
-		customers.addAll(customerService.findAll());
-		
-		List<Administrator> admins = new ArrayList<Administrator>();
-		admins.addAll(adminService.findAll());
-		
 		Object testingData[][] = {
 				{customers.get(0).getUserAccount().getUsername(),"want",null},
-				{admins.get(0).getUserAccount().getUsername(),"want", IllegalArgumentException.class},
+				{null,"want", IllegalArgumentException.class},
 		};
 		
 		for(int i = 0; i < testingData.length; i++){

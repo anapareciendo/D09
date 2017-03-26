@@ -11,10 +11,12 @@
 package useCases;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +27,7 @@ import services.AdministratorService;
 import services.CustomerService;
 import services.MessageService;
 import utilities.AbstractTest;
-import domain.Administrator;
-import domain.Customer;
+import domain.Actor;
 import domain.Message;
 
 @ContextConfiguration(locations = {
@@ -44,24 +45,28 @@ public class ReplyMessageTest extends AbstractTest {
 	private AdministratorService adminService;
 
 
-	//Apply for a request
+	private List<Actor> actors;
+	
+	@Before
+    public void setup() {
+		this.actors= new ArrayList<Actor>();
+		this.actors.addAll(this.customerService.findAll());
+		this.actors.addAll(this.adminService.findAll());
+		
+		Collections.shuffle(this.actors);
+	}
+	
 	@Test
 	public void driver() {
 		
-		List<Customer> customers= new ArrayList<Customer>();
-		customers.addAll(customerService.findAll());
-		
-		List<Administrator> admins = new ArrayList<Administrator>();
-		admins.addAll(adminService.findAll());
-		
 		final Object testingData[][] = {
 			{
-				customers.get(0).getUserAccount().getUsername(), "Texto", null
+				actors.get(0).getUserAccount().getUsername(), "Texto", null
 			//El customer1 es el dueño del mensaje a responder
 			}, 
 			{
 				null, "Texto", IllegalArgumentException.class
-			//El admin1 no es el dueño del mensaje a responder
+			//No esta autenticado
 			},
 		};
 

@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,15 +44,19 @@ public class ForwardMessageTest extends AbstractTest {
 			//Reenvía un mensaje con un usuario no autenticado (test negativo)
 				
 	 */
+	
+	private List<Actor> actors;
+
+	@Before
+    public void setup() {
+		this.actors = new ArrayList<Actor>();
+		this.actors.addAll(customerService.findAll());
+		this.actors.addAll(administratorService.findAll());
+		Collections.shuffle(this.actors);
+	}
 
 	@Test
 	public void driver() {
-		
-		List<Actor> actors= new ArrayList<Actor>();
-		actors.addAll(customerService.findAll());
-		actors.addAll(administratorService.findAll());
-		Collections.shuffle(actors);
-		
 		final Object testingData[][] = {
 			//Reenvio mensaje
 			{
@@ -78,12 +83,9 @@ public class ForwardMessageTest extends AbstractTest {
 			List<Message> messages = new ArrayList<Message>();
 			messages.addAll(messageService.findMyMessages());
 			Collections.shuffle(messages);
-			List<Actor> actors= new ArrayList<Actor>();
-			actors.addAll(customerService.findAll());
-			actors.addAll(administratorService.findAll());
-			Collections.shuffle(actors);
-			if(!messages.isEmpty() && !actors.isEmpty()){
-				this.messageService.forward(messages.get(0).getId(),actors.get(0));
+			Collections.shuffle(this.actors);
+			if(!messages.isEmpty() && !this.actors.isEmpty()){
+				this.messageService.forward(messages.get(0).getId(),this.actors.get(0));
 			}
 			this.unauthenticate();
 

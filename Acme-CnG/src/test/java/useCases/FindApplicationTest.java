@@ -11,23 +11,22 @@
 package useCases;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import domain.Administrator;
-import domain.Customer;
-
-import services.AdministratorService;
 import services.ApplicationService;
 import services.CustomerService;
 import utilities.AbstractTest;
+import domain.Customer;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -38,8 +37,6 @@ public class FindApplicationTest extends AbstractTest {
 
 	@Autowired
 	private ApplicationService appService;
-	@Autowired
-	private AdministratorService adminService;
 	@Autowired
 	private CustomerService customerService;
 
@@ -52,17 +49,22 @@ public class FindApplicationTest extends AbstractTest {
 			//El usuario autenticado es un admin (test negativo)
 				
 	 */
+	
+	private List<Customer> customers;
+
+	@Before
+    public void setup() {
+		this.customers= new ArrayList<Customer>();
+		this.customers.addAll(customerService.findAll());
+		
+		Collections.shuffle(customers);
+	}
+	
 	@Test
 	public void driver(){
-		List<Customer> customers= new ArrayList<Customer>();
-		customers.addAll(customerService.findAll());
-		
-		List<Administrator> admins = new ArrayList<Administrator>();
-		admins.addAll(adminService.findAll());
-		
 		Object testingData[][] = {
 				{customers.get(0).getUserAccount().getUsername(),null},
-				{admins.get(0).getUserAccount().getUsername(),IllegalArgumentException.class},
+				{null,IllegalArgumentException.class},
 		};
 		
 		for(int i = 0; i < testingData.length; i++){

@@ -11,10 +11,12 @@
 package useCases;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,17 +60,29 @@ public class DisplayDemandTest extends AbstractTest {
 			//No hay usuario autenticado (test negativo)
 				
 	 */
+	
+	private List<Customer> customers;
+	private List<Administrator> admins;
+	private List<Demand> demands;
+
+	@Before
+    public void setup() {
+		this.customers= new ArrayList<Customer>();
+		this.customers.addAll(customerService.findAll());
+		
+		this.admins = new ArrayList<Administrator>();
+		this.admins.addAll(adminService.findAll());
+		
+		this.demands=new ArrayList<Demand>();
+		this.demands.addAll(demandService.findAll());
+		
+		Collections.shuffle(admins);
+		Collections.shuffle(customers);
+		Collections.shuffle(demands);
+	}
+	
 	@Test
 	public void driver() {
-		List<Customer> customers= new ArrayList<Customer>();
-		customers.addAll(customerService.findAll());
-		
-		List<Administrator> admins = new ArrayList<Administrator>();
-		admins.addAll(adminService.findAll());
-		
-		List<Demand> demands=new ArrayList<Demand>();
-		demands.addAll(demandService.findAll());
-		
 		final Object testingData[][] = {
 			{
 				customers.get(0).getUserAccount().getUsername(), demands.get(0).getId(), null

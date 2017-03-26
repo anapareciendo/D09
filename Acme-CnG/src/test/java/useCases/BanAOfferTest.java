@@ -16,6 +16,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import services.AdministratorService;
-import services.CustomerService;
 import services.DemandService;
 import utilities.AbstractTest;
 import domain.Administrator;
-import domain.Customer;
 import domain.Demand;
 
 @ContextConfiguration(locations = {
@@ -42,8 +41,6 @@ public class BanAOfferTest extends AbstractTest {
 	private DemandService demandService;
 	@Autowired
 	private AdministratorService adminService;
-	@Autowired
-	private CustomerService customerService;
 	
 
 	/* *----Ban an offer that he or she finds inappropriate.-----*
@@ -54,16 +51,22 @@ public class BanAOfferTest extends AbstractTest {
 			//El usuario autenticado es un customer (test negativo)
 				
 	 */
+	
+	private List<Administrator> admins;
+	
+	@Before
+    public void setup() {
+		this.admins = new ArrayList<Administrator>();
+		this.admins.addAll(adminService.findAll());
+		
+		Collections.shuffle(admins);
+	}
+	
 	@Test
 	public void driver(){
-		List<Customer> customers= new ArrayList<Customer>();
-		customers.addAll(customerService.findAll());
-		
-		List<Administrator> admins = new ArrayList<Administrator>();
-		admins.addAll(adminService.findAll());
 		Object testingData[][] = {
 				{admins.get(0).getUserAccount().getUsername(),null},
-				{customers.get(0).getUserAccount().getUsername(),IllegalArgumentException.class},
+				{null,IllegalArgumentException.class},
 		};
 		
 		for(int i = 0; i < testingData.length; i++){
@@ -76,7 +79,7 @@ public class BanAOfferTest extends AbstractTest {
 		Class<?> caught;
 		caught = null;
 		try{
-			authenticate(username);
+			this.authenticate(username);
 			List<Demand> demands = new ArrayList<Demand>();
 			demands.addAll(demandService.findNoBannedOffers());
 			Collections.shuffle(demands);

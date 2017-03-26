@@ -10,17 +10,26 @@
 
 package useCases;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import services.AdministratorService;
 import services.CommentService;
+import services.DemandService;
 import utilities.AbstractTest;
+import domain.Administrator;
 import domain.Comment;
+import domain.Demand;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -31,14 +40,28 @@ public class BanACommentTest extends AbstractTest {
 
 	@Autowired
 	private CommentService	commentService;
+	@Autowired
+	private AdministratorService adminService;
+	@Autowired
+	private DemandService demandService;
 
-
+	private List<Administrator> admins;
+	
+	@Before
+    public void setup() {
+		this.admins = new ArrayList<Administrator>();
+		this.admins.addAll(adminService.findAll());
+		
+		Collections.shuffle(this.admins);
+	}
+	
+	
 	//Apply for a request
 	@Test
 	public void driver() {
 		final Object testingData[][] = {
 			{
-				"admin1", null
+				this.admins.get(0).getUserAccount().getUsername(), null
 			}, {
 				null, IllegalArgumentException.class
 			},
@@ -53,9 +76,19 @@ public class BanACommentTest extends AbstractTest {
 		caught = null;
 		try {
 			this.authenticate(username);
-//			this.commentService.findNoBannedComments();
-			final Comment c = this.commentService.findOne(49);
-			this.commentService.ban(c.getId());
+			List<Comment> comments = new ArrayList<Comment>();
+			List<Demand> demands = new ArrayList<Demand>();
+			demands.addAll(demandService.findNoBannedOffers());
+			demands.addAll(demandService.findNoBannedRequests());
+			Collections.shuffle(demands);
+			
+			if(!demands.isEmpty()){
+				comments.addAll(this.commentService.findRealComments(demands.get(0).getId()));
+				if(!comments.isEmpty()){
+					Collections.shuffle(comments);
+					this.commentService.ban(comments.get(0).getId());
+				}
+			}
 			this.unauthenticate();
 		} catch (final Throwable oops) {
 			caught = oops.getClass();

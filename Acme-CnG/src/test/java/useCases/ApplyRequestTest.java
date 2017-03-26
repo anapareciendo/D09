@@ -16,6 +16,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,13 +58,23 @@ public class ApplyRequestTest extends AbstractTest {
 			//El usuario autenticado es un admin (test negativo)
 				
 	 */
+	
+	private List<Customer> customers;
+	private List<Administrator> admins;
+	
+	@Before
+    public void setup() {
+		this.customers = new ArrayList<Customer>();
+		this.admins = new ArrayList<Administrator>();
+		this.customers.addAll(customerService.findAll());
+		this.admins.addAll(adminService.findAll());
+		
+		Collections.shuffle(this.admins);
+		Collections.shuffle(this.customers);
+	}
+	
 	@Test
 	public void driver(){
-		List<Customer> customers= new ArrayList<Customer>();
-		customers.addAll(customerService.findAll());
-		
-		List<Administrator> admins = new ArrayList<Administrator>();
-		admins.addAll(adminService.findAll());
 		Object testingData[][] = {
 				{customers.get(0).getUserAccount().getUsername(),null},
 				{admins.get(0).getUserAccount().getUsername(),IllegalArgumentException.class},

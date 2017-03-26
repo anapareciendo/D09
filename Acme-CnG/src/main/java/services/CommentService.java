@@ -64,11 +64,6 @@ public class CommentService {
 		return res;
 	}
 
-	public Collection<Comment> findAll() {
-		final Collection<Comment> res = this.commentRepository.findAll();
-		return res;
-	}
-
 	public Comment findOne(final int commentId) {
 		final Comment res = this.commentRepository.findOne(commentId);
 		return res;

@@ -1,10 +1,12 @@
 package useCases;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,13 +41,18 @@ public class FindNotBannedDemads extends AbstractTest{
 	@Autowired
 	private CustomerService customerService;
 
+	private List<Customer> customers;
+
+	@Before
+    public void setup() {
+		this.customers= new ArrayList<Customer>();
+		this.customers.addAll(customerService.findAll());
+		
+		Collections.shuffle(customers);
+	}
 	
 	@Test
 	public void driver(){
-
-		List<Customer> customers= new ArrayList<Customer>();
-		customers.addAll(customerService.findAll());
-		
 		Object testingData[][] = {
 				{customers.get(0).getUserAccount().getUsername(),null},
 				{null,IllegalArgumentException.class},

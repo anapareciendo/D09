@@ -11,10 +11,12 @@
 package useCases;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,10 +49,19 @@ public class ChangeBannerTest extends AbstractTest {
 			//El usuario no se autentica (test negativo)
 				
 	 */
+	
+	private List<Administrator> admins;
+	
+	@Before
+    public void setup() {
+		this.admins = new ArrayList<Administrator>();
+		this.admins.addAll(adminService.findAll());
+		
+		Collections.shuffle(this.admins);
+	}
+	
 	@Test
 	public void driver() {
-		List<Administrator> admins = new ArrayList<Administrator>();
-		admins.addAll(adminService.findAll());
 		final Object testingData[][] = {
 			{
 				admins.get(0).getUserAccount().getUsername(), null

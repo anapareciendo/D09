@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import security.LoginService;
-import services.AdministratorService;
 import services.CustomerService;
 import services.DemandService;
 import services.PlaceService;
 import utilities.AbstractTest;
-import domain.Administrator;
 import domain.Customer;
 import domain.Demand;
 import domain.Place;
@@ -51,21 +50,21 @@ public class PostADemand extends AbstractTest{
 	@Autowired
 	private CustomerService customerService;
 	
-	@Autowired
-	private AdministratorService adminService;
+	private List<Customer> customers;
+	
+	@Before
+    public void setup() {
+		this.customers= new ArrayList<Customer>();
+		this.customers.addAll(this.customerService.findAll());
+		
+		Collections.shuffle(this.customers);
+	}
 	
 	@Test
 	public void driver(){
-		
-		List<Customer> customers= new ArrayList<Customer>();
-		customers.addAll(customerService.findAll());
-		
-		List<Administrator> admins = new ArrayList<Administrator>();
-		admins.addAll(adminService.findAll());
-		
 		Object testingData[][] = {
 				{"title","description",Calendar.getInstance().getTime(),Boolean.FALSE,customers.get(0).getUserAccount().getUsername(),null},
-				{"title","description",Calendar.getInstance().getTime(),Boolean.FALSE,admins.get(0).getUserAccount().getUsername(),IllegalArgumentException.class},
+				{"title","description",Calendar.getInstance().getTime(),Boolean.FALSE,null,IllegalArgumentException.class},
 
 		};
 		

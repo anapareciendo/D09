@@ -11,10 +11,12 @@
 package useCases;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,11 +54,18 @@ public class PostCommentTest extends AbstractTest {
 			//Un usuario sin autenticar, envía un comentario (test negativo)
 	 */
 	
+	private List<Customer> customers;
+	
+	@Before
+    public void setup() {
+		this.customers= new ArrayList<Customer>();
+		this.customers.addAll(this.customerService.findAll());
+		
+		Collections.shuffle(this.customers);
+	}
+	
 	@Test
 	public void driver() {
-		List<Customer> customers= new ArrayList<Customer>();
-		customers.addAll(customerService.findAll());
-		
 		final Object testingData[][] = {
 			{
 				customers.get(0).getUserAccount().getUsername(), "prueba", "texto", 5, null

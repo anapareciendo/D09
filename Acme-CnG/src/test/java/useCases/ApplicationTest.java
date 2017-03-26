@@ -2,10 +2,12 @@
 package useCases;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +28,7 @@ import domain.Demand;
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class ApplicationTest2 extends AbstractTest {
+public class ApplicationTest extends AbstractTest {
 
 	@Autowired
 	private ApplicationService	applicationService;
@@ -45,22 +47,23 @@ public class ApplicationTest2 extends AbstractTest {
 			//El usuario autenticado no es un customer, por lo que no puede aceptar applications
 			//El usuario no esta logado 	
 	 */
+	private List<Customer> customers;
+	private List<Administrator> admins;
 	
+	@Before
+    public void setup() {
+		this.customers = new ArrayList<Customer>();
+		this.admins = new ArrayList<Administrator>();
+		this.customers.addAll(customerService.findAll());
+		this.admins.addAll(adminService.findAll());
+		
+		Collections.shuffle(this.admins);
+		Collections.shuffle(this.customers);
+	}
 
 	@SuppressWarnings("unchecked")
 	@Test
 	public void driver() {
-		
-		
-		
-		List<Customer> customers= new ArrayList<Customer>();
-		customers.addAll(customerService.findAll());
-		
-		List<Administrator> admins = new ArrayList<Administrator>();
-		admins.addAll(adminService.findAll());
-		
-		
-		
 		final Object testingDataAccept[][] = {
 				
 			{

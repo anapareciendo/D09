@@ -1,7 +1,12 @@
 package useCases;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import services.AdministratorService;
+import services.CommentService;
 import services.CustomerService;
 import utilities.AbstractTest;
 import domain.Actor;
@@ -24,37 +30,49 @@ public class DisplayActorTest extends AbstractTest{
 	private AdministratorService adminService;
 	@Autowired
 	private CustomerService customerService;
+	@Autowired
+	private CommentService commentService;
 	
+	private List<Actor> actors;
+	
+	@Before
+    public void setup() {
+		this.actors = new ArrayList<Actor>();
+		this.actors.addAll(adminService.findAll());
+		this.actors.addAll(customerService.findAll());
+		
+		Collections.shuffle(this.actors);
+	}
 	
 	@Test
 	public void driver(){
 		Object testingData[][] = {
 				//Está autenticado
-				{28,"customer1",null},
+				{actors.get(0).getUserAccount().getUsername(),null},
 				//No está autenticado
-				{28,"noUser",IllegalArgumentException.class},
+				{null,IllegalArgumentException.class},
 
 		};
 		
 		for(int i = 0; i < testingData.length; i++){
-			template((int)testingData[i][0], 
-					(String) testingData[i][1],
-					(Class<?>) testingData[i][2]);
+			template((String) testingData[i][0],
+					(Class<?>) testingData[i][1]);
 		}
 	}
 	
-	protected void template(int uaId, String user, Class<?> expected){
+	protected void template(String user, Class<?> expected){
 		
 		Class<?> caught;
 		caught = null;
 		try{
 			authenticate(user);
-			
-			Actor a = customerService.findByUserAccountId(uaId);
+			int uaId = this.actors.get(0).getUserAccount().getId();
+			Actor a = this.customerService.findByUserAccountId(uaId);
 			if (a == null){
-				a = adminService.findByUserAccountId(uaId);
+				a = this.adminService.findByUserAccountId(uaId);
 			}
-			//Falta el not banned commentss
+			this.commentService.findRealComments(a.getId());
+			
 			unauthenticate();
 		
 		} catch(Throwable oops){
