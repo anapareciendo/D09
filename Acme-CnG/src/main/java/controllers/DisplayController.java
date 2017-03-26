@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.CommentService;
 import services.DemandService;
 import domain.Comment;
 import domain.Demand;
@@ -29,6 +30,8 @@ public class DisplayController extends AbstractController {
 
 	@Autowired
 	private DemandService demandService;
+	@Autowired
+	private CommentService commentService;
 	
 	
 	// Constructors -----------------------------------------------------------
@@ -44,8 +47,8 @@ public class DisplayController extends AbstractController {
 		
 		Demand demand = demandService.findOne(demandId);
 		
-		Collection<Comment> comments = demand.getComments();
-		
+//		Collection<Comment> comments = demand.getComments();
+		Collection<Comment> comments = commentService.findReceivedComments(demandId);
 		
 		result = new ModelAndView("demand/display");
 		result.addObject("demand", demand);
