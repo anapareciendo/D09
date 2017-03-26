@@ -17,6 +17,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,24 +77,31 @@ public class ExangeMessageTest2 extends AbstractTest {
 				
 	 */
 	
+	private List<Actor> actors;
+	
+	@Before
+    public void setup() {
+		this.actors =  new ArrayList<Actor>();
+		this.actors.addAll(this.adminService.findAll());
+		this.actors.addAll(this.customerService.findAll());
+		Collections.shuffle(this.actors);
+		
+		Collections.shuffle(this.actors);
+	}
+	
 	@Test
 	public void driver(){
-		List<Actor> actors = new ArrayList<Actor>();
-		actors.addAll(adminService.findAll());
-		actors.addAll(customerService.findAll());
-		Collections.shuffle(actors);
-		
 		Object testingData[][] = {
 				//Usuario autenticado y existe receptor
-				{actors.get(0).getUserAccount().getUsername(),actors.get(1).getId(),"titulo","text",null},
-				//Usuario autenticado y no existe el recipient
+				{actors.get(0).getUserAccount().getUsername(),actors.get(0).getId(),"titulo","text",null},
+				//Usuario autenticado y no existe el receptor
 				{actors.get(0).getUserAccount().getUsername(),-30,"titulo","text",IllegalArgumentException.class},
-				//Usuario no autenticado y existe el recipient
+				//Usuario no autenticado y existe el receptor
 				{null,actors.get(1).getId(),"titulo","text",IllegalArgumentException.class},
-				//Usuario autenticado y existe el recipient.Titulo vacio
-				{actors.get(0).getUserAccount().getUsername(),actors.get(1).getId(),"","text",IllegalArgumentException.class},
+				//Usuario autenticado y existe el recipients.Titulo vacio
+				{actors.get(0).getUserAccount().getUsername(),actors.get(1).getId(),"","text",null},
 				//Usuario autenticado y existe el recipient.Texto vacio
-				{actors.get(0).getUserAccount().getUsername(),actors.get(1).getId(),"titulo","",IllegalArgumentException.class},
+				{actors.get(0).getUserAccount().getUsername(),actors.get(1).getId(),"titulo","",null},
 				//Usuario autenticado y existe el recipient.Título nulo
 				{actors.get(0).getUserAccount().getUsername(),actors.get(1).getId(),null,"text",IllegalArgumentException.class},
 				//Usuario autenticado y existe el recipient.Texto nulo
@@ -211,11 +219,6 @@ public class ExangeMessageTest2 extends AbstractTest {
 	
 	@Test
 	public void driverCreate(){
-
-		List<Actor> actors = new ArrayList<Actor>();
-		actors.addAll(adminService.findAll());
-		actors.addAll(customerService.findAll());
-		
 		Object testingData[][] = {
 				//Creo el usuario que va a enviar el mensaje de nuevas.
 				{actors.get(0).getUserAccount().getUsername(),actors.get(1).getId(),"titulo","text",1,null},

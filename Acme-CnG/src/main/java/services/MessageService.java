@@ -72,8 +72,8 @@ public class MessageService {
 		Assert.notNull(message.getRecipient());
 
 		Assert.isTrue(message.getMoment() != null);
-		Assert.isTrue(message.getTitle() != null && message.getTitle() != "");
-		Assert.isTrue(message.getText() != null && message.getText() != "");
+		Assert.isTrue(message.getTitle() != null);
+		Assert.isTrue(message.getText() != null);
 
 		final Message res = this.messageRepository.save(message);
 		res.getSender().getSenderMessages().add(res);
