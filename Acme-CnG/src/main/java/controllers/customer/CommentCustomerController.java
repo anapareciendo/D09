@@ -51,7 +51,7 @@ public class CommentCustomerController extends AbstractController{
 			try{	
 				commentService.save(res);
 				Demand demand = demandService.findOne(res.getCommentable().getId());
-				Collection<Comment> comments = demand.getComments();
+				Collection<Comment> comments = commentService.findRealComments(demand.getId());
 				result = new ModelAndView("demand/display");
 				result.addObject("demand", demand);
 				result.addObject("comments", comments);

@@ -15,7 +15,7 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
 	@Query("select c from Comment c where c.banned=false and c.commentable.id=?1")
 	Collection<Comment> findReceivedComments(int id);
 
-	@Query("select c from Comment c where c.banned=false")
-	Collection<Comment> findNoBannedComments();
+	@Query("select c from Comment c where c.posted.userAccount.id=?1 and c.commentable.id=?2")
+	Collection<Comment> findMyCommentsAbout(int uaId, int demandId);
 
 }

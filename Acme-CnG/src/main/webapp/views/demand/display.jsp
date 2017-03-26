@@ -37,18 +37,11 @@
 		<spring:message code="demand.comment.text" var="textHeader" />
 		<display:column property="text" title="${textHeader}" sortable="false"/>
 		
+		<spring:message code="demand.comment.moment" var="momentHeader" />
+		<display:column property="moment" title="${momentHeader}" sortable="false"/>
+		
 		<spring:message code="demand.comment.stars" var="starsHeader" />
 		<display:column property="stars" title="${starsHeader}" sortable="false"/>
-
-		<%-- <jstl:if test="${comment.banned == true}">
-		<display:column property="posted.userAccount.username" title="${autorHeader}" sortable="false"/>
-		
-		<display:column title="${titleHeader}" sortable="false"><jstl:out value="${bannedHeader}" /></display:column>
-		
-		<display:column title="${textHeader}" sortable="false"><jstl:out value="${bannedHeader}" /></display:column>
-		
-		<display:column title="${starsHeader}" sortable="false">-</display:column>
-		</jstl:if> --%>
 		
 		<security:authorize access="hasRole('ADMIN')">
 		<display:column>

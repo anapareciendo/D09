@@ -10,7 +10,8 @@
 
 package controllers;
 
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,7 +34,6 @@ public class DisplayController extends AbstractController {
 	@Autowired
 	private CommentService commentService;
 	
-	
 	// Constructors -----------------------------------------------------------
 
 	public DisplayController() {
@@ -46,9 +46,8 @@ public class DisplayController extends AbstractController {
 		ModelAndView result; 
 		
 		Demand demand = demandService.findOne(demandId);
-		
-//		Collection<Comment> comments = demand.getComments();
-		Collection<Comment> comments = commentService.findReceivedComments(demandId);
+		Set<Comment> comments = new HashSet<Comment>();
+		comments.addAll(commentService.findRealComments(demandId));
 		
 		result = new ModelAndView("demand/display");
 		result.addObject("demand", demand);

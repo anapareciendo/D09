@@ -1,8 +1,12 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +23,7 @@ import domain.Actor;
 import domain.Comment;
 import domain.Commentable;
 import domain.Customer;
+import domain.Demand;
 
 @Service
 @Transactional
@@ -32,6 +37,10 @@ public class CommentService {
 	//Suppoert services
 	@Autowired
 	private CustomerService customerService;
+	@Autowired
+	private AdministratorService adminService;
+	@Autowired
+	private DemandService demandService;
 	
 	@Autowired
 	private Validator validator;
@@ -123,7 +132,7 @@ public class CommentService {
 		return this.commentRepository.findReceivedComments(id);
 	}
 
-	public Collection<Comment> findNoBannedComments() {
+	public Collection<Comment> findMyCommentsAbout(int demandId){
 		final Authority a = new Authority();
 		a.setAuthority(Authority.ADMIN);
 		final Authority c = new Authority();
@@ -131,7 +140,7 @@ public class CommentService {
 		final UserAccount ua = LoginService.getPrincipal();
 		Assert.isTrue(ua.getAuthorities().contains(a) || ua.getAuthorities().contains(c), "You must to be autenticate for this action");
 
-		return this.commentRepository.findNoBannedComments();
+		return this.commentRepository.findMyCommentsAbout(ua.getId(), demandId);
 	}
 
 	public Comment reconstruct(Comment comment, BindingResult binding) {
@@ -146,6 +155,27 @@ public class CommentService {
 		validator.validate(comment, binding);
 		
 		return res;
+	}
+	
+	public Set<Comment> findRealComments(int demandId){
+		Set<Comment> comments = new HashSet<Comment>();
+		Demand demand = demandService.findOne(demandId);
+		
+		int uaId = LoginService.getPrincipal().getId();
+		Actor actor = adminService.findByUserAccountId(uaId);
+		if(actor!=null){
+			comments.addAll(demand.getComments());
+		}else{
+			actor = customerService.findByUserAccountId(uaId);
+			comments.addAll(commentRepository.findReceivedComments(demandId));
+			List<Comment> myComments = new ArrayList<Comment>();
+			myComments.addAll(commentRepository.findMyCommentsAbout(uaId, demandId));
+			if(!myComments.isEmpty()){
+				comments.addAll(myComments);
+			}
+		}
+		
+		return comments;
 	}
 
 }
