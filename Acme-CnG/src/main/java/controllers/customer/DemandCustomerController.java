@@ -59,9 +59,25 @@ public class DemandCustomerController extends AbstractController{
 		Type type =demandService.apply(demandId);
 		
 		if(type==Type.OFFER){
-			result = new ModelAndView("redirect:offer.do");
+//			result = new ModelAndView("redirect:offer.do");
+			List<Demand> demands = new ArrayList<Demand>();
+			demands.addAll(demandService.findNoBannedOffers());
+			
+			result = new ModelAndView("demand/list");
+			result.addObject("requestURI", "demand/customer/offer.do");
+			result.addObject("demand", demands);
+			result.addObject("type", "offer");
+			result.addObject("message", "demand.aply.green");
 		}else{
-			result = new ModelAndView("redirect:request.do");
+//			result = new ModelAndView("redirect:request.do");
+			List<Demand> demands = new ArrayList<Demand>();
+			demands.addAll(demandService.findNoBannedRequests());
+			
+			result = new ModelAndView("demand/list");
+			result.addObject("requestURI", "demand/customer/request.do");
+			result.addObject("demand", demands);
+			result.addObject("type", "request");
+			result.addObject("message", "demand.aply.green");
 		}
 		return result;
 	}
