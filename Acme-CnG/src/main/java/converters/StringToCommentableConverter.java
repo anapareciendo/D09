@@ -15,6 +15,8 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import repositories.AdministratorRepository;
+import repositories.CustomerRepository;
 import repositories.DemandRepository;
 import domain.Commentable;
 
@@ -24,6 +26,10 @@ public class StringToCommentableConverter implements Converter<String, Commentab
 
 	@Autowired
 	DemandRepository demandRepository;
+	@Autowired
+	CustomerRepository customerRepository;
+	@Autowired
+	AdministratorRepository adminRepository;
 
 	@Override
 	public Commentable convert(String text) {
@@ -34,6 +40,12 @@ public class StringToCommentableConverter implements Converter<String, Commentab
 			id = Integer.valueOf(text);
 			
 			result = demandRepository.findOne(id);
+			if(result==null){
+				result = customerRepository.findOne(id);
+			}
+			if(result==null){
+				result = adminRepository.findOne(id);
+			}
 		} catch (Exception oops) {
 			throw new IllegalArgumentException(oops);
 		}

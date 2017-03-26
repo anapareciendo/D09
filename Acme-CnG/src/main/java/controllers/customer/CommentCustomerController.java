@@ -15,7 +15,9 @@ import services.CommentService;
 import services.CustomerService;
 import services.DemandService;
 import controllers.AbstractController;
+import domain.Actor;
 import domain.Comment;
+import domain.Commentable;
 import domain.Customer;
 import domain.Demand;
 
@@ -31,11 +33,17 @@ public class CommentCustomerController extends AbstractController{
 	private CustomerService customerService;
 	
 	@RequestMapping(value = "/post", method = RequestMethod.GET)
-	public ModelAndView request(@RequestParam int demandId) {
+	public ModelAndView request(@RequestParam int commentableId) {
 		ModelAndView result;
 		
 		Customer sender = customerService.findByUserAccountId(LoginService.getPrincipal().getId());
-		Comment res = commentService.create(sender, demandService.findOne(demandId));
+		
+		Commentable commentable = demandService.findOne(commentableId);
+		if(commentable==null){
+			commentable = customerService.findOne(commentableId);
+		}
+		
+		Comment res = commentService.create(sender, commentable);
 		
 		result = new ModelAndView("demand/post");
 		result.addObject("comment", res);
@@ -50,21 +58,32 @@ public class CommentCustomerController extends AbstractController{
 		Comment res = commentService.reconstruct(comment, binding);
 			try{	
 				commentService.save(res);
-				Demand demand = demandService.findOne(res.getCommentable().getId());
-				Collection<Comment> comments = commentService.findRealComments(demand.getId());
-				result = new ModelAndView("demand/display");
-				result.addObject("demand", demand);
+				Commentable commentable = demandService.findOne(res.getCommentable().getId());
+				if(commentable == null){
+					commentable = customerService.findOne(res.getCommentable().getId());
+				}
+				Collection<Comment> comments = commentService.findRealComments(commentable.getId());
+				
+				if(commentable instanceof Demand){
+					result = new ModelAndView("demand/display");
+					Demand demand = (Demand) commentable;
+					result.addObject("demand", demand);
+				}else{
+					result = new ModelAndView("customer/display");
+					Actor actor = (Actor) commentable;
+					result.addObject("actor", actor);
+				}
 				result.addObject("comments", comments);
 
 			} catch (Throwable oops) {
 				result = new ModelAndView("demand/post");
 				result.addObject("comment", comment);
 				result.addObject("message", "message.send.error");
-					
-				}
+			}
 		}catch(Throwable opps){
 			result = new ModelAndView("demand/post");
 			result.addObject("comment", comment);
+			result.addObject("message", "message.send.error");
 		}
 		
 		return result;

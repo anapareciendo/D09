@@ -22,16 +22,11 @@
 
 	<div>
 		<h2>
-			<jstl:out value="${demand.title}" />
+			<jstl:out value="${actor.name}" />
+	  		<jstl:out value="${actor.surname}" />
 		</h2>
-		<p><jstl:out value="${demand.description}" /></p>
-		
-		<h3>
-			<a href="display/customer.do?customerId=${demand.customer.id}">
-	  			<jstl:out value="${demand.customer.name}" />
-	  			<jstl:out value="${demand.customer.surname}" />
-	  		</a>
-		</h3>
+		<h4><jstl:out value="${actor.email}" /></h4>
+		<h4><jstl:out value="${actor.phone}" /></h4>
 	</div>
 	
 	<display:table name="comments" id="comment">	
@@ -66,7 +61,7 @@
 	
 	<security:authorize access="hasRole('CUSTOMER')">
 	<div>
-	  	<a href="comment/customer/post.do?commentableId=${demand.id}">
+	  	<a href="comment/customer/post.do?commentableId=${actor.id}">
 			<spring:message code="demand.comment.post" var="postHeader" />
 	  		<jstl:out value="${postHeader}" />
 		</a>
