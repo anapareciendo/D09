@@ -184,7 +184,7 @@ public class AdministratorService {
 	 
 	 //Level A
 	 
-	//The minimum, the average, and the maximum number of messages sent per actor
+	//The minimum number of messages sent per actor
 	 public Double minSentMessagePerActor(){
 			this.isAdministrator();
 			return administratorRepository.minSentMessagePerActor();

@@ -56,11 +56,29 @@ public class AdministratorController extends AbstractController {
 	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
 	public ModelAndView display() {
 		ModelAndView result;
-		
-		Double ratioDemand = adminService.ratioDemand();
-		
+				
 		result = new ModelAndView("administrator/dashboard");
-		result.addObject("ratioDemand", ratioDemand);		
+		result.addObject("ratioDemand", adminService.ratioDemand());
+		result.addObject("avgOffersCustomer", adminService.avgOffersCustomer());
+		result.addObject("avgRequestsCustomer",adminService.avgRequestsCustomer());
+		result.addObject("avgApplicationsOffer", adminService.avgApplicationsOffer());
+		result.addObject("avgApplicationsRequest", adminService.avgApplicationsRequest());
+		result.addObject("customerMoreApplicationAccepted", adminService.customerMoreApplicationAccepted().getName());
+		result.addObject("customerMoreApplicationDenied", adminService.customerMoreApplicationDenied().getName());
+		result.addObject("avgCommentPerActor", adminService.avgCommentPerActor());
+		result.addObject("avgCommentPerOffer", adminService.avgCommentPerOffer());
+		result.addObject("avgCommentPerRequest", adminService.avgCommentPerRequest());
+		result.addObject("avgCommentPostAdmin", adminService.avgCommentPostAdmin());
+		result.addObject("avgCommentPostCustomer", adminService.avgCommentPostCustomer());
+		result.addObject("minSentMessagePerActor", adminService.minSentMessagePerActor());
+		result.addObject("maxSentMessagePerActor", adminService.maxSentMessagePerActor());
+		result.addObject("avgSentMessagePerActor", adminService.avgSentMessagePerActor());
+		result.addObject("minReciveMessagePerActor",adminService.minReciveMessagePerActor());
+		result.addObject("maxReciveMessagePerActor", adminService.maxReciveMessagePerActor());
+		result.addObject("avgReciveMessagePerActor", adminService.avgReciveMessagePerActor());
+		result.addObject("actorsSentMoreMessages", adminService.actorsSentMoreMessages());
+		result.addObject("actorsGotMoreMessages", adminService.actorsGotMoreMessages());
+		
 		
 		return result;
 		
