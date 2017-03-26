@@ -23,7 +23,6 @@ import domain.Actor;
 import domain.Comment;
 import domain.Commentable;
 import domain.Customer;
-import domain.Demand;
 
 @Service
 @Transactional
@@ -157,19 +156,25 @@ public class CommentService {
 		return res;
 	}
 	
-	public Set<Comment> findRealComments(int demandId){
+	public Set<Comment> findRealComments(int commentableId){
 		Set<Comment> comments = new HashSet<Comment>();
-		Demand demand = demandService.findOne(demandId);
+		Commentable commentable = demandService.findOne(commentableId);
+		if(commentable==null){
+			commentable = customerService.findOne(commentableId);
+		}
+		if(commentable==null){
+			commentable = adminService.findOne(commentableId);
+		}
 		
 		int uaId = LoginService.getPrincipal().getId();
 		Actor actor = adminService.findByUserAccountId(uaId);
 		if(actor!=null){
-			comments.addAll(demand.getComments());
+			comments.addAll(commentable.getComments());
 		}else{
 			actor = customerService.findByUserAccountId(uaId);
-			comments.addAll(commentRepository.findReceivedComments(demandId));
+			comments.addAll(commentRepository.findReceivedComments(commentableId));
 			List<Comment> myComments = new ArrayList<Comment>();
-			myComments.addAll(commentRepository.findMyCommentsAbout(uaId, demandId));
+			myComments.addAll(commentRepository.findMyCommentsAbout(uaId, commentableId));
 			if(!myComments.isEmpty()){
 				comments.addAll(myComments);
 			}

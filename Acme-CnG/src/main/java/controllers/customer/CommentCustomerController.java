@@ -45,7 +45,7 @@ public class CommentCustomerController extends AbstractController{
 		
 		Comment res = commentService.create(sender, commentable);
 		
-		result = new ModelAndView("demand/post");
+		result = new ModelAndView("comment/post");
 		result.addObject("comment", res);
 
 		return result;
@@ -76,12 +76,12 @@ public class CommentCustomerController extends AbstractController{
 				result.addObject("comments", comments);
 
 			} catch (Throwable oops) {
-				result = new ModelAndView("demand/post");
+				result = new ModelAndView("comment/post");
 				result.addObject("comment", comment);
 				result.addObject("message", "message.send.error");
 			}
 		}catch(Throwable opps){
-			result = new ModelAndView("demand/post");
+			result = new ModelAndView("comment/post");
 			result.addObject("comment", comment);
 			result.addObject("message", "message.send.error");
 		}
