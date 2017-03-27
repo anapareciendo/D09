@@ -1,8 +1,12 @@
 package controllers;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -27,9 +31,7 @@ import domain.Message;
 @ContextConfiguration(locations = {
 		"classpath:spring/junit.xml"
 	})
-//Test donde se prueba el método findMyMessages en MessageController
-//Se comprueba que la vista message/list es creada correctamente
-//.andExpect(forwardedUrl("/views/message/list.jsp"))
+
 public class MessageControllerTest {
 	
 	
@@ -47,6 +49,8 @@ public class MessageControllerTest {
 	        mockMvc = MockMvcBuilders.standaloneSetup(messageController).build();
 	    }
 	    
+	    //Test donde se prueba el método findMyMessages en MessageController
+	    //Se comprueba que la vista message/list es creada correctamente
 	    @Test
 	    public void testFindMyMessages() throws Exception {
 	    	
@@ -57,6 +61,12 @@ public class MessageControllerTest {
 	        mockMvc.perform(get("/message/list"))
 	                .andExpect(status().isOk())
 	                .andExpect(view().name("message/list"))
+	                .andExpect(forwardedUrl("message/list"))
 	                .andExpect(model().attribute("ms", hasSize(2)));
+	        
+	        verify(messageService, times(1)).findMyMessages();
+	        verifyNoMoreInteractions(messageService);
 	    }
+	    
+	    
 }
