@@ -56,15 +56,21 @@ public class MessageControllerTest {
 	    	
 	    	Message ms1 = new Message();
 	    	Message ms2 = new Message();
+	    	
 	    	when(messageService.findMyMessages()).thenReturn(Arrays.asList(ms1, ms2));
 	 
 	        mockMvc.perform(get("/message/list"))
+	        
 	                .andExpect(status().isOk())
+	                
 	                .andExpect(view().name("message/list"))
+	                
 	                .andExpect(forwardedUrl("message/list"))
+	                
 	                .andExpect(model().attribute("ms", hasSize(2)));
 	        
 	        verify(messageService, times(1)).findMyMessages();
+	        
 	        verifyNoMoreInteractions(messageService);
 	    }
 	    
