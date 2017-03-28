@@ -54,8 +54,8 @@ public class ExangeMessageTest extends AbstractTest {
 	/* *----Exchange messages with other actors.-----*
 	  -El orden de los parámetros para "drive" es:Usuario que se va a autenticar, usuario receptor 
 	  del mensaje, título del mensaje,texto del mensaje, error esperado
-	  
-	  Cobertura del test:
+	 
+	  Cobertura del test:*/ 
 	 	//Usuario autenticado y existe receptor
 		//Usuario autenticado y no existe el recipient
 		//Usuario no autenticado
@@ -63,8 +63,11 @@ public class ExangeMessageTest extends AbstractTest {
 		//Usuario autenticado y existe el recipient.Texto vacio
 		//Usuario autenticado y existe el recipient.Título nulo
 		//Usuario autenticado y existe el recipient.Texto nulo
-				
-	 */
+		
+		//Registrarse como Customer y enviar un mensaje
+		//Registrarse como Customer con el nombre a null
+		//Registrarse como Customer con el patron del telefono erroneo
+	 
 	
 	private List<Actor> actors;
 	
@@ -87,8 +90,6 @@ public class ExangeMessageTest extends AbstractTest {
 				{"customerTest2","password",null,"Ramos","aloyR@gmail.com","+34122332687", IllegalArgumentException.class},
 //				//Customer se intenta registrar incumpliendo el patron del telefono y luego mandar un mensaje
 				{"customerTest3","password","Aloy","Ramos","aloyR@gmail.com","32687", ConstraintViolationException.class},
-//				//Customer se intenta registrar incumpliendo el patron del email y luego mandar un mensaje
-				{"customerTest4","password","Aloyyy","Ramos","aloyR","+34122332687", ConstraintViolationException.class},
 		};
 		Object testingData[][] = {
 				
