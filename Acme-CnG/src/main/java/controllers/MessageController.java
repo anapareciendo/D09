@@ -202,7 +202,12 @@ public class MessageController extends AbstractController{
 			result = new ModelAndView("redirect:list.do");
 		} catch (Throwable oops) {
 		
-			result = new ModelAndView("redirect:list.do");
+			Collection<Message> messages;
+			
+			messages = messageService.findMyMessages();
+			result = new ModelAndView("message/list");
+			result.addObject("requestURI", "message/list.do");
+			result.addObject("ms", messages);
 			result.addObject("message", "message.commit.error");
 		}
 
