@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+ * PopulateDatabase.xml
+ *
+ * Copyright (C) 2017 Universidad de Sevilla
+ * 
+ * The use of this project is hereby constrained to the conditions of the 
+ * TDG Licence, a copy of which you may download from 
+ * http://www.tdg-seville.info/License.html
+ -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	">
+	
+	<!-- User accounts -->
+
+	<bean id="userAccount1" class="security.UserAccount">
+		<property name="username" value="admin1" />
+		<property name="password" value="e00cf25ad42683b3df678c61f42c6bda" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="ADMIN" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Admin -->
+	<bean id="admin1" class="domain.Administrator">
+		<property name="name" value="Jefe" />
+		<property name="surname" value="Maximo" />
+		<property name="email" value="jefemaximo@gmail.com" />
+		<property name="userAccount" ref="userAccount1" />
+		<property name="phone" value="+34122332687" />	
+		<property name="postComments">
+			<list></list>
+		</property>
+		<property name="senderMessages">
+			<list></list>
+		</property>
+		<property name="receivedMessages">
+			<list></list>
+		</property>
+		<property name="comments">
+			<list></list>
+		</property>
+	</bean>
+	
+	<!-- Place -->
+	
+	<bean id="place1" class="domain.Place">
+		<property name="address" value="Madrid" />
+	</bean>
+	
+	<bean id="place2" class="domain.Place">
+		<property name="address" value="Sevilla" />
+		<property name="latitude" value="13"/>
+		<property name="longitude" value="50"/>
+	</bean>
+	
+	<bean id="place3" class="domain.Place">
+		<property name="address" value="Cádiz" />
+		<property name="latitude" value="20"/>
+		<property name="longitude" value="18"/>
+	</bean>
+	
+	<!-- Banner -->
+	<bean id="banner1" class="domain.Banner">
+		<property name="logo" value="Welcome!"/>
+	</bean>
+</beans>
