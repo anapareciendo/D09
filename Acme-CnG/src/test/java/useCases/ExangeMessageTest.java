@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import javax.validation.ConstraintViolationException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,12 +24,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import security.Authority;
 import security.LoginService;
+import security.UserAccount;
 import services.AdministratorService;
 import services.CustomerService;
 import services.MessageService;
 import utilities.AbstractTest;
 import domain.Actor;
+import domain.Customer;
 import domain.Message;
 
 @ContextConfiguration(locations = {
@@ -50,25 +54,15 @@ public class ExangeMessageTest extends AbstractTest {
 	/* *----Exchange messages with other actors.-----*
 	  -El orden de los parámetros para "drive" es:Usuario que se va a autenticar, usuario receptor 
 	  del mensaje, título del mensaje,texto del mensaje, error esperado
-	  -El orden de los parámetros para "driveModify" es: Usuario que se va a autenticar, usuario 
-	  receptor del mensaje, título del mensaje,texto del mensaje,{1-2} (Si es 1, modifico el actor
-	  que envía el mensaje. Si es 2, modifico el actor que recibe el mensaje), error esperado.
-	  -El orden de los parámetros para "driveCreate" es: Usuario que se va a autenticar, usuario 
-	  receptor del mensaje, título del mensaje,texto del mensaje,{1-2} (Si es 1, creo el actor
-	  que envía el mensaje. Si es 2, creo el actor que recibe el mensaje), error esperado.
 	  
 	  Cobertura del test:
 	 	//Usuario autenticado y existe receptor
 		//Usuario autenticado y no existe el recipient
-		//Usuario no autenticado y existe el recipient
+		//Usuario no autenticado
 		//Usuario autenticado y existe el recipient.Titulo vacio
 		//Usuario autenticado y existe el recipient.Texto vacio
 		//Usuario autenticado y existe el recipient.Título nulo
 		//Usuario autenticado y existe el recipient.Texto nulo
-		//Usuario autenticado y existe receptor.Modifico el sender antes de enviar el mensaje
-		//Usuario autenticado y existe receptor.Modifico el recipient antes de enviar el mensaje
-		//Creo el usuario que va a enviar el mensaje de nuevas.
-		//Creo el usuario que va a recibir el mensaje de nuevas.
 				
 	 */
 	
@@ -86,6 +80,16 @@ public class ExangeMessageTest extends AbstractTest {
 	
 	@Test
 	public void driver(){
+		Object testingDataNew[][]={
+				//Customer entra al sistema y envia un mensaje
+				{"customerTest","password","Aloy","Ramos","aloyR@gmail.com","+34122332687", null},
+//				//Customer se intenta registrar con el campo nombre a null y luego mandar un mensaje
+				{"customerTest2","password",null,"Ramos","aloyR@gmail.com","+34122332687", IllegalArgumentException.class},
+//				//Customer se intenta registrar incumpliendo el patron del telefono y luego mandar un mensaje
+				{"customerTest3","password","Aloy","Ramos","aloyR@gmail.com","32687", ConstraintViolationException.class},
+//				//Customer se intenta registrar incumpliendo el patron del email y luego mandar un mensaje
+				{"customerTest4","password","Aloyyy","Ramos","aloyR","+34122332687", ConstraintViolationException.class},
+		};
 		Object testingData[][] = {
 				
 				{
@@ -119,6 +123,8 @@ public class ExangeMessageTest extends AbstractTest {
 		};
 		for (int i = 0; i < testingData.length; i++)
 			this.template((String) testingData[i][0], (int) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (Class<?>) testingData[i][4]);
+		for (int i = 0; i < testingDataNew.length; i++)
+			this.templateNew((String) testingDataNew[i][0], (String) testingDataNew[i][1],(String) testingDataNew[i][2],(String) testingDataNew[i][3],(String) testingDataNew[i][4],(String) testingDataNew[i][5], (Class<?>) testingDataNew[i][6]);
 	}
 
 	private void template(String username, int recipientId, String title, String text, Class<?> expected) {
@@ -145,5 +151,40 @@ public class ExangeMessageTest extends AbstractTest {
 		this.checkExceptions(expected, caught);
 	}
 	
+	private void templateNew(String username, String password, String name, String surname, String email, String phone, Class<?> expected) {
+		Class<?> caught;
+		caught = null;
+		try {
+			UserAccount ua = new UserAccount();
+			Authority a = new Authority();
+			a.setAuthority(Authority.CUSTOMER);
+			ua.setAuthorities(new ArrayList<Authority>());
+			ua.setPassword(password);
+			ua.setUsername(username);
+			ua.getAuthorities().add(a);
+			
+			Customer c = this.customerService.create(ua);
+			c.setName(name);
+			c.setSurname(surname);
+			c.setEmail(email);
+			c.setPhone(phone);
+			
+			Customer s =this.customerService.save(c);
+			
+			
+			this.authenticate(c.getUserAccount().getUsername());
+			Actor recipient = this.actors.get(0);
+			
+			Message res =this.messageService.create(s, recipient);
+			res.setText("Test");
+			res.setTitle("Test");
+			
+			this.messageService.save(res);
+			this.unauthenticate();
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+		this.checkExceptions(expected, caught);
+	}
 	
 }
