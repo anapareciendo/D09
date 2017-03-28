@@ -47,6 +47,15 @@ public class BanACommentTest extends AbstractTest {
 
 	private List<Administrator> admins;
 	
+	/* *----Ban a comment that administrator finds inappropriate.-----*
+	  -El orden de los parámetros es:Usuario que se va a autenticar, error esperado
+	  
+	  Cobertura del test tanto para aceptar applications como para denegarlas:
+	  		//El usuario autenticado es un admin (test positivo)
+			//El usuario no está autenticado  (test negativo)
+				
+	 */
+	
 	@Before
     public void setup() {
 		this.admins = new ArrayList<Administrator>();
@@ -55,8 +64,6 @@ public class BanACommentTest extends AbstractTest {
 		Collections.shuffle(this.admins);
 	}
 	
-	
-	//Apply for a request
 	@Test
 	public void driver() {
 		final Object testingData[][] = {

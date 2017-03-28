@@ -47,6 +47,15 @@ public class ReplyMessageTest extends AbstractTest {
 
 	private List<Actor> actors;
 	
+	/* *---- List the messages that he or she’s got and reply to them-----*
+	  -El orden de los parametros es: usuario que se va a autenticar,texto del mensaje, error 
+	  esperado
+	  
+	  Cobertura del test:
+			//El usuario autenticado es el dueño del mensaje a responder(test positivo)
+			//El usuario no está autenticado(test negativo)
+	 */
+	
 	@Before
     public void setup() {
 		this.actors= new ArrayList<Actor>();
@@ -62,7 +71,7 @@ public class ReplyMessageTest extends AbstractTest {
 		final Object testingData[][] = {
 			{
 				actors.get(0).getUserAccount().getUsername(), "Texto", null
-			//El customer1 es el due�o del mensaje a responder
+			//El usuario autenticado es el dueño del mensaje a responder
 			}, 
 			{
 				null, "Texto", IllegalArgumentException.class

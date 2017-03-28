@@ -35,6 +35,15 @@ public class DisplayActorTest extends AbstractTest{
 	
 	private List<Actor> actors;
 	
+	/* *----Display an actor.-----*
+	  -El orden de los parámetros es:Usuario que se va a autenticar, error esperado
+	  
+	  Cobertura del test tanto para aceptar applications como para denegarlas:
+			//El usuario autenticado existe (test positivo)
+			//El usuario no se autentica (test negativo)
+				
+	 */
+	
 	@Before
     public void setup() {
 		this.actors = new ArrayList<Actor>();
