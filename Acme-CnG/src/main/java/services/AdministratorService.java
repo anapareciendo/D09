@@ -110,9 +110,13 @@ public class AdministratorService {
 	 //Ratio of offers versus requests
 	 public Double ratioDemand(){
 			this.isAdministrator();
+			Double res = 0.0;
 			Integer offer = administratorRepository.ratioOffer();
 			Integer request = administratorRepository.ratioRequest();
-			return (double) (offer/request);
+			if(request!=0){
+				res = (double) offer/request;
+			}
+			return res;
 		}
 	 
 	//Average number of offers per customer.
@@ -140,14 +144,24 @@ public class AdministratorService {
 		}
 	 
 	//The customer who has more applications accepted
-	 public Customer customerMoreApplicationAccepted(){
+	 public String customerMoreApplicationAccepted(){
 			this.isAdministrator();
-			return administratorRepository.customerMoreApplicationAccepted();
+			String name ="Empty";
+			Customer c=administratorRepository.customerMoreApplicationAccepted();
+			if(c!=null){
+				name=c.getName();
+			}
+			return name;
 		}
 	//The customer who has more applications denied.
-	 public Customer customerMoreApplicationDenied(){
+	 public String customerMoreApplicationDenied(){
 			this.isAdministrator();
-			return administratorRepository.customerMoreApplicationDenied();
+			String name = "Empty";
+			Customer c=administratorRepository.customerMoreApplicationDenied();
+			if(c!=null){
+				name=c.getName();
+			}
+			return name;
 		}
 	 
 	 //Level B

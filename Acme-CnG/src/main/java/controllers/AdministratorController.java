@@ -63,8 +63,8 @@ public class AdministratorController extends AbstractController {
 		result.addObject("avgRequestsCustomer",adminService.avgRequestsCustomer());
 		result.addObject("avgApplicationsOffer", adminService.avgApplicationsOffer());
 		result.addObject("avgApplicationsRequest", adminService.avgApplicationsRequest());
-		result.addObject("customerMoreApplicationAccepted", adminService.customerMoreApplicationAccepted().getName());
-		result.addObject("customerMoreApplicationDenied", adminService.customerMoreApplicationDenied().getName());
+		result.addObject("customerMoreApplicationAccepted", adminService.customerMoreApplicationAccepted());
+		result.addObject("customerMoreApplicationDenied", adminService.customerMoreApplicationDenied());
 		result.addObject("avgCommentPerActor", adminService.avgCommentPerActor());
 		result.addObject("avgCommentPerOffer", adminService.avgCommentPerOffer());
 		result.addObject("avgCommentPerRequest", adminService.avgCommentPerRequest());
