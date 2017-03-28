@@ -82,7 +82,7 @@ public class RequestController extends AbstractController{
 			result = new ModelAndView("request/create");
 			result.addObject("request", request);
 			result.addObject("places",places);
-//			result.addObject("errors", binding.getAllErrors());
+			result.addObject("errors", binding.getAllErrors());
 		}
 			
 		return result;

@@ -82,7 +82,7 @@ public class OfferController extends AbstractController{
 			result = new ModelAndView("offer/create");
 			result.addObject("offer", offer);
 			result.addObject("places",places);
-//			result.addObject("errors", binding.getAllErrors());
+			result.addObject("errors", binding.getAllErrors());
 		}
 			
 		return result;
