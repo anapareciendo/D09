@@ -89,7 +89,7 @@ public class MessageService {
 		Assert.isTrue(this.messageRepository.exists(message.getId()));
 
 		final UserAccount ua = LoginService.getPrincipal();
-		Assert.isTrue(message.getSender().getUserAccount().equals(ua), "You are not the owner of the message");
+		Assert.isTrue(message.getRecipient().getUserAccount().equals(ua), "You are not the owner of the message");
 
 		this.messageRepository.delete(message);
 	}

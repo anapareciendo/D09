@@ -181,7 +181,24 @@ public class MessageController extends AbstractController{
 		
 		try {
 			Message ms = messageService.findOne(messageId);
-			messageService.delete(ms);
+			result = new ModelAndView("message/delete");
+			result.addObject("ms", ms);
+		} catch (Throwable oops) {
+		
+			result = new ModelAndView("redirect:list.do");
+			result.addObject("message", "message.commit.error");
+		}
+
+		return result;
+	}
+	
+	@RequestMapping(value = "/delete", method = RequestMethod.POST, params = "delete")
+	public ModelAndView delete(Message ms) {
+		ModelAndView result;
+		
+		try {
+			Message msd = messageService.findOne(ms.getId());
+			messageService.delete(msd);
 			result = new ModelAndView("redirect:list.do");
 		} catch (Throwable oops) {
 		
